@@ -42,7 +42,7 @@ C\
 Download and install GIT:
 https://git-scm.com/download/win
 # Clone
-To clone repository, go open Windows Commandline and navigate to directory, in which you would like to work in:
+To clone repository, open Windows Command Line and navigate to directory, in which you would like to work:
 ```sh
 $ git clone https://github.com/pietrik123/untitled-sdl-tank-game.git
 ```
@@ -55,6 +55,8 @@ Navigate to the directory, where project files are stored.
 
 Select Solution Platform. It has to be: <b>x86</b>.
 
-From upper menu select: Compilation -> Compile solution ...
+From upper menu select:
+
+Compilation -> Compile solution ...
 
 
