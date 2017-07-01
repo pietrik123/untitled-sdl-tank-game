@@ -22,21 +22,22 @@ Download SDL2.0 SDK, prepared specially for this project:
 
 https://www.dropbox.com/s/neda15344p7chgc/development.zip?dl=0
 
-Extract development.zip to C:\.
+Extract <b>development.zip</b> to <b>C</b> drive .
 
-After extraction directories in c:\development should have following structure:
+After extraction directories should have following structure:
 ```sh
-development\
-|- sdl2_visual\
-   |- include\
-   |- lib\
-   |  |- x86\
-   |  |- x64\     
-   |- sdl2_image\
-      |-include\
-      |-lib\
-        |- x86\
-        |- x64\  
+C\
+|-development\
+  |- sdl2_visual\
+     |- include\
+     |- lib\
+     |  |- x86\
+     |  |- x64\     
+     |- sdl2_image\
+        |-include\
+        |-lib\
+          |- x86\
+          |- x64\  
 ```
 Download and install GIT:
 https://git-scm.com/download/win
@@ -52,7 +53,7 @@ File -> Open -> Project/Solution ...
 
 Navigate to the directory, where project files are stored.
 
-Select Solution Platform. It has to be: x86.
+Select Solution Platform. It has to be: <b>x86</b>.
 
 From upper menu select: Compilation -> Compile solution ...
 
