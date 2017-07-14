@@ -61,11 +61,7 @@ void MyTexture :: renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int
 
 	int w, h;
 
-
 	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-
-
-
 	int tileWidth = w / numOfFrames;
 
 	sourceRect.x = frameIndex*tileWidth;

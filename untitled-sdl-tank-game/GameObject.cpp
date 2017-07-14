@@ -10,7 +10,6 @@ GameObject :: GameObject(int x, int y) {
 	myTex = NULL;
 }
 
-
 GameObject :: ~GameObject() {
 	//delete this->myTex;
 	std::cout << "Destroying game object!" << std::endl;

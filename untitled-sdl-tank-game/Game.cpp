@@ -53,13 +53,38 @@ bool Game :: initSDL(){
 			screenSurface = SDL_GetWindowSurface(window);
 		}
 	}
-
 	return success;
 }
 
 bool Game :: initGame() {
+	//menu init
+	
+	MenuItem newGameItem;
+	MenuItem quitGameItem;
+
+	MenuWindow mainMenuWindow;
+	
+	newGameItem.setItem(renderer, "new_game",  "data\\gfx\\menu\\new_game_item.png");
+	quitGameItem.setItem(renderer, "quit_game",  "data\\gfx\\menu\\quit_item.png");
+
+	newGameItem.setLocation(250, 250);
+	quitGameItem.setLocation(250, 370);
+
+	std::vector<MenuItem> itemsVect;
+	itemsVect.push_back(newGameItem);
+	itemsVect.push_back(quitGameItem);
+
+	mainMenuWindow.setMenuWindow(renderer, itemsVect, "data\\gfx\\menu\\menu_bg.png", "data\\gfx\\menu\\indicator.png");
+	gameMenu.addMenuWindow(mainMenuWindow);
+	
+	if (gameMenu.validate() == false)
+	{
+		exit(EXIT_FAILURE);
+	}
+
+	//game init
 	terrain = new GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	terrain->myTex = new MyTexture(renderer, "data\\\gfx\\terrain.png");
+	terrain->myTex = new MyTexture(renderer, "data\\gfx\\terrain.png");
 
 	player = new Player(100, 100);
 	player->myTex = new MyTexture(renderer, "data\\gfx\\player.png");
@@ -89,7 +114,6 @@ bool Game :: initGame() {
 
 	enemies.push_back(e);
 
-	//std::cout<<player->myTex.texture<<std::endl;
 	std::cout << "Game init done!" << std::endl;
 	return true;
 }
@@ -101,6 +125,29 @@ bool Game :: endGame() {
 
 	delete terrain;
 	delete player;
+	return true;
+}
+
+bool Game::runGame()
+{
+	if (initSDL() != true)
+	{
+		exit(EXIT_FAILURE);
+	}
+	initGame();
+
+
+	//put all functions here
+	int res = gameMenu.gameMenuLoop(renderer);
+
+	if (res == START_GAME)
+	{
+		mainLoop();
+	}
+	else if (res == QUIT_GAME)
+	{
+		//quit game
+	}
 	return true;
 }
 
@@ -199,8 +246,6 @@ void Game :: mainLoop() {
 					flames.push_back(f);
 
 					enemies.erase(enemies.begin() + i);
-
-
 				}
 			}
 		}
@@ -215,20 +260,15 @@ void Game :: mainLoop() {
 			}
 		}
 
-
 		//display
 		SDL_RenderClear(renderer);
-
 
 		terrain->myTex->render(renderer, terrain->posX, terrain->posY, RENDER_IN_CENTER);
 		player->myTex->render(renderer, player->posX, player->posY, RENDER_IN_CENTER);
 
-
 		for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
 			(*enemyIt).myTex->render(renderer, (*enemyIt).posX, (*enemyIt).posY, RENDER_IN_CENTER);
 		}
-
-
 
 		for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
 			(*bulletIt).myTex->render(renderer, (*bulletIt).posX, (*bulletIt).posY, RENDER_IN_CENTER);

@@ -2,10 +2,13 @@
 
 #include "MyTexture.h"
 
-#define LEFT 1
-#define RIGHT 2
-#define UP 3
-#define DOWN 4
+enum Direction
+{
+	LEFT = 1,
+	RIGHT = 2,
+	UP = 3,
+	DOWN = 4
+};
 
 class GameObject {
 public:
