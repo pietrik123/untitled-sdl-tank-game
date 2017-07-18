@@ -50,6 +50,7 @@ protected:
 	MyTexture* backgroundTex;
 	MyTexture* indicatorTex;
 	
+	
 	int indPosX;
 	int indPosY;
 	//SDL_Renderer *renderer;
@@ -57,15 +58,17 @@ protected:
 public:
 	//TODO
 
+	int activeOptionIdx;
 	std::vector<MenuItem>::iterator activeOption;
 	std::vector<MenuItem> options;
 
 	void setIndPos(int x, int y);
-	MenuWindow(): backgroundTex (nullptr), indicatorTex(nullptr) {}
+	MenuWindow(): backgroundTex (nullptr), indicatorTex(nullptr), activeOptionIdx(-1) {}
 	~MenuWindow() {}
 
 	int getIndPosX();
 	int getIndPosY();
+	
 
 	void setMenuWindow(SDL_Renderer* r, std::vector<MenuItem> items, std::string bgImgFileName, std::string indImgFileName);
 	//void MenuWindow::setActiveOption(std::vector<MenuItem>::iterator it);
@@ -85,9 +88,10 @@ protected:
 	std::vector<MenuWindow> windows;
 
 public:
-	GameMenu(){}
+	GameMenu() : activeWindowIdx(-1){}
 	~GameMenu() {}
 
+	int activeWindowIdx;
 	void addMenuWindow(MenuWindow window);
 	void setActiveWindow(std::vector<MenuWindow>::iterator it);
 		
