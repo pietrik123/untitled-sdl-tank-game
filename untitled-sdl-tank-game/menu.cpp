@@ -4,8 +4,7 @@ int GameMenu::gameMenuLoop(SDL_Renderer* r)
 {
 	int result = START_GAME;
 	bool stop = false;
-	MenuWindow& w = windows[0];
-	w.activeOption = w.options.begin();
+	MenuWindow& w = windows[activeWindowIdx];
 	while (!stop)
 	{
 		
@@ -18,13 +17,13 @@ int GameMenu::gameMenuLoop(SDL_Renderer* r)
 			if (state[SDL_SCANCODE_UP])
 			{
 
-				if (w.activeOption != (-- w.options.end()) )
+				if (w.activeOptionIdx != (w.options.size() - 1))
 				{
-					w.activeOption ++;
+					w.activeOptionIdx ++;
 				}
 				else
 				{
-					w.activeOption = w.options.begin();
+					w.activeOptionIdx = 0;
 				}		
 			}
 
@@ -32,18 +31,18 @@ int GameMenu::gameMenuLoop(SDL_Renderer* r)
 			{
 				//
 				
-				if (w.activeOption != w.options.begin())
+				if (w.activeOptionIdx != 0)
 				{
-					w.activeOption --;
+					w.activeOptionIdx --;
 				}
 				else
 				{
-					w.activeOption = -- w.options.end();
+					w.activeOptionIdx = w.options.size()-1;
 				}
 			}
 			if (state[SDL_SCANCODE_RETURN])
 			{
-				MenuItem& opt = *w.activeOption;
+				MenuItem& opt = w.options[w.activeOptionIdx];
 				if (opt.getName() == "new_game")
 				{
 					result = START_GAME;
@@ -74,20 +73,17 @@ int GameMenu::gameMenuLoop(SDL_Renderer* r)
 void GameMenu::addMenuWindow(MenuWindow window)
 {
 	windows.push_back(window);
-	activeWindow = -- windows.end();
+	activeWindowIdx = windows.size()-1;
 }
 
 void GameMenu::displayGameMenu(SDL_Renderer* r)
 {
 	SDL_RenderClear(r);
-	(*activeWindow).displayWindow(r);
+	windows[activeWindowIdx].displayWindow(r);
 	SDL_RenderPresent(r);	
 }
 
-void GameMenu::setActiveWindow(std::vector<MenuWindow>::iterator it)
-{	
-	activeWindow = it;
-}
+
 
 bool MenuItem::setItem (SDL_Renderer* r, std::string name, std::string imgFileName)
 {
@@ -131,15 +127,11 @@ int MenuItem::getPosY()
 void MenuWindow::setMenuWindow(SDL_Renderer* r, std::vector<MenuItem> items, std::string bgImgFileName, std::string indImgFileName)
 {
 	options = items;
-	activeOption = options.begin();
+	activeOptionIdx = 0;
 	backgroundTex = new MyTexture(r, bgImgFileName);
 	indicatorTex = new MyTexture(r, indImgFileName);
 }
 
-/*void MenuWindow::setActiveOption(std::vector<MenuItem>::iterator it)
-{
-	activeOption = it;
-}*/
 
 void MenuWindow::displayWindow(SDL_Renderer* r)
 {
@@ -148,14 +140,12 @@ void MenuWindow::displayWindow(SDL_Renderer* r)
 
 	for (MenuItem item : options)
 	{
-		//TODO
 		item.displayItem(r);
 	}
 
-	//TODO
-
 	//display indicator
-	MenuItem a = *activeOption;
+	MenuItem a = options[activeOptionIdx];
+
 	int y = a.getPosY();
 	int x = a.getPosX() - 130;
 
@@ -210,10 +200,11 @@ bool MenuWindow::validate()
 	//TODO
 	//error "vector iterators incompatible"
 
-		/*if (activeOption == options.begin())
+		if (activeOptionIdx < 0 || activeOptionIdx >(options.size() - 1))
 		{
 			res = false;
-		}*/
+		}
+
 	}
 	if (res != false)
 	{

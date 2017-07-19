@@ -75,6 +75,7 @@ bool Game :: initGame() {
 	itemsVect.push_back(quitGameItem);
 
 	mainMenuWindow.setMenuWindow(renderer, itemsVect, "data\\gfx\\menu\\menu_bg.png", "data\\gfx\\menu\\indicator.png");
+
 	gameMenu.addMenuWindow(mainMenuWindow);
 	
 	if (gameMenu.validate() == false)

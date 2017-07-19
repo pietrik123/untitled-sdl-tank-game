@@ -23,6 +23,7 @@ protected:
 	
 public:
 
+
 	std::string getName();
 	MenuItem() : img(nullptr), posX(0), posY(0) {}
 	~MenuItem() {}
@@ -56,12 +57,12 @@ protected:
 
 public:
 	//TODO
-
-	std::vector<MenuItem>::iterator activeOption;
+	int activeOptionIdx;
+	//std::vector<MenuItem>::iterator activeOption;
 	std::vector<MenuItem> options;
 
 	void setIndPos(int x, int y);
-	MenuWindow(): backgroundTex (nullptr), indicatorTex(nullptr) {}
+	MenuWindow() : backgroundTex(nullptr), indicatorTex(nullptr), activeOptionIdx(-1) {}
 	~MenuWindow() {}
 
 	int getIndPosX();
@@ -70,6 +71,7 @@ public:
 	void setMenuWindow(SDL_Renderer* r, std::vector<MenuItem> items, std::string bgImgFileName, std::string indImgFileName);
 	//void MenuWindow::setActiveOption(std::vector<MenuItem>::iterator it);
 	void displayWindow(SDL_Renderer* r);
+	
 	
 	//TODO
 	//validate method
@@ -81,15 +83,17 @@ public:
 class GameMenu
 {
 protected:
-	std::vector<MenuWindow>::iterator activeWindow;
+	//std::vector<MenuWindow>::iterator activeWindow;
 	std::vector<MenuWindow> windows;
 
 public:
-	GameMenu(){}
+	int activeWindowIdx;
+
+	GameMenu() : activeWindowIdx(-1) {}
 	~GameMenu() {}
 
 	void addMenuWindow(MenuWindow window);
-	void setActiveWindow(std::vector<MenuWindow>::iterator it);
+	//void setActiveWindow(std::vector<MenuWindow>::iterator it);
 		
 	int gameMenuLoop(SDL_Renderer* r);
 	
