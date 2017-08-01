@@ -22,7 +22,7 @@ Game :: ~Game() {
 bool Game :: initSDL(){
 	bool success = true;
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ) {
 		success = false;
 		std::cout << "Error: " << SDL_GetError() << std::endl;
 	}
@@ -53,6 +53,12 @@ bool Game :: initSDL(){
 			screenSurface = SDL_GetWindowSurface(window);
 		}
 	}
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		success = false;
+	}
+
 	return success;
 }
 
@@ -101,6 +107,8 @@ bool Game :: initGame() {
 	helpScreen = new GameObject(320, 450);
 	helpScreen->myTex = new MyTexture(renderer, "data\\gfx\\help.png");
 
+	music = Mix_LoadMUS("data\\bandit_radio.wav");
+
 	Enemy e = enemyTemplate;
 
 	e.posX = 250;
@@ -124,8 +132,15 @@ bool Game :: endGame() {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
+	Mix_FreeMusic(music);
+
 	delete terrain;
 	delete player;
+
+	Mix_Quit();
+	IMG_Quit();
+	SDL_Quit();
+
 	return true;
 }
 
@@ -140,6 +155,12 @@ bool Game::runGame()
 
 	//put all functions here
 	int res = gameMenu.gameMenuLoop(renderer);
+
+	//play music
+	if (Mix_PlayingMusic() == 0)
+	{ 
+		Mix_PlayMusic( music, -1 );
+	}
 
 	if (res == START_GAME)
 	{
@@ -286,4 +307,5 @@ void Game :: mainLoop() {
 		//wait
 		SDL_Delay(50);
 	}
+
 }
