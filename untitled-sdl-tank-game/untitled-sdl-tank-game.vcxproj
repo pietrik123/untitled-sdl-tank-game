@@ -154,6 +154,7 @@
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="MyTexture.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="MyTexture.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

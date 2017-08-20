@@ -176,7 +176,7 @@ bool Game::runGame()
 void Game :: mainLoop() {
 	bool exit = false;
 
-
+	bool addBulletFlag = false;
 	while (exit != true) {
 		//game logic cycle
 		SDL_Event e;
@@ -197,11 +197,12 @@ void Game :: mainLoop() {
 				player->moveObj(RIGHT);
 			}
 			if (state[SDL_SCANCODE_SPACE]) {
-				player->shotFired = true;
+				if (!addBulletFlag)
+				{
+					addBulletFlag = player->weapon->trigger();
+				}		
 			}
-			else {
-				player->shotFired = false;
-			}
+			
 			if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
 				if (e.key.keysym.sym == SDLK_ESCAPE) { exit = true; }
 
@@ -209,14 +210,16 @@ void Game :: mainLoop() {
 			}
 		}
 
-		player->handleGun();
+		//player->handleGun();
+		player->weapon->act();
 
-		if (player->addBullet == true) {
+		if (addBulletFlag == true) {
 			Bullet b = bulletTemplate;
 			b.posX = player->posX;
 			b.posY = player->posY;
 			bullets.push_back(b);
 			std::cout << "bullet added!";
+			addBulletFlag = false;
 		}
 
 

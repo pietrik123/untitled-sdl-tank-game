@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "weapon.h"
 
 class Player : public GameObject {
 public:
@@ -9,6 +10,8 @@ public:
 	bool shotFired;
 	bool prevShotFired;
 	bool addBullet;
+	Weapon* weapon;
+
 
 	Player(int x, int y);
 
