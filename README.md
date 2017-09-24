@@ -34,10 +34,15 @@ C\
      |  |- x86\
      |  |- x64\     
      |- sdl2_image\
+     |  |-include\
+     |  |-lib\
+     |    |- x86\
+     |    |- x64\  
+     |- sdl2_mixer\
         |-include\
         |-lib\
-          |- x86\
-          |- x64\  
+          |-x86\
+          |-x64\
 ```
 Download and install GIT:
 https://git-scm.com/download/win

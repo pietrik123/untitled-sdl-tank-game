@@ -9,6 +9,7 @@
 
 #include<SDL.h>
 #include<SDL_image.h>
+#include<SDL_mixer.h>
 #include<vector>
 
 #define SCREEN_WIDTH  640
@@ -35,6 +36,8 @@ public:
 	std::vector<Flame> flames;
 	GameObject* helpScreen;
 	
+	Mix_Music *music;
+
 	Game();
 	~Game();
 
