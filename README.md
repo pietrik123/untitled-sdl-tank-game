@@ -60,6 +60,12 @@ Navigate to the directory, where project files are stored.
 
 Select Solution Platform. It has to be: <b>x86</b>.
 
+From the main upper menu please select:
+
+Project -> Properties ...
+
+In configuration (general) please expand: "Windows SDK" and select version of SDK, which is present on your system (for example 10.0.14393.0). Click "Apply" and "Ok".
+
 From upper menu select:
 
 Compilation -> Compile solution ...
