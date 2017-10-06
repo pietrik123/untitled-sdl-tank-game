@@ -33,3 +33,8 @@
 
 #dirs
 x64/
+
+#other
+*.ilk
+*.log
+*.pdb
