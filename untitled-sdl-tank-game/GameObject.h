@@ -4,10 +4,10 @@
 
 enum Direction
 {
-	LEFT = 1,
-	RIGHT = 2,
-	UP = 3,
-	DOWN = 4
+    EAST = 1,
+    NORTH = 2,
+	WEST = 3,
+	SOUTH = 4
 };
 
 class GameObject {

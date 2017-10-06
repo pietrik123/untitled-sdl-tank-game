@@ -16,16 +16,16 @@ GameObject :: ~GameObject() {
 }
 
 void GameObject :: moveObj(int direction) {
-	if (direction == LEFT) {
+	if (direction == WEST) {
 		posX -= 5;
 	}
-	if (direction == RIGHT) {
+	if (direction == EAST) {
 		posX += 5;
 	}
-	if (direction == UP) {
-		posY -= 5;
-	}
-	if (direction == DOWN) {
+	if (direction == NORTH) {
 		posY += 5;
+	}
+	if (direction == SOUTH) {
+		posY -= 5;
 	}
 }
