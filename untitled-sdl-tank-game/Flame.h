@@ -8,7 +8,7 @@ public:
 	int lifeCycle;
 
 	Flame();
-	Flame(int x, int y);
+	Flame(float x, float y);
 
 	void act();
 };

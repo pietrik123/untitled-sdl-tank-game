@@ -4,21 +4,21 @@
 
 enum Direction
 {
-	LEFT = 1,
-	RIGHT = 2,
-	UP = 3,
-	DOWN = 4
+    EAST = 1,
+    NORTH = 2,
+	WEST = 3,
+	SOUTH = 4
 };
 
 class GameObject {
 public:
-	int posX;
-	int posY;
+	float posX;
+	float posY;
 
 	MyTexture* myTex;
 
 	GameObject();
-	GameObject(int x, int y);
+	GameObject(float x, float y);
 
 	~GameObject();
 

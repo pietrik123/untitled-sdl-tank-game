@@ -4,7 +4,7 @@
 
 Bullet :: Bullet() {}
 
-Bullet :: Bullet(int x, int y) :GameObject(x, y) {
+Bullet :: Bullet(float x, float y) :GameObject(x, y) {
 	posX = x;
 	posY = y;
 	lifeCycle = 0;

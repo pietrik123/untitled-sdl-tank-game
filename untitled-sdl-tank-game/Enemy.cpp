@@ -5,7 +5,7 @@ Enemy :: Enemy() {
 
 }
 
-Enemy :: Enemy(int x, int y) : GameObject(x, y) {
+Enemy :: Enemy(float x, float y) : GameObject(x, y) {
 	posX = x;
 	posY = y;
 }

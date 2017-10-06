@@ -1,4 +1,3 @@
-
 #include "Game.h"
 
 #include <iostream>
@@ -13,6 +12,12 @@ Game :: Game() {
 	Enemy enemyTemplate(-10, -10);
 	Bullet bulletTemplate(-10, -10);
 	Flame flameTemplate(-10, -10);
+
+    screenWidth = SCREEN_WIDTH;
+    screenHeight = SCREEN_HEIGHT;
+
+    scaleX = 1.0;
+    scaleY = 1.0;
 }
 
 Game :: ~Game() {
@@ -111,15 +116,15 @@ bool Game :: initGame() {
 
 	Enemy e = enemyTemplate;
 
-	e.posX = 250;
-	e.posY = 400;
+	e.posX = 0.0;
+	e.posY = 0.0;
 
 	enemies.push_back(e);
 
 	e = enemyTemplate;
 
-	e.posX = 450;
-	e.posY = 100;
+	e.posX = 50.0;
+	e.posY = 50.0;
 
 	enemies.push_back(e);
 
@@ -185,16 +190,16 @@ void Game :: mainLoop() {
 			const Uint8* state = SDL_GetKeyboardState(NULL);
 
 			if (state[SDL_SCANCODE_UP]) {
-				player->moveObj(UP);
+				player->moveObj(NORTH);
 			}
 			if (state[SDL_SCANCODE_DOWN]) {
-				player->moveObj(DOWN);
+				player->moveObj(SOUTH);
 			}
 			if (state[SDL_SCANCODE_LEFT]) {
-				player->moveObj(LEFT);
+				player->moveObj(WEST);
 			}
 			if (state[SDL_SCANCODE_RIGHT]) {
-				player->moveObj(RIGHT);
+				player->moveObj(EAST);
 			}
 			if (state[SDL_SCANCODE_SPACE]) {
 				if (!addBulletFlag)
@@ -205,7 +210,6 @@ void Game :: mainLoop() {
 			
 			if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
 				if (e.key.keysym.sym == SDLK_ESCAPE) { exit = true; }
-
 
 			}
 		}
@@ -222,11 +226,9 @@ void Game :: mainLoop() {
 			addBulletFlag = false;
 		}
 
-
 		std::vector<Enemy>::iterator enemyIt;
 		std::vector<Bullet>::iterator bulletIt;
 		std::vector<Flame>::iterator flameIt;
-
 
 		int n;
 		int i;
@@ -288,27 +290,55 @@ void Game :: mainLoop() {
 		//display
 		SDL_RenderClear(renderer);
 
-		terrain->myTex->render(renderer, terrain->posX, terrain->posY, RENDER_IN_CENTER);
-		player->myTex->render(renderer, player->posX, player->posY, RENDER_IN_CENTER);
+		terrain->myTex->render(renderer,
+            (int)terrain->posX,
+            (int)terrain->posY,
+            RENDER_IN_CENTER);
+     
+		player->myTex->render(renderer,
+            getPosXOnScreen(player->posX),
+            getPosYOnScreen(player->posY),
+            RENDER_IN_CENTER);
 
 		for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
-			(*enemyIt).myTex->render(renderer, (*enemyIt).posX, (*enemyIt).posY, RENDER_IN_CENTER);
+			(*enemyIt).myTex->render(renderer,
+                getPosXOnScreen((*enemyIt).posX),
+                getPosYOnScreen((*enemyIt).posY),
+                RENDER_IN_CENTER);
 		}
 
 		for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
-			(*bulletIt).myTex->render(renderer, (*bulletIt).posX, (*bulletIt).posY, RENDER_IN_CENTER);
+			(*bulletIt).myTex->render(renderer,
+                getPosXOnScreen((*bulletIt).posX),
+                getPosYOnScreen((*bulletIt).posY),
+                RENDER_IN_CENTER);
 		}
 
 		for (flameIt = flames.begin();flameIt != flames.end(); ++flameIt) {
 			Flame &flame = (*flameIt);
-			flame.myTex->renderAnim(renderer, flame.posX, flame.posY, RENDER_IN_CENTER, 5, flame.texFrame);
+			flame.myTex->renderAnim(renderer,
+                getPosXOnScreen(flame.posX),
+                getPosYOnScreen(flame.posY),
+                RENDER_IN_CENTER, 5, flame.texFrame);
 		}
 
-		helpScreen->myTex->render(renderer, helpScreen->posX, helpScreen->posY, RENDER_IN_CENTER);
+		helpScreen->myTex->render(renderer,
+            (int)helpScreen->posX, 
+            (int)helpScreen->posY,
+            RENDER_IN_CENTER);
 
 		SDL_RenderPresent(renderer);
 		//wait
 		SDL_Delay(50);
 	}
+}
 
+int Game::getPosXOnScreen(float worldX)
+{
+    return (int)(scaleX * worldX + Game::screenWidth / 2.0);
+}
+
+int Game::getPosYOnScreen(float worldY)
+{
+    return (int)(-scaleY * worldY + Game::screenHeight / 2.0);
 }

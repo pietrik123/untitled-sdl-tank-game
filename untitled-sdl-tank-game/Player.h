@@ -13,7 +13,7 @@ public:
 	Weapon* weapon;
 
 
-	Player(int x, int y);
+	Player(float x, float y);
 
 	void handleGun();
 
