@@ -4,7 +4,7 @@
 
 Flame :: Flame() {}
 
-Flame :: Flame(int x, int y) : GameObject(x, y) {
+Flame :: Flame(float x, float y) : GameObject(x, y) {
 	std::cout << "Flame created!" << std::endl;
 	texFrame = 0;
 	lifeCycle = 0;

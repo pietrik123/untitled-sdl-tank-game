@@ -13,6 +13,12 @@ Game :: Game() {
 	Enemy enemyTemplate(-10, -10);
 	Bullet bulletTemplate(-10, -10);
 	Flame flameTemplate(-10, -10);
+
+    screenWidth = SCREEN_WIDTH;
+    screenHeight = SCREEN_HEIGHT;
+
+    scaleX = 1.0;
+    scaleY = 1.0;
 }
 
 Game :: ~Game() {
@@ -311,4 +317,14 @@ void Game :: mainLoop() {
 		SDL_Delay(50);
 	}
 
+}
+
+int Game::getPosXOnScreen(float worldX)
+{
+    return (int)(scaleX * worldX + Game::screenWidth / 2.0);
+}
+
+int Game::getPosYOnScreen(float worldY)
+{
+    return (int)(scaleY * worldY + Game::screenHeight / 2.0);
 }

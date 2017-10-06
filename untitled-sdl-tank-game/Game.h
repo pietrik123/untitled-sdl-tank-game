@@ -48,4 +48,14 @@ public:
 	
 	bool endGame();
 	void mainLoop();
+
+    int getPosXOnScreen(float);
+    int getPosYOnScreen(float);
+
+    int screenWidth;
+    int screenHeight;
+
+    float scaleX; // screen_dx/world_dx
+    float scaleY; // screen_dy/world_dy
+
 };

@@ -8,7 +8,7 @@ public:
 	int lifeCycle;
 	
 	Bullet();
-	Bullet(int x, int y);
+	Bullet(float x, float y);
 
 	~Bullet();
 

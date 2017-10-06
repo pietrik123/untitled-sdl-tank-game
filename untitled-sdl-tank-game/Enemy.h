@@ -6,7 +6,7 @@
 class Enemy : public GameObject {
 public:
 	Enemy();
-	Enemy(int x, int y);
+	Enemy(float x, float y);
 
 	bool checkHit(Bullet &b);
 };

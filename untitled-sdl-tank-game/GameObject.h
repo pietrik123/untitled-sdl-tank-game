@@ -12,13 +12,13 @@ enum Direction
 
 class GameObject {
 public:
-	int posX;
-	int posY;
+	float posX;
+	float posY;
 
 	MyTexture* myTex;
 
 	GameObject();
-	GameObject(int x, int y);
+	GameObject(float x, float y);
 
 	~GameObject();
 

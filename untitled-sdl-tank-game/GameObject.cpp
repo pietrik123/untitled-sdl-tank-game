@@ -4,7 +4,7 @@
 
 GameObject :: GameObject() {}
 
-GameObject :: GameObject(int x, int y) {
+GameObject :: GameObject(float x, float y) {
 	posX = x;
 	posY = y;
 	myTex = NULL;
