@@ -2,49 +2,55 @@
 
 #include <iostream>
 
-MyTexture :: MyTexture() {
+MyTexture :: MyTexture()
+{
 	texture = NULL;
 	std::cout << "Empty texture created!" << std::endl;
 }
 
-MyTexture :: MyTexture(SDL_Renderer* renderer, std::string fileName) {
+MyTexture :: MyTexture(SDL_Renderer* renderer, std::string fileName)
+{
 
 	SDL_Surface* textureSurface = NULL;
 
 	textureSurface = IMG_Load(fileName.c_str());
-	if (textureSurface == NULL) {
+	if (textureSurface == NULL)
+    {
 		std::cout << "Error: " << SDL_GetError() << std::endl;
 	}
 
 	SDL_SetColorKey(textureSurface, SDL_TRUE, SDL_MapRGB(textureSurface->format, 0xFF, 0x00, 0xFF));
 
 	texture = SDL_CreateTextureFromSurface(renderer, textureSurface);
-	if (texture == NULL) {
+	if (texture == NULL)
+    {
 		std::cout << "Error: " << SDL_GetError() << std::endl;
 	}
 	SDL_FreeSurface(textureSurface);
 	std::cout << "Texture created!" << std::endl;
 }
 
-MyTexture :: ~MyTexture() {
+MyTexture :: ~MyTexture()
+{
 	SDL_DestroyTexture(texture);
 	std::cout << "Destructor called!" << std::endl;
-
 }
 
-
-void MyTexture :: render(SDL_Renderer* renderer, int x, int y, int mode) {
+void MyTexture :: render(SDL_Renderer* renderer, int x, int y, int mode)
+{
 	SDL_Rect rect;
 
 	int w, h;
 
 	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
 
-	if (mode == RENDER_IN_CENTER) {
+	if (mode == RENDER_IN_CENTER)
+    {
 		rect.x = x - w / 2;
 		rect.y = y - h / 2;
 	}
-	else if (mode == RENDER_IN_CORNER) {
+	else if (mode == RENDER_IN_CORNER)
+    {
 		rect.x = x;
 		rect.y = y;
 	}
@@ -55,7 +61,8 @@ void MyTexture :: render(SDL_Renderer* renderer, int x, int y, int mode) {
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
 
-void MyTexture :: renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int numOfFrames, int frameIndex) {
+void MyTexture :: renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int numOfFrames, int frameIndex)
+{
 	SDL_Rect targetRect;
 	SDL_Rect sourceRect;
 
@@ -69,11 +76,13 @@ void MyTexture :: renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int
 	sourceRect.w = tileWidth;
 	sourceRect.h = h;
 
-	if (mode == RENDER_IN_CENTER) {
+	if (mode == RENDER_IN_CENTER)
+    {
 		targetRect.x = x - tileWidth / 2;
 		targetRect.y = y - h / 2;
 	}
-	else if (mode == RENDER_IN_CORNER) {
+	else if (mode == RENDER_IN_CORNER)
+    {
 		targetRect.x = x;
 		targetRect.y = y;
 	}

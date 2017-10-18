@@ -4,7 +4,8 @@
 
 Bullet :: Bullet() {}
 
-Bullet :: Bullet(float x, float y) :GameObject(x, y) {
+Bullet :: Bullet(float x, float y) :GameObject(x, y)
+{
 	posX = x;
 	posY = y;
 	lifeCycle = 0;
@@ -12,13 +13,16 @@ Bullet :: Bullet(float x, float y) :GameObject(x, y) {
 	std::cout << "Bullet created!" << std::endl;
 }
 
-Bullet :: ~Bullet() {
+Bullet :: ~Bullet()
+{
 	std::cout << "Bullet destroyed!" << std::endl;
 }
 
-void Bullet :: move() {
+void Bullet :: move()
+{
 	lifeCycle += 1;
-	if (lifeCycle > 20) {
+	if (lifeCycle > 20)
+    {
 		destroyed = true;
 	}
 	posX += 4;

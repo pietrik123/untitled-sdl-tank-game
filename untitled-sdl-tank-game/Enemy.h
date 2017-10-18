@@ -3,7 +3,8 @@
 #include "GameObject.h"
 #include "Bullet.h"
 
-class Enemy : public GameObject {
+class Enemy : public GameObject
+{
 public:
 	Enemy();
 	Enemy(float x, float y);

@@ -7,7 +7,8 @@
 #define RENDER_IN_CORNER 1
 #define RENDER_IN_CENTER 2
 
-class MyTexture {
+class MyTexture
+{
 public:
 	SDL_Texture* texture;
 

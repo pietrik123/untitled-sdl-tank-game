@@ -2,7 +2,8 @@
 
 #include "GameObject.h"
 
-class Flame : public GameObject {
+class Flame : public GameObject
+{
 public:
 	int texFrame;
 	int lifeCycle;

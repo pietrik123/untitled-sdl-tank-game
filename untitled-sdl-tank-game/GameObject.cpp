@@ -1,31 +1,52 @@
 #include "GameObject.h"
 
 #include <iostream>
+#include <math.h>
 
-GameObject :: GameObject() {}
+GameObject :: GameObject()
+{}
 
-GameObject :: GameObject(float x, float y) {
+GameObject :: GameObject(float x, float y)
+{
 	posX = x;
 	posY = y;
+    radius = 10.0;
 	myTex = NULL;
 }
 
-GameObject :: ~GameObject() {
+GameObject::GameObject(float x, float y, float parRadius)
+{
+    posX = x;
+    posY = y;
+    radius = parRadius;
+    myTex = NULL;
+}
+
+GameObject :: ~GameObject()
+{
 	//delete this->myTex;
 	std::cout << "Destroying game object!" << std::endl;
 }
 
-void GameObject :: moveObj(int direction) {
-	if (direction == WEST) {
-		posX -= 5;
-	}
-	if (direction == EAST) {
-		posX += 5;
-	}
-	if (direction == NORTH) {
-		posY += 5;
-	}
-	if (direction == SOUTH) {
-		posY -= 5;
-	}
+void GameObject :: moveObj(Direction direction)
+{
+}
+
+float getDistance(const GameObject& obj1, const GameObject& obj2)
+{
+    return
+        powf(powf(obj1.posX - obj2.posX, 2.0) + powf(obj1.posY - obj2.posY, 2.0), 0.5);
+}
+
+bool collision(const GameObject& obj1, const GameObject& obj2,
+               BoundsType bounds1, BoundsType bounds2)
+{
+    if (bounds1 == RADIUS && bounds2 == RADIUS)
+    {
+        if (getDistance(obj1, obj2) < (obj1.radius + obj2.radius))
+        {
+            return true;
+        }
+    }
+    return false;
 }

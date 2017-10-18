@@ -10,7 +10,15 @@ enum Direction
 	SOUTH = 4
 };
 
-class GameObject {
+enum BoundsType
+{
+    RADIUS,
+    POLYGON,
+    RECTANGLE
+};
+
+class GameObject
+{
 public:
 	float posX;
 	float posY;
@@ -19,8 +27,15 @@ public:
 
 	GameObject();
 	GameObject(float x, float y);
+    GameObject(float x, float y, float radius);
 
 	~GameObject();
 
-	void moveObj(int direction);
+	virtual void moveObj(Direction direction);
+
+    float radius;
 };
+
+float getDistance(const GameObject& obj1, const GameObject& obj2);
+
+bool collision(const GameObject &obj1, const GameObject &obj2, BoundsType bounds1, BoundsType bounds2);
