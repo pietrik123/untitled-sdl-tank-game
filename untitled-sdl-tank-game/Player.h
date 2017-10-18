@@ -3,7 +3,8 @@
 #include "GameObject.h"
 #include "weapon.h"
 
-class Player : public GameObject {
+class Player : public GameObject
+{
 public:
 	bool bulletReady;
 	int reloadingPhase;
@@ -16,5 +17,6 @@ public:
 	Player(float x, float y);
 
 	void handleGun();
+    void moveObj(Direction direction);
 
 };

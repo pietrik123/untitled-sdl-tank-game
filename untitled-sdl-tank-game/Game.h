@@ -18,7 +18,8 @@
 #define BULLET_LIFE 50
 #define FLAME_LIFE 15
 
-class Game {
+class Game
+{
 public:
 	GameMenu gameMenu;
 
@@ -30,10 +31,12 @@ public:
 	Player* player;
 	Enemy enemyTemplate;
 	Bullet bulletTemplate;
+    GameObject brickTemplate;
 	Flame flameTemplate;
 	std::vector<Enemy> enemies;
 	std::vector<Bullet> bullets;
 	std::vector<Flame> flames;
+    std::vector<GameObject> bricks;
 	GameObject* helpScreen;
 	
 	Mix_Music *music;

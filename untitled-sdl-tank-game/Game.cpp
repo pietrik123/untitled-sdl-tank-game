@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-Game :: Game() {
+Game :: Game()
+{
 	std::cout << "Game started!" << std::endl;
 
 	SDL_Window* window = NULL;
@@ -20,36 +21,45 @@ Game :: Game() {
     scaleY = 1.0;
 }
 
-Game :: ~Game() {
+Game :: ~Game() 
+{
 	std::cout << "Game finished!" << std::endl;
 }
 
-bool Game :: initSDL(){
+bool Game :: initSDL()
+{
 	bool success = true;
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 )
+    {
 		success = false;
 		std::cout << "Error: " << SDL_GetError() << std::endl;
 	}
-	else {
+	else
+    {
 		window = SDL_CreateWindow("Ziemniak", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-		if (window == NULL) {
+		if (window == NULL)
+        {
 			success = false;
 			std::cout << "Error: " << SDL_GetError() << std::endl;
 		}
-		else {
+		else
+        {
 			int imgFlags = IMG_INIT_PNG;
 
-			if (!(IMG_Init(imgFlags) & imgFlags)) {
+			if (!(IMG_Init(imgFlags) & imgFlags))
+            {
 				success = false;
 				std::cout << "Error: " << SDL_GetError() << std::endl;
 			}
-			else {
+			else
+            {
 				renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 				SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				if (renderer == NULL) {
+				if (renderer == NULL)
+                {
 					success = false;
 					std::cout << "Error: " << SDL_GetError() << std::endl;
 				}
@@ -67,7 +77,8 @@ bool Game :: initSDL(){
 	return success;
 }
 
-bool Game :: initGame() {
+bool Game :: initGame()
+{
 	//menu init
 	
 	MenuItem newGameItem;
@@ -101,6 +112,8 @@ bool Game :: initGame() {
 	player = new Player(100, 100);
 	player->myTex = new MyTexture(renderer, "data\\gfx\\player.png");
 
+    brickTemplate = GameObject(-100.0, -100.0, 25.0);
+    brickTemplate.myTex = new MyTexture(renderer, "data\\gfx\\brick.png");
 
 	enemyTemplate.myTex = new MyTexture(renderer, "data\\gfx\\enemy.png");
 
@@ -128,11 +141,26 @@ bool Game :: initGame() {
 
 	enemies.push_back(e);
 
+    GameObject b = brickTemplate;
+
+    b.posX = -50.0;
+    b.posY = -100.0;
+
+    bricks.push_back(b);
+
+    b = brickTemplate;
+
+    b.posX = -100.0;
+    b.posY = -50.0;
+
+    bricks.push_back(b);
+
 	std::cout << "Game init done!" << std::endl;
 	return true;
 }
 
-bool Game :: endGame() {
+bool Game :: endGame()
+{
 	SDL_FreeSurface(screenSurface);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -178,46 +206,61 @@ bool Game::runGame()
 	return true;
 }
 
-void Game :: mainLoop() {
+void Game :: mainLoop()
+{
 	bool exit = false;
 
 	bool addBulletFlag = false;
 	while (exit != true) {
+        float prevPosX = player->posX;
+        float prevPosY = player->posY;
 		//game logic cycle
+
+        //handle keyboard
 		SDL_Event e;
-		while (SDL_PollEvent(&e) != 0) {
+		while (SDL_PollEvent(&e) != 0)
+        {
 
 			const Uint8* state = SDL_GetKeyboardState(NULL);
 
-			if (state[SDL_SCANCODE_UP]) {
+			if (state[SDL_SCANCODE_UP])
+            {
 				player->moveObj(NORTH);
 			}
-			if (state[SDL_SCANCODE_DOWN]) {
+			if (state[SDL_SCANCODE_DOWN])
+            {
 				player->moveObj(SOUTH);
 			}
-			if (state[SDL_SCANCODE_LEFT]) {
+			if (state[SDL_SCANCODE_LEFT])
+            {
 				player->moveObj(WEST);
 			}
-			if (state[SDL_SCANCODE_RIGHT]) {
+			if (state[SDL_SCANCODE_RIGHT])
+            {
 				player->moveObj(EAST);
 			}
-			if (state[SDL_SCANCODE_SPACE]) {
+			if (state[SDL_SCANCODE_SPACE])
+            {
 				if (!addBulletFlag)
 				{
 					addBulletFlag = player->weapon->trigger();
 				}		
 			}
 			
-			if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
-				if (e.key.keysym.sym == SDLK_ESCAPE) { exit = true; }
-
+			if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
+            {
+				if (e.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    exit = true;
+                }
 			}
 		}
 
 		//player->handleGun();
 		player->weapon->act();
 
-		if (addBulletFlag == true) {
+		if (addBulletFlag == true)
+        {
 			Bullet b = bulletTemplate;
 			b.posX = player->posX;
 			b.posY = player->posY;
@@ -229,26 +272,42 @@ void Game :: mainLoop() {
 		std::vector<Enemy>::iterator enemyIt;
 		std::vector<Bullet>::iterator bulletIt;
 		std::vector<Flame>::iterator flameIt;
+        std::vector<GameObject>::iterator bricksIt;
 
+        //check collision with the wall
+        for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
+        {
+            if (collision(*player, *bricksIt, RADIUS, RADIUS))
+            {
+                player->posX = prevPosX;
+                player->posY = prevPosY;
+            }
+        }
+
+        //handle bullets' actions
 		int n;
 		int i;
 		n = bullets.size();
 
-		for (i = 0; i<n; i++) {
-			//cout<<"Entering loop..."<<"No. of elements: "<<bullets.size()<<endl;
+		for (i = 0; i<n; i++)
+        {
 			bullets[i].move();
 
-			if (bullets[i].lifeCycle > BULLET_LIFE) {
+			if (bullets[i].lifeCycle > BULLET_LIFE)
+            {
 				bullets.erase(bullets.begin() + i);
 				std::cout << "Deleted" << std::endl;
 			}
 		}
 
+        //handle enemies' actions
 		n = enemies.size();
-
-		for (i = 0; i<n; i++) {
-			for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
-				if (enemies[i].checkHit(*bulletIt) == true) {
+		for (i = 0; i<n; i++)
+        {
+			for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt)
+            {
+				if (enemies[i].checkHit(*bulletIt) == true)
+                {
 					//add flame
 
 					Flame f = flameTemplate;
@@ -277,12 +336,15 @@ void Game :: mainLoop() {
 			}
 		}
 
+        //handle flames' actions
 		n = flames.size();
 
-		for (i = 0;i<n;i++) {
+		for (i = 0;i<n;i++)
+        {
 			flames[i].act();
 
-			if (flames[i].lifeCycle > 14) {
+			if (flames[i].lifeCycle > 14)
+            {
 				flames.erase(flames.begin() + i);
 			}
 		}
@@ -321,6 +383,13 @@ void Game :: mainLoop() {
                 getPosYOnScreen(flame.posY),
                 RENDER_IN_CENTER, 5, flame.texFrame);
 		}
+
+        for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
+            (*bricksIt).myTex->render(renderer,
+                getPosXOnScreen((*bricksIt).posX),
+                getPosYOnScreen((*bricksIt).posY),
+                RENDER_IN_CENTER);
+        }
 
 		helpScreen->myTex->render(renderer,
             (int)helpScreen->posX, 

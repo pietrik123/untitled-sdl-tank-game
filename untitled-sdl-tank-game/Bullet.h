@@ -2,7 +2,8 @@
 
 #include "GameObject.h"
 
-class Bullet : public GameObject {
+class Bullet : public GameObject
+{
 public:
 	bool destroyed;
 	int lifeCycle;
