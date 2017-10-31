@@ -32,7 +32,7 @@ MyTexture :: MyTexture(SDL_Renderer* renderer, std::string fileName)
 
 MyTexture :: ~MyTexture()
 {
-	SDL_DestroyTexture(texture);
+	//SDL_DestroyTexture(texture);
 	std::cout << "Destructor called!" << std::endl;
 }
 

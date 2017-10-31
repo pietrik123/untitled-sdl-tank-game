@@ -10,6 +10,7 @@ public:
 
 	Flame();
 	Flame(float x, float y);
+    Flame(float x, float y, MyTexture& texture);
 
 	void act();
 };

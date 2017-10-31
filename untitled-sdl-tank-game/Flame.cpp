@@ -11,6 +11,14 @@ Flame :: Flame(float x, float y) : GameObject(x, y)
 	lifeCycle = 0;
 }
 
+Flame :: Flame(float x, float y, MyTexture& texture) : GameObject(x, y)
+{
+    std::cout << "Flame created!" << std::endl;
+    texFrame = 0;
+    lifeCycle = 0;
+    myTex = texture;
+}
+
 void Flame :: act()
 {
 	lifeCycle += 1;

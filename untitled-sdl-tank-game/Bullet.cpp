@@ -6,12 +6,20 @@ Bullet :: Bullet() {}
 
 Bullet :: Bullet(float x, float y) :GameObject(x, y)
 {
-	posX = x;
-	posY = y;
 	lifeCycle = 0;
 	destroyed = false;
 	std::cout << "Bullet created!" << std::endl;
 }
+
+Bullet::Bullet(float x, float y, float collisionRadius, MyTexture& texture) :GameObject(x, y)
+{
+    lifeCycle = 0;
+    destroyed = false;
+    std::cout << "Bullet created!" << std::endl;
+    radius = collisionRadius;
+    myTex = texture;
+}
+
 
 Bullet :: ~Bullet()
 {
