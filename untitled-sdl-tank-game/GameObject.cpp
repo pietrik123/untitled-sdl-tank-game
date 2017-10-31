@@ -4,14 +4,14 @@
 #include <math.h>
 
 GameObject :: GameObject()
-{}
+{
+}
 
 GameObject :: GameObject(float x, float y)
 {
 	posX = x;
 	posY = y;
-    radius = 10.0;
-	myTex = NULL;
+    radius = 1.0;
 }
 
 GameObject::GameObject(float x, float y, float parRadius)
@@ -19,7 +19,22 @@ GameObject::GameObject(float x, float y, float parRadius)
     posX = x;
     posY = y;
     radius = parRadius;
-    myTex = NULL;
+}
+
+GameObject::GameObject(float x, float y, MyTexture& texture)
+{
+    posX = x;
+    posY = y;
+    radius = 1.0;
+    myTex = texture;
+}
+
+GameObject::GameObject(float x, float y, float parRadius, MyTexture& texture)
+{
+    posX = x;
+    posY = y;
+    radius = parRadius;
+    myTex = texture;
 }
 
 GameObject :: ~GameObject()

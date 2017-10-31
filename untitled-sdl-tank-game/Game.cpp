@@ -6,13 +6,11 @@ Game :: Game()
 {
 	std::cout << "Game started!" << std::endl;
 
-	SDL_Window* window = NULL;
-	SDL_Renderer* renderer = NULL;
-	SDL_Surface* screenSurface = NULL;
+	window = NULL;
+	renderer = NULL;
+	screenSurface = NULL;
 
-	Enemy enemyTemplate(-10, -10);
-	Bullet bulletTemplate(-10, -10);
-	Flame flameTemplate(-10, -10);
+    tex = NULL;
 
     screenWidth = SCREEN_WIDTH;
     screenHeight = SCREEN_HEIGHT;
@@ -105,55 +103,36 @@ bool Game :: initGame()
 		exit(EXIT_FAILURE);
 	}
 
+    // load textures
+
+    texDataStruct.terrainTex = MyTexture(renderer, "data\\gfx\\terrain.png");
+
+    tex = new MyTexture(renderer, "data\\gfx\\terrain.png");
+
+    texDataStruct.playerTexture = MyTexture(renderer, "data\\gfx\\player.png");
+    texDataStruct.enemyTexture = MyTexture(renderer, "data\\gfx\\enemy.png");
+    texDataStruct.brickTexture = MyTexture(renderer, "data\\gfx\\brick.png");
+    texDataStruct.bulletTexture = MyTexture(renderer, "data\\gfx\\bullet.png");
+    texDataStruct.flameTexture = MyTexture(renderer, "data\\gfx\\flame.png");
+    texDataStruct.helpScreenTexture = MyTexture(renderer, "data\\gfx\\help.png");
+
 	//game init
-	terrain = new GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	terrain->myTex = new MyTexture(renderer, "data\\gfx\\terrain.png");
+	terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
+	player = Player(100.0, 100.0, 25.0, texDataStruct.playerTexture);
 
-	player = new Player(100, 100);
-	player->myTex = new MyTexture(renderer, "data\\gfx\\player.png");
+    enemies.push_back(Enemy(0.0, 0.0, 25.0, texDataStruct.enemyTexture));
+    enemies.push_back(Enemy(50.0, 50.0, 25.0, texDataStruct.enemyTexture));
 
-    brickTemplate = GameObject(-100.0, -100.0, 25.0);
-    brickTemplate.myTex = new MyTexture(renderer, "data\\gfx\\brick.png");
+    bricks.push_back(GameObject(-100.0, -100.0, 25.0, texDataStruct.brickTexture));
+    bricks.push_back(GameObject(-100.0, -50.0, 25.0, texDataStruct.brickTexture));
 
-	enemyTemplate.myTex = new MyTexture(renderer, "data\\gfx\\enemy.png");
+    bulletTemplate = Bullet(-10, -10, 10.0, texDataStruct.bulletTexture);
+    flameTemplate = Flame(-10.0, -10.0, texDataStruct.flameTexture);
 
-	bulletTemplate.myTex = new MyTexture(renderer, "data\\gfx\\bullet.png");
-
-	flameTemplate.myTex = new MyTexture(renderer, "data\\gfx\\flame.png");
-
-
-	helpScreen = new GameObject(320, 450);
-	helpScreen->myTex = new MyTexture(renderer, "data\\gfx\\help.png");
+	helpScreen = GameObject(320, 450);
+    helpScreen.myTex = texDataStruct.helpScreenTexture;
 
 	music = Mix_LoadMUS("data\\bandit_radio.wav");
-
-	Enemy e = enemyTemplate;
-
-	e.posX = 0.0;
-	e.posY = 0.0;
-
-	enemies.push_back(e);
-
-	e = enemyTemplate;
-
-	e.posX = 50.0;
-	e.posY = 50.0;
-
-	enemies.push_back(e);
-
-    GameObject b = brickTemplate;
-
-    b.posX = -50.0;
-    b.posY = -100.0;
-
-    bricks.push_back(b);
-
-    b = brickTemplate;
-
-    b.posX = -100.0;
-    b.posY = -50.0;
-
-    bricks.push_back(b);
 
 	std::cout << "Game init done!" << std::endl;
 	return true;
@@ -166,9 +145,6 @@ bool Game :: endGame()
 	SDL_DestroyWindow(window);
 
 	Mix_FreeMusic(music);
-
-	delete terrain;
-	delete player;
 
 	Mix_Quit();
 	IMG_Quit();
@@ -197,7 +173,7 @@ bool Game::runGame()
 
 	if (res == START_GAME)
 	{
-		mainLoop();
+        mainLoop();
 	}
 	else if (res == QUIT_GAME)
 	{
@@ -212,8 +188,8 @@ void Game :: mainLoop()
 
 	bool addBulletFlag = false;
 	while (exit != true) {
-        float prevPosX = player->posX;
-        float prevPosY = player->posY;
+        float prevPosX = player.posX;
+        float prevPosY = player.posY;
 		//game logic cycle
 
         //handle keyboard
@@ -225,25 +201,25 @@ void Game :: mainLoop()
 
 			if (state[SDL_SCANCODE_UP])
             {
-				player->moveObj(NORTH);
+				player.moveObj(NORTH);
 			}
 			if (state[SDL_SCANCODE_DOWN])
             {
-				player->moveObj(SOUTH);
+				player.moveObj(SOUTH);
 			}
 			if (state[SDL_SCANCODE_LEFT])
             {
-				player->moveObj(WEST);
+				player.moveObj(WEST);
 			}
 			if (state[SDL_SCANCODE_RIGHT])
             {
-				player->moveObj(EAST);
+				player.moveObj(EAST);
 			}
 			if (state[SDL_SCANCODE_SPACE])
             {
 				if (!addBulletFlag)
 				{
-					addBulletFlag = player->weapon->trigger();
+					addBulletFlag = player.weapon->trigger();
 				}		
 			}
 			
@@ -256,14 +232,13 @@ void Game :: mainLoop()
 			}
 		}
 
-		//player->handleGun();
-		player->weapon->act();
+		player.weapon->act();
 
 		if (addBulletFlag == true)
         {
 			Bullet b = bulletTemplate;
-			b.posX = player->posX;
-			b.posY = player->posY;
+			b.posX = player.posX;
+			b.posY = player.posY;
 			bullets.push_back(b);
 			std::cout << "bullet added!";
 			addBulletFlag = false;
@@ -277,10 +252,10 @@ void Game :: mainLoop()
         //check collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
         {
-            if (collision(*player, *bricksIt, RADIUS, RADIUS))
+            if (collision(player, *bricksIt, RADIUS, RADIUS))
             {
-                player->posX = prevPosX;
-                player->posY = prevPosY;
+                player.posX = prevPosX;
+                player.posY = prevPosY;
             }
         }
 
@@ -289,111 +264,155 @@ void Game :: mainLoop()
 		int i;
 		n = bullets.size();
 
-		for (i = 0; i<n; i++)
+        for (bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++)
         {
-			bullets[i].move();
-
-			if (bullets[i].lifeCycle > BULLET_LIFE)
+            (*bulletIt).move();
+            if ((*bulletIt).lifeCycle > BULLET_LIFE)
             {
-				bullets.erase(bullets.begin() + i);
-				std::cout << "Deleted" << std::endl;
-			}
-		}
+                (*bulletIt).destroyed = true;
+               
+            }
+        }
 
         //handle enemies' actions
-		n = enemies.size();
-		for (i = 0; i<n; i++)
-        {
-			for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt)
+		for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {         
+			for (bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt)
             {
-				if (enemies[i].checkHit(*bulletIt) == true)
+                if ((*bulletIt).destroyed == true) continue;
+                if (collision(*enemyIt, *bulletIt, RADIUS, RADIUS))
                 {
 					//add flame
-
 					Flame f = flameTemplate;
 
-					f.posX = enemies[i].posX + 10;
-					f.posY = enemies[i].posY + 10;
+					f.posX = (*enemyIt).posX + 10;
+					f.posY = (*enemyIt).posY + 10;
 
 					flames.push_back(f);
 
 					f = flameTemplate;
 
-					f.posX = enemies[i].posX - 15;
-					f.posY = enemies[i].posY + 3;
+					f.posX = (*enemyIt).posX - 15;
+					f.posY = (*enemyIt).posY + 3;
 
 					flames.push_back(f);
 
 					f = flameTemplate;
 
-					f.posX = enemies[i].posX;
-					f.posY = enemies[i].posY - 7;
+					f.posX = (*enemyIt).posX;
+					f.posY = (*enemyIt).posY - 7;
 
 					flames.push_back(f);
 
-					enemies.erase(enemies.begin() + i);
-				}
+                    (*enemyIt).energy -= 50;
+                    (*bulletIt).destroyed = true;
+				}             
 			}
 		}
 
         //handle flames' actions
-		n = flames.size();
-
-		for (i = 0;i<n;i++)
+		for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt)
         {
-			flames[i].act();
+			(*flameIt).act();
 
-			if (flames[i].lifeCycle > 14)
+			if ((*flameIt).lifeCycle > 15)
             {
-				flames.erase(flames.begin() + i);
+				flames.erase(flameIt);
+                
+                if (flames.size() != 0)
+                {
+                    flameIt = flames.begin();
+                }
+                else
+                {
+                    break;
+                }
 			}
 		}
+
+        //erase enemies, who have energy below or equal 0
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            if ((*enemyIt).energy <= 0)
+            {
+                enemies.erase(enemyIt);
+                if (enemies.size() != 0)
+                {
+                    enemyIt = enemies.begin();  
+                }
+                else
+                {
+                    break;
+                }
+            }          
+        }
+
+        // delete bullets which have been destroyed
+        for (bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt)
+        {
+            if ((*bulletIt).destroyed == true)
+            {
+                bullets.erase(bulletIt);
+                if (bullets.size() != 0)
+                {
+                    bulletIt = bullets.begin();
+                }
+                else
+                {
+                    break;
+                }
+                std::cout << "Deleted bullet" << std::endl;
+            }
+            
+        }
 
 		//display
 		SDL_RenderClear(renderer);
 
-		terrain->myTex->render(renderer,
-            (int)terrain->posX,
-            (int)terrain->posY,
+        tex->render(renderer, 0, 0, RENDER_IN_CENTER);
+        
+		terrain.myTex.render(renderer,
+            (int)terrain.posX,
+            (int)terrain.posY,
             RENDER_IN_CENTER);
      
-		player->myTex->render(renderer,
-            getPosXOnScreen(player->posX),
-            getPosYOnScreen(player->posY),
+		player.myTex.render(renderer,
+            getPosXOnScreen(player.posX),
+            getPosYOnScreen(player.posY),
             RENDER_IN_CENTER);
 
 		for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
-			(*enemyIt).myTex->render(renderer,
+			(*enemyIt).myTex.render(renderer,
                 getPosXOnScreen((*enemyIt).posX),
                 getPosYOnScreen((*enemyIt).posY),
                 RENDER_IN_CENTER);
 		}
 
 		for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
-			(*bulletIt).myTex->render(renderer,
+			(*bulletIt).myTex.render(renderer,
                 getPosXOnScreen((*bulletIt).posX),
                 getPosYOnScreen((*bulletIt).posY),
                 RENDER_IN_CENTER);
 		}
 
-		for (flameIt = flames.begin();flameIt != flames.end(); ++flameIt) {
+		for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
 			Flame &flame = (*flameIt);
-			flame.myTex->renderAnim(renderer,
+			flame.myTex.renderAnim(renderer,
                 getPosXOnScreen(flame.posX),
                 getPosYOnScreen(flame.posY),
                 RENDER_IN_CENTER, 5, flame.texFrame);
 		}
 
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
-            (*bricksIt).myTex->render(renderer,
+            (*bricksIt).myTex.render(renderer,
                 getPosXOnScreen((*bricksIt).posX),
                 getPosYOnScreen((*bricksIt).posY),
                 RENDER_IN_CENTER);
         }
-
-		helpScreen->myTex->render(renderer,
-            (int)helpScreen->posX, 
-            (int)helpScreen->posY,
+ 
+		helpScreen.myTex.render(renderer,
+            (int)helpScreen.posX, 
+            (int)helpScreen.posY,
             RENDER_IN_CENTER);
 
 		SDL_RenderPresent(renderer);

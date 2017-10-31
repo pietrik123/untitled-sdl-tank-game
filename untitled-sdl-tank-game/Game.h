@@ -15,8 +15,19 @@
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT  480
 
-#define BULLET_LIFE 50
+#define BULLET_LIFE 15
 #define FLAME_LIFE 15
+
+struct TextureDataStruct
+{
+    MyTexture terrainTex;
+    MyTexture playerTexture;
+    MyTexture enemyTexture;
+    MyTexture brickTexture;
+    MyTexture bulletTexture;
+    MyTexture flameTexture;
+    MyTexture helpScreenTexture;
+};
 
 class Game
 {
@@ -27,19 +38,23 @@ public:
 	SDL_Renderer* renderer;
 	SDL_Surface* screenSurface;
 
-	GameObject* terrain;
-	Player* player;
-	Enemy enemyTemplate;
+    MyTexture* tex;
+
+	GameObject terrain;
+	Player player;
+	
 	Bullet bulletTemplate;
-    GameObject brickTemplate;
 	Flame flameTemplate;
+
 	std::vector<Enemy> enemies;
 	std::vector<Bullet> bullets;
 	std::vector<Flame> flames;
     std::vector<GameObject> bricks;
-	GameObject* helpScreen;
+	
+    GameObject helpScreen;
 	
 	Mix_Music *music;
+    TextureDataStruct texDataStruct;
 
 	Game();
 	~Game();
@@ -62,3 +77,4 @@ public:
     float scaleY; // screen_dy/world_dy
 
 };
+

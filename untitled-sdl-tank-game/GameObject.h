@@ -23,11 +23,13 @@ public:
 	float posX;
 	float posY;
 
-	MyTexture* myTex;
+	MyTexture myTex;
 
 	GameObject();
 	GameObject(float x, float y);
     GameObject(float x, float y, float radius);
+    GameObject(float x, float y, MyTexture& texture);
+    GameObject(float x, float y, float radius, MyTexture& texture);
 
 	~GameObject();
 

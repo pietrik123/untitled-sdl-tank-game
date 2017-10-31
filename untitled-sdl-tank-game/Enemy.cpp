@@ -3,12 +3,19 @@
 
 Enemy :: Enemy()
 {
+    energy = 100;
 }
 
 Enemy :: Enemy(float x, float y) : GameObject(x, y)
 {
-	posX = x;
-	posY = y;
+    energy = 100;
+}
+
+Enemy::Enemy(float x, float y, float collisionRadius, MyTexture& texture) : GameObject(x, y)
+{
+    energy = 100;
+    radius = collisionRadius;
+    myTex = texture;
 }
 
 bool Enemy:: checkHit(Bullet &b)
