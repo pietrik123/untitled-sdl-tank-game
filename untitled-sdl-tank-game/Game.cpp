@@ -330,7 +330,9 @@ void Game :: mainLoop()
 			}
 		}
 
+        //handle enemies
         //erase enemies, who have energy below or equal 0
+        //move enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
             if ((*enemyIt).energy <= 0)
@@ -344,7 +346,8 @@ void Game :: mainLoop()
                 {
                     break;
                 }
-            }          
+            }
+            (*enemyIt).follow(player);
         }
 
         // delete bullets which have been destroyed

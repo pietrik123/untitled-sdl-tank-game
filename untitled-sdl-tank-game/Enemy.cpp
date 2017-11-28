@@ -28,3 +28,40 @@ bool Enemy:: checkHit(Bullet &b)
 	}
 	return hit;
 }
+
+void Enemy::follow(const GameObject& objectToFollow)
+{   
+    short int dirX = 0;
+    short int dirY = 0;
+
+    if (objectToFollow.posX - posX > 0)
+    {
+        dirX = 1;
+    }
+    else if (objectToFollow.posX - posX < 0)
+    {
+        dirX = -1;
+    }
+    else
+    {
+        dirX = 0;
+    }
+
+    if (objectToFollow.posY - posY > 0)
+    {
+        dirY = 1;
+    }
+    else if (objectToFollow.posY - posY < 0)
+    {
+        dirY = -1;
+    }
+    else
+    {
+        dirY = 0;
+    }
+
+    posX += dirX * ds;
+    posY += dirY * ds;
+}
+
+const float Enemy::ds = 2.5;
