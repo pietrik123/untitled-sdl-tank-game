@@ -47,6 +47,12 @@ void GameObject :: moveObj(Direction direction)
 {
 }
 
+void GameObject::writePrevPositions()
+{
+    prevPosX = posX;
+    prevPosY = posY;
+}
+
 float getDistance(const GameObject& obj1, const GameObject& obj2)
 {
     return

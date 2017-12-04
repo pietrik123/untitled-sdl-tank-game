@@ -100,6 +100,7 @@ bool Game :: initGame()
 	
 	if (gameMenu.validate() == false)
 	{
+        std::cout << "Error in game menu validation!" << "\n";
 		exit(EXIT_FAILURE);
 	}
 
@@ -244,10 +245,16 @@ void Game :: mainLoop()
 			addBulletFlag = false;
 		}
 
-		std::vector<Enemy>::iterator enemyIt;
+        std::vector<Enemy>::iterator enemyIt;
 		std::vector<Bullet>::iterator bulletIt;
 		std::vector<Flame>::iterator flameIt;
         std::vector<GameObject>::iterator bricksIt;
+        
+        // write previous positions of enemies
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            (*enemyIt).writePrevPositions();
+        }
 
         //check collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
@@ -260,8 +267,8 @@ void Game :: mainLoop()
         }
 
         //handle bullets' actions
-		int n;
-		int i;
+		unsigned int n;
+		unsigned int i;
 		n = bullets.size();
 
         for (bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++)
@@ -348,6 +355,25 @@ void Game :: mainLoop()
                 }
             }
             (*enemyIt).follow(player);
+        }
+
+        // handle enemies' collisions
+        unsigned int j;
+        for (i = 0; i < enemies.size(); i++)
+        {
+            for (j = 0; j < enemies.size(); j++)
+            {
+                if (i == j) continue;
+
+                bool res = collision(enemies[i], enemies[j],
+                    BoundsType::RADIUS, BoundsType::RADIUS);
+
+                if (res == true)
+                {
+                    enemies[i].posX = enemies[i].prevPosX;
+                    enemies[i].posY = enemies[i].prevPosY;
+                }
+            }
         }
 
         // delete bullets which have been destroyed
