@@ -28,3 +28,5 @@ void Flame :: act()
 		texFrame += 1;
 	}
 }
+
+const int Flame::maxLifeCycle = 20;
