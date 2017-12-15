@@ -23,6 +23,9 @@ public:
 	float posX;
 	float posY;
 
+    float prevPosX;
+    float prevPosY;
+
 	MyTexture myTex;
 
 	GameObject();
@@ -33,6 +36,7 @@ public:
 
 	~GameObject();
 
+    virtual void writePrevPositions();
 	virtual void moveObj(Direction direction);
 
     float radius;

@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include <iostream>
+#include <algorithm>
 
 Game :: Game()
 {
@@ -17,6 +18,21 @@ Game :: Game()
 
     scaleX = 1.0;
     scaleY = 1.0;
+}
+
+bool isEnemyDestroyed(const Enemy &e)
+{
+    return e.energy <= 0;
+}
+
+bool isFlameCycleOver(const Flame &f)
+{
+    return f.lifeCycle > Flame::maxLifeCycle;
+}
+
+bool isBulletDestroyed(const Bullet &b)
+{
+    return b.destroyed;
 }
 
 Game :: ~Game() 
@@ -100,6 +116,7 @@ bool Game :: initGame()
 	
 	if (gameMenu.validate() == false)
 	{
+        std::cout << "Error in game menu validation!" << "\n";
 		exit(EXIT_FAILURE);
 	}
 
@@ -244,25 +261,31 @@ void Game :: mainLoop()
 			addBulletFlag = false;
 		}
 
-		std::vector<Enemy>::iterator enemyIt;
+        std::vector<Enemy>::iterator enemyIt;
 		std::vector<Bullet>::iterator bulletIt;
 		std::vector<Flame>::iterator flameIt;
         std::vector<GameObject>::iterator bricksIt;
+        
+        // write previous positions of enemies
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            (*enemyIt).writePrevPositions();
+        }
 
         //check collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
         {
-            if (collision(player, *bricksIt, RADIUS, RADIUS))
-            {
-                player.posX = prevPosX;
-                player.posY = prevPosY;
-            }
+        if (collision(player, *bricksIt, RADIUS, RADIUS))
+        {
+            player.posX = prevPosX;
+            player.posY = prevPosY;
+        }
         }
 
         //handle bullets' actions
-		int n;
-		int i;
-		n = bullets.size();
+        unsigned int n;
+        unsigned int i;
+        n = bullets.size();
 
         for (bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++)
         {
@@ -270,101 +293,91 @@ void Game :: mainLoop()
             if ((*bulletIt).lifeCycle > BULLET_LIFE)
             {
                 (*bulletIt).destroyed = true;
-               
+
             }
         }
 
         //handle enemies' actions
-		for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
-        {         
-			for (bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt)
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            for (bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt)
             {
                 if ((*bulletIt).destroyed == true) continue;
                 if (collision(*enemyIt, *bulletIt, RADIUS, RADIUS))
                 {
-					//add flame
-					Flame f = flameTemplate;
+                    //add flame
+                    Flame f = flameTemplate;
 
-					f.posX = (*enemyIt).posX + 10;
-					f.posY = (*enemyIt).posY + 10;
+                    f.posX = (*enemyIt).posX + 10;
+                    f.posY = (*enemyIt).posY + 10;
 
-					flames.push_back(f);
+                    flames.push_back(f);
 
-					f = flameTemplate;
+                    f = flameTemplate;
 
-					f.posX = (*enemyIt).posX - 15;
-					f.posY = (*enemyIt).posY + 3;
+                    f.posX = (*enemyIt).posX - 15;
+                    f.posY = (*enemyIt).posY + 3;
 
-					flames.push_back(f);
+                    flames.push_back(f);
 
-					f = flameTemplate;
+                    f = flameTemplate;
 
-					f.posX = (*enemyIt).posX;
-					f.posY = (*enemyIt).posY - 7;
+                    f.posX = (*enemyIt).posX;
+                    f.posY = (*enemyIt).posY - 7;
 
-					flames.push_back(f);
+                    flames.push_back(f);
 
                     (*enemyIt).energy -= 50;
                     (*bulletIt).destroyed = true;
-				}             
-			}
-		}
+                }
+            }
+        }
 
         //handle flames' actions
-		for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt)
+        for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt)
         {
-			(*flameIt).act();
+            (*flameIt).act();
+        }
 
-			if ((*flameIt).lifeCycle > 15)
-            {
-				flames.erase(flameIt);
-                
-                if (flames.size() != 0)
-                {
-                    flameIt = flames.begin();
-                }
-                else
-                {
-                    break;
-                }
-			}
-		}
+        flames.erase(
+            std::remove_if(flames.begin(), flames.end(), isFlameCycleOver),
+            flames.end());
 
-        //erase enemies, who have energy below or equal 0
+        //handle enemies
+        //move enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
-            if ((*enemyIt).energy <= 0)
+            (*enemyIt).follow(player);
+        }
+
+        //erase enemies, who have energy below or equal 0
+        enemies.erase(
+            std::remove_if(enemies.begin(), enemies.end(), isEnemyDestroyed),
+            enemies.end());
+        
+        // handle enemies' collisions
+        unsigned int j;
+        for (i = 0; i < enemies.size(); i++)
+        {
+            for (j = 0; j < enemies.size(); j++)
             {
-                enemies.erase(enemyIt);
-                if (enemies.size() != 0)
+                if (i == j) continue;
+
+                bool res = collision(enemies[i], enemies[j],
+                    BoundsType::RADIUS, BoundsType::RADIUS);
+
+                if (res == true)
                 {
-                    enemyIt = enemies.begin();  
+                    enemies[i].posX = enemies[i].prevPosX;
+                    enemies[i].posY = enemies[i].prevPosY;
                 }
-                else
-                {
-                    break;
-                }
-            }          
+            }
         }
 
         // delete bullets which have been destroyed
-        for (bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt)
-        {
-            if ((*bulletIt).destroyed == true)
-            {
-                bullets.erase(bulletIt);
-                if (bullets.size() != 0)
-                {
-                    bulletIt = bullets.begin();
-                }
-                else
-                {
-                    break;
-                }
-                std::cout << "Deleted bullet" << std::endl;
-            }
-            
-        }
+        bullets.erase(
+            std::remove_if(bullets.begin(), bullets.end(), isBulletDestroyed),
+            bullets.end());
 
 		//display
 		SDL_RenderClear(renderer);

@@ -22,5 +22,4 @@ public:
     ~Player();
 
     void moveObj(Direction direction);
-
 };

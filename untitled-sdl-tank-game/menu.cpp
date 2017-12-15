@@ -1,5 +1,7 @@
 #include "menu.h"
 
+#include <iostream>
+
 int GameMenu::gameMenuLoop(SDL_Renderer* r)
 {
 	int result = START_GAME;
@@ -181,6 +183,10 @@ bool MenuItem::validate()
 	{
 		res = false;
 	}
+    if (res == false)
+    {
+        std::cout << "Error in menu item validation!\n";
+    }
 	return res;
 }
 
@@ -217,6 +223,10 @@ bool MenuWindow::validate()
 			}
 		}
 	}
+    if (res == false)
+    {
+        std::cout << "Error in menu window validation!\n";
+    }
 	return res;
 }
 
@@ -237,5 +247,9 @@ bool GameMenu::validate()
 			}
 		}
 	}
+    if (res == false)
+    {
+        std::cout << "Error in game menu validation!\n";
+    }
 	return res;
 }
