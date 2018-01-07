@@ -17,5 +17,6 @@ public:
 	~MyTexture();
 
 	void render(SDL_Renderer* renderer, int x, int y, int mode);
+    void render(SDL_Renderer* renderer, int x, int y, int mode, float angle);
 	void renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int numOfFrames, int frameIndex);
 };

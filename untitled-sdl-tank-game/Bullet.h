@@ -14,5 +14,7 @@ public:
 
 	~Bullet();
 
+    float getDirectionAngle();
+
 	void move();
 };

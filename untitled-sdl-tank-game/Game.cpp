@@ -203,7 +203,9 @@ void Game :: mainLoop()
 {
 	bool exit = false;
 
-	bool addBulletFlag = false;
+    bool addBulletFlag = false;
+    Direction bulletStartDir = EAST;
+
 	while (exit != true) {
         float prevPosX = player.posX;
         float prevPosY = player.posY;
@@ -232,13 +234,47 @@ void Game :: mainLoop()
             {
 				player.moveObj(EAST);
 			}
-			if (state[SDL_SCANCODE_SPACE])
+
+			if (state[SDL_SCANCODE_SPACE] && state[SDL_SCANCODE_LEFT])
             {
 				if (!addBulletFlag)
 				{
 					addBulletFlag = player.weapon->trigger();
+                    bulletStartDir = WEST;
 				}		
 			}
+            else if (state[SDL_SCANCODE_SPACE] && state[SDL_SCANCODE_RIGHT])
+            {
+                if (!addBulletFlag)
+                {
+                    addBulletFlag = player.weapon->trigger();
+                    bulletStartDir = EAST;
+                }
+            }
+            else if (state[SDL_SCANCODE_SPACE] && state[SDL_SCANCODE_UP])
+            {
+                if (!addBulletFlag)
+                {
+                    addBulletFlag = player.weapon->trigger();
+                    bulletStartDir = NORTH;
+                }
+            }
+            else if (state[SDL_SCANCODE_SPACE] && state[SDL_SCANCODE_DOWN])
+            {
+                if (!addBulletFlag)
+                {
+                    addBulletFlag = player.weapon->trigger();
+                    bulletStartDir = SOUTH;
+                }
+            }
+            else if (state[SDL_SCANCODE_SPACE])
+            {
+                if (!addBulletFlag)
+                {
+                    addBulletFlag = player.weapon->trigger();
+                    bulletStartDir = EAST;
+                }
+            }
 			
 			if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
@@ -256,6 +292,7 @@ void Game :: mainLoop()
 			Bullet b = bulletTemplate;
 			b.posX = player.posX;
 			b.posY = player.posY;
+            b.direction = bulletStartDir;
 			bullets.push_back(b);
 			std::cout << "bullet added!";
 			addBulletFlag = false;
@@ -405,7 +442,9 @@ void Game :: mainLoop()
 			(*bulletIt).myTex.render(renderer,
                 getPosXOnScreen((*bulletIt).posX),
                 getPosYOnScreen((*bulletIt).posY),
-                RENDER_IN_CENTER);
+                RENDER_IN_CENTER,
+                (*bulletIt).getDirectionAngle()
+                );
 		}
 
 		for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {

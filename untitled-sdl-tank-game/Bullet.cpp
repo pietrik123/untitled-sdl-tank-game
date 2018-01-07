@@ -11,7 +11,8 @@ Bullet :: Bullet(float x, float y) :GameObject(x, y)
 	std::cout << "Bullet created!" << std::endl;
 }
 
-Bullet::Bullet(float x, float y, float collisionRadius, MyTexture& texture) :GameObject(x, y)
+Bullet::Bullet(float x, float y, float collisionRadius, MyTexture& texture)
+    :GameObject(x, y)
 {
     lifeCycle = 0;
     destroyed = false;
@@ -33,6 +34,41 @@ void Bullet :: move()
     {
 		destroyed = true;
 	}
-	posX += 4;
-	//cout<<"bullet pos x: "<<posX<<endl;
+
+    switch (direction)
+    {
+        case SOUTH:
+            posY -= 4.0;
+            break;
+        case WEST:
+            posX -= 4.0;
+            break;
+        case NORTH:
+            posY += 4.0;
+            break;
+        case EAST:
+        default:
+            posX += 4.0;
+    }
+}
+
+float Bullet::getDirectionAngle()
+{
+    float angle = 0.0;
+    switch (direction)
+    {
+        case NORTH:
+            angle = 270.0;
+            break;
+        case SOUTH:
+            angle = 90.0;
+            break;
+        case WEST:
+            angle = 180.0;
+            break;
+        case EAST:
+        default:
+            break;
+    }
+    return angle;
 }

@@ -2,6 +2,8 @@
 
 #include "MyTexture.h"
 
+#include <vector>
+
 enum Direction
 {
     EAST = 1,
@@ -27,12 +29,16 @@ public:
     float prevPosY;
 
 	MyTexture myTex;
+    std::vector<MyTexture> additionalTextures;
+
+    Direction direction;
 
 	GameObject();
 	GameObject(float x, float y);
     GameObject(float x, float y, float radius);
     GameObject(float x, float y, MyTexture& texture);
     GameObject(float x, float y, float radius, MyTexture& texture);
+    GameObject(float x, float y, float radius, MyTexture& texture, Direction dir);
 
 	~GameObject();
 
