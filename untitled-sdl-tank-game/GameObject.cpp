@@ -5,17 +5,18 @@
 
 GameObject :: GameObject()
 {
+    
 }
 
 GameObject :: GameObject(float x, float y)
-{
+{   
 	posX = x;
 	posY = y;
     radius = 1.0;
 }
 
 GameObject::GameObject(float x, float y, float parRadius)
-{
+{   
     posX = x;
     posY = y;
     radius = parRadius;
@@ -35,6 +36,17 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture& texture)
     posY = y;
     radius = parRadius;
     myTex = texture;
+    direction = EAST;
+}
+
+GameObject::GameObject(float x, float y, float parRadius, MyTexture& texture,
+                       Direction dir)
+{
+    posX = x;
+    posY = y;
+    radius = parRadius;
+    myTex = texture;
+    direction = dir;
 }
 
 GameObject :: ~GameObject()

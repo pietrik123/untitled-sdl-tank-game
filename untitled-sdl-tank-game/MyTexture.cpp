@@ -92,3 +92,29 @@ void MyTexture :: renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int
 
 	SDL_RenderCopy(renderer, texture, &sourceRect, &targetRect);
 }
+
+void MyTexture::render(SDL_Renderer* renderer, int x, int y, int mode, 
+    float angle)
+{
+    SDL_Rect rect;
+
+    int w, h;
+
+    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+
+    if (mode == RENDER_IN_CENTER)
+    {
+        rect.x = x - w / 2;
+        rect.y = y - h / 2;
+    }
+    else if (mode == RENDER_IN_CORNER)
+    {
+        rect.x = x;
+        rect.y = y;
+    }
+
+    rect.w = w;
+    rect.h = h;
+
+    SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+}
