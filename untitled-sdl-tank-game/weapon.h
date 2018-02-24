@@ -13,6 +13,12 @@ public:
 	virtual bool trigger() { return false; }
 };
 
+enum WeaponIndex
+{
+    BASIC_CANNON,
+    BOMB_DROP
+};
+
 //basic cannon class
 
 class BasicCannon : public Weapon
@@ -22,6 +28,15 @@ public:
 	static const int READY = 100;
 	void act();
 	bool trigger();
+};
+
+class BombDrop : public Weapon
+{
+public:
+    BombDrop();
+    static const int READY = 200;
+    void act();
+    bool trigger();
 };
 
 

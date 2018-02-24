@@ -31,7 +31,10 @@ Player::Player(float x, float y, float collisionRadius, MyTexture& texture)
     prevShotFired = false;
     addBullet = false;
 
-    weapon = new BasicCannon();
+    weaponIndex = WeaponIndex::BASIC_CANNON;
+
+    weapons.push_back(new BasicCannon());
+    weapons.push_back(new BombDrop());
 }
 
 Player::~Player()
@@ -57,6 +60,11 @@ void Player::moveObj(Direction direction)
     {
         posY -= ds;
     }
+}
+
+Weapon* Player::getCurrentWeapon()
+{
+    return weapons[weaponIndex];
 }
 
 const float Player::ds = 5.0;

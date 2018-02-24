@@ -50,4 +50,6 @@ public:
 
 float getDistance(const GameObject& obj1, const GameObject& obj2);
 
+float getDistance(const GameObject& obj, float pointX, float pointY);
+
 bool collision(const GameObject &obj1, const GameObject &obj2, BoundsType bounds1, BoundsType bounds2);

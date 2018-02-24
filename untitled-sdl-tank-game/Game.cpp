@@ -35,6 +35,11 @@ bool isBulletDestroyed(const Bullet &b)
     return b.destroyed;
 }
 
+bool isBombExploded(const Bomb &b)
+{
+    return b.exploded;
+}
+
 Game :: ~Game() 
 {
 	std::cout << "Game finished!" << std::endl;
@@ -132,6 +137,7 @@ bool Game :: initGame()
     texDataStruct.bulletTexture = MyTexture(renderer, "data\\gfx\\bullet.png");
     texDataStruct.flameTexture = MyTexture(renderer, "data\\gfx\\flame.png");
     texDataStruct.helpScreenTexture = MyTexture(renderer, "data\\gfx\\help.png");
+    texDataStruct.bombTexture = MyTexture(renderer, "data\\gfx\\bomb.png");
 
 	//game init
 	terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
@@ -145,6 +151,7 @@ bool Game :: initGame()
 
     bulletTemplate = Bullet(-10, -10, 10.0, texDataStruct.bulletTexture);
     flameTemplate = Flame(-10.0, -10.0, texDataStruct.flameTexture);
+    bombTemplate = Bomb(-10.0, -10.0, texDataStruct.bombTexture);
 
 	helpScreen = GameObject(320, 450);
     helpScreen.myTex = texDataStruct.helpScreenTexture;
@@ -204,6 +211,7 @@ void Game :: mainLoop()
 	bool exit = false;
 
     bool addBulletFlag = false;
+    bool addBombFlag = false;
     Direction bulletStartDir = EAST;
 
 	while (exit != true) {
@@ -234,61 +242,76 @@ void Game :: mainLoop()
             {
 				player.moveObj(EAST);
 			}
-
-			if (state[SDL_SCANCODE_SPACE] && state[SDL_SCANCODE_LEFT])
+            
+            if (state[SDL_SCANCODE_SPACE])
             {
-				if (!addBulletFlag)
-				{
-					addBulletFlag = player.weapon->trigger();
-                    bulletStartDir = WEST;
-				}		
-			}
-            else if (state[SDL_SCANCODE_SPACE] && state[SDL_SCANCODE_RIGHT])
-            {
-                if (!addBulletFlag)
+                switch (player.weaponIndex)
                 {
-                    addBulletFlag = player.weapon->trigger();
-                    bulletStartDir = EAST;
+                    case WeaponIndex::BASIC_CANNON:
+
+                        // this if statement is because of event loop race condition
+                        if (!addBulletFlag)
+                        {
+                            addBulletFlag = player.getCurrentWeapon()->trigger();
+                        }
+                        std::cout << "add bullet flag: " << addBulletFlag << "\n";
+                        break;
+                    case WeaponIndex::BOMB_DROP:
+                        if (!addBombFlag)
+                        {
+                            addBombFlag = player.getCurrentWeapon()->trigger();
+                        }  
+                        break;
+                    default:
+                        break;
                 }
             }
-            else if (state[SDL_SCANCODE_SPACE] && state[SDL_SCANCODE_UP])
+
+            if (addBulletFlag == true)
             {
-                if (!addBulletFlag)
+                bulletStartDir = EAST;
+                if (state[SDL_SCANCODE_LEFT])
                 {
-                    addBulletFlag = player.weapon->trigger();
+                    bulletStartDir = WEST;
+                }
+                else if (state[SDL_SCANCODE_DOWN])
+                {
+                    bulletStartDir = SOUTH;
+                }
+                else if (state[SDL_SCANCODE_UP])
+                {
                     bulletStartDir = NORTH;
                 }
             }
-            else if (state[SDL_SCANCODE_SPACE] && state[SDL_SCANCODE_DOWN])
-            {
-                if (!addBulletFlag)
-                {
-                    addBulletFlag = player.weapon->trigger();
-                    bulletStartDir = SOUTH;
-                }
-            }
-            else if (state[SDL_SCANCODE_SPACE])
-            {
-                if (!addBulletFlag)
-                {
-                    addBulletFlag = player.weapon->trigger();
-                    bulletStartDir = EAST;
-                }
-            }
 			
-			if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
+            if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
-				if (e.key.keysym.sym == SDLK_ESCAPE)
+                if (e.key.keysym.sym == SDLK_ESCAPE)
                 {
                     exit = true;
+                }
+            }
+
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_n)
+                {
+                    player.weaponIndex++;
+                    if (player.weaponIndex > player.weapons.size() - 1)
+                    {
+                        player.weaponIndex = 0;
+                        //exit = true;
+                    }
+                    std::cout << "player weapon index : " << player.weaponIndex << "\n";
                 }
 			}
 		}
 
-		player.weapon->act();
-
+        player.getCurrentWeapon()->act();
+		
 		if (addBulletFlag == true)
         {
+            std::cout << "add bullet flag: " << addBulletFlag << "\n";
 			Bullet b = bulletTemplate;
 			b.posX = player.posX;
 			b.posY = player.posY;
@@ -298,8 +321,19 @@ void Game :: mainLoop()
 			addBulletFlag = false;
 		}
 
+        if (addBombFlag == true)
+        {
+            Bomb b = bombTemplate;
+            b.posX = player.posX;
+            b.posY = player.posY;
+            bombs.push_back(b);
+            std::cout << "bomb added!";
+            addBombFlag = false;
+        }
+
         std::vector<Enemy>::iterator enemyIt;
 		std::vector<Bullet>::iterator bulletIt;
+        std::vector<Bomb>::iterator bombIt;
 		std::vector<Flame>::iterator flameIt;
         std::vector<GameObject>::iterator bricksIt;
         
@@ -334,7 +368,14 @@ void Game :: mainLoop()
             }
         }
 
-        //handle enemies' actions
+        //handle bombs actions
+        for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
+        {
+            (*bombIt).act();
+        }
+
+        //handle bullet hits
+        //add flames
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
             for (bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt)
@@ -344,31 +385,53 @@ void Game :: mainLoop()
                 {
                     //add flame
                     Flame f = flameTemplate;
-
                     f.posX = (*enemyIt).posX + 10;
                     f.posY = (*enemyIt).posY + 10;
-
                     flames.push_back(f);
 
                     f = flameTemplate;
-
                     f.posX = (*enemyIt).posX - 15;
                     f.posY = (*enemyIt).posY + 3;
-
                     flames.push_back(f);
 
                     f = flameTemplate;
-
                     f.posX = (*enemyIt).posX;
                     f.posY = (*enemyIt).posY - 7;
-
                     flames.push_back(f);
 
                     (*enemyIt).energy -= 50;
                     (*bulletIt).destroyed = true;
                 }
             }
+
+            for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
+            {
+                if (isBombExploded(*bombIt))
+                {
+                    Flame f = flameTemplate;
+                    f.posX = (*bombIt).posX + 0;
+                    f.posY = (*bombIt).posY + 8;
+                    flames.push_back(f);
+
+                    f = flameTemplate;
+                    f.posX = (*bombIt).posX + (-5);
+                    f.posY = (*bombIt).posY + (-4);
+                    flames.push_back(f);
+
+                    f = flameTemplate;
+                    f.posX = (*bombIt).posX + 5;
+                    f.posY = (*bombIt).posY + (-4);
+                    flames.push_back(f);
+
+                    if (getDistance(*enemyIt, *bombIt) <= (*bombIt).explosionRadius)
+                    {
+                        (*enemyIt).energy -= 200;
+                    }
+                }
+            }
         }
+
+       
 
         //handle flames' actions
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt)
@@ -416,6 +479,11 @@ void Game :: mainLoop()
             std::remove_if(bullets.begin(), bullets.end(), isBulletDestroyed),
             bullets.end());
 
+        // delete bullets which have been destroyed
+        bombs.erase(
+            std::remove_if(bombs.begin(), bombs.end(), isBombExploded),
+            bombs.end());
+
 		//display
 		SDL_RenderClear(renderer);
 
@@ -426,6 +494,14 @@ void Game :: mainLoop()
             (int)terrain.posY,
             RENDER_IN_CENTER);
      
+        for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
+        {
+            (*bombIt).myTex.render(renderer,
+                getPosXOnScreen((*bombIt).posX),
+                getPosYOnScreen((*bombIt).posY),
+                RENDER_IN_CENTER);
+        }
+
 		player.myTex.render(renderer,
             getPosXOnScreen(player.posX),
             getPosYOnScreen(player.posY),

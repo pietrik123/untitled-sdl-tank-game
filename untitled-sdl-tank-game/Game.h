@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Flame.h"
+#include "Bomb.h"
 #include "menu.h"
 
 #include<SDL.h>
@@ -27,6 +28,7 @@ struct TextureDataStruct
     MyTexture bulletTexture;
     MyTexture flameTexture;
     MyTexture helpScreenTexture;
+    MyTexture bombTexture;
 };
 
 class Game
@@ -45,11 +47,13 @@ public:
 	
 	Bullet bulletTemplate;
 	Flame flameTemplate;
+    Bomb bombTemplate;
 
 	std::vector<Enemy> enemies;
 	std::vector<Bullet> bullets;
 	std::vector<Flame> flames;
     std::vector<GameObject> bricks;
+    std::vector<Bomb> bombs;
 	
     GameObject helpScreen;
 	

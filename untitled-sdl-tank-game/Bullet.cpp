@@ -72,3 +72,4 @@ float Bullet::getDirectionAngle()
     }
     return angle;
 }
+

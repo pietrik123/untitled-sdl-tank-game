@@ -71,6 +71,12 @@ float getDistance(const GameObject& obj1, const GameObject& obj2)
         powf(powf(obj1.posX - obj2.posX, 2.0) + powf(obj1.posY - obj2.posY, 2.0), 0.5);
 }
 
+float getDistance(const GameObject& obj1, float pointX, float pointY)
+{
+    return
+        powf(powf(obj1.posX - pointX, 2.0) + powf(obj1.posY - pointY, 2.0), 0.5);
+}
+
 bool collision(const GameObject& obj1, const GameObject& obj2,
                BoundsType bounds1, BoundsType bounds2)
 {

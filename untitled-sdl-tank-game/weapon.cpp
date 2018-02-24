@@ -35,3 +35,27 @@ bool BasicCannon::trigger()
 
 	// TODO add bullet to the scene
 }
+
+BombDrop::BombDrop()
+{
+    readyCnt = 200;
+}
+
+void BombDrop::act()
+{
+    if (readyCnt < READY)
+    {
+        readyCnt += 5;
+    }
+}
+
+bool BombDrop::trigger()
+{
+   
+    if (readyCnt >= READY)
+    {       
+        readyCnt = 0;
+        return true;
+    }
+    return false;
+}
