@@ -166,6 +166,15 @@ bool Game :: endGame()
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
+    SDL_DestroyTexture(texDataStruct.terrainTex.texture);
+    SDL_DestroyTexture(texDataStruct.playerTexture.texture);
+    SDL_DestroyTexture(texDataStruct.enemyTexture.texture);
+    SDL_DestroyTexture(texDataStruct.brickTexture.texture);
+    SDL_DestroyTexture(texDataStruct.bulletTexture.texture);
+    SDL_DestroyTexture(texDataStruct.flameTexture.texture);
+    SDL_DestroyTexture(texDataStruct.helpScreenTexture.texture);
+    SDL_DestroyTexture(texDataStruct.bombTexture.texture);
+
 	Mix_FreeMusic(music);
 
 	Mix_Quit();
