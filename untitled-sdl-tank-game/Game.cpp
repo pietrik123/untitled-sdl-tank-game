@@ -3,15 +3,13 @@
 #include <iostream>
 #include <algorithm>
 
-Game :: Game()
+Game::Game() : window(NULL), renderer(NULL), screenSurface(NULL),
+    music(NULL)
 {
 	std::cout << "Game started!" << std::endl;
 
-	window = NULL;
 	renderer = NULL;
 	screenSurface = NULL;
-
-    tex = NULL;
 
     screenWidth = SCREEN_WIDTH;
     screenHeight = SCREEN_HEIGHT;
@@ -129,7 +127,7 @@ bool Game :: initGame()
 
     texDataStruct.terrainTex = MyTexture(renderer, "data\\gfx\\terrain.png");
 
-    tex = new MyTexture(renderer, "data\\gfx\\terrain.png");
+    //tex = new MyTexture(renderer, "data\\gfx\\terrain.png");
 
     texDataStruct.playerTexture = MyTexture(renderer, "data\\gfx\\player.png");
     texDataStruct.enemyTexture = MyTexture(renderer, "data\\gfx\\enemy.png");
@@ -487,7 +485,7 @@ void Game :: mainLoop()
 		//display
 		SDL_RenderClear(renderer);
 
-        tex->render(renderer, 0, 0, RENDER_IN_CENTER);
+        //tex->render(renderer, 0, 0, RENDER_IN_CENTER);
         
 		terrain.myTex.render(renderer,
             (int)terrain.posX,

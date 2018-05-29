@@ -34,45 +34,38 @@ struct TextureDataStruct
 class Game
 {
 public:
-	GameMenu gameMenu;
-
+    // SDL fields
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	SDL_Surface* screenSurface;
 
-    MyTexture* tex;
+    // music
+    Mix_Music *music;
 
-	GameObject terrain;
-	Player player;
-	
+    // GUI (menu etc.)
+    GameMenu gameMenu;
+    GameObject helpScreen;
+    	
+    // game objects
+    GameObject terrain;
+	Player player;	
+
+    // copyable objects
 	Bullet bulletTemplate;
 	Flame flameTemplate;
     Bomb bombTemplate;
 
+    // groups of objects
 	std::vector<Enemy> enemies;
 	std::vector<Bullet> bullets;
 	std::vector<Flame> flames;
     std::vector<GameObject> bricks;
     std::vector<Bomb> bombs;
 	
-    GameObject helpScreen;
-	
-	Mix_Music *music;
+    // texture struct	
     TextureDataStruct texDataStruct;
 
-	Game();
-	~Game();
-
-	bool runGame();
-
-	bool initSDL();
-	bool initGame();
-	
-	bool endGame();
-	void mainLoop();
-
-    int getPosXOnScreen(float);
-    int getPosYOnScreen(float);
+    // other
 
     int screenWidth;
     int screenHeight;
@@ -80,5 +73,23 @@ public:
     float scaleX; // screen_dx/world_dx
     float scaleY; // screen_dy/world_dy
 
+    // constructors and destructors
+
+	Game();
+	~Game();
+
+    // public methods
+
+    bool initSDL();
+
+    bool initGame();
+    void mainLoop();
+	bool runGame();	
+	bool endGame();
+	
+    // utils
+
+    int getPosXOnScreen(float);
+    int getPosYOnScreen(float);
 };
 
