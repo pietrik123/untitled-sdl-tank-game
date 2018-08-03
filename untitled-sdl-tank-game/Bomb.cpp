@@ -5,6 +5,8 @@ Bomb::Bomb() {}
 
 Bomb::Bomb(float x, float y, MyTexture &tex)
 {
+    maxLifeCycle = 50;
+
     posX = x;
     posY = y;
     myTex = tex;
@@ -18,10 +20,8 @@ Bomb::~Bomb() {}
 void Bomb::act()
 {
     lifeCycle += 1;
-    if (lifeCycle > maxLife)
+    if (lifeCycle > maxLifeCycle)
     {
         exploded = true;
     }
 }
-
-const int Bomb::maxLife = 50;

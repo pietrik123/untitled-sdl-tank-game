@@ -5,7 +5,7 @@
 class Flame : public GameObject
 {
 public:
-    static const int maxLifeCycle;
+    int maxLifeCycle;
 	int texFrame;
 	int lifeCycle;
 

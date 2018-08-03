@@ -6,7 +6,7 @@
 class Enemy : public GameObject
 {
 public:
-    static const float ds;
+    float displcmnt;
     int energy;
 
 	Enemy();
@@ -15,5 +15,5 @@ public:
 
     void follow(const GameObject& objectToFollow);
 
-	bool checkHit(Bullet &b);
+	bool isHit(Bullet &b);
 };

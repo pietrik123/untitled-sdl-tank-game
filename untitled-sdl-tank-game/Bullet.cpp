@@ -2,18 +2,24 @@
 
 #include <iostream>
 
-Bullet :: Bullet() {}
+Bullet::Bullet() {}
 
-Bullet :: Bullet(float x, float y) :GameObject(x, y)
+Bullet::Bullet(float x, float y) : GameObject(x, y)
 {
+    displcmnt = 4.0;
+    maxLifeCycle = 20;
+
 	lifeCycle = 0;
 	destroyed = false;
 	std::cout << "Bullet created!" << std::endl;
 }
 
 Bullet::Bullet(float x, float y, float collisionRadius, MyTexture& texture)
-    :GameObject(x, y)
+    : GameObject(x, y)
 {
+    displcmnt = 4;
+    maxLifeCycle = 20;
+
     lifeCycle = 0;
     destroyed = false;
     std::cout << "Bullet created!" << std::endl;
@@ -22,15 +28,15 @@ Bullet::Bullet(float x, float y, float collisionRadius, MyTexture& texture)
 }
 
 
-Bullet :: ~Bullet()
+Bullet::~Bullet()
 {
 	std::cout << "Bullet destroyed!" << std::endl;
 }
 
-void Bullet :: move()
+void Bullet::move()
 {
 	lifeCycle += 1;
-	if (lifeCycle > 20)
+	if (lifeCycle > maxLifeCycle)
     {
 		destroyed = true;
 	}
@@ -38,17 +44,17 @@ void Bullet :: move()
     switch (direction)
     {
         case SOUTH:
-            posY -= 4.0;
+            posY -= displcmnt;
             break;
         case WEST:
-            posX -= 4.0;
+            posX -= displcmnt;
             break;
         case NORTH:
-            posY += 4.0;
+            posY += displcmnt;
             break;
         case EAST:
         default:
-            posX += 4.0;
+            posX += displcmnt;
     }
 }
 

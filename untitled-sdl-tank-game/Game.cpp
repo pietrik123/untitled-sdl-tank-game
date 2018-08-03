@@ -25,7 +25,7 @@ bool isEnemyDestroyed(const Enemy &e)
 
 bool isFlameCycleOver(const Flame &f)
 {
-    return f.lifeCycle > Flame::maxLifeCycle;
+    return f.lifeCycle > f.maxLifeCycle;
 }
 
 bool isBulletDestroyed(const Bullet &b)
@@ -499,33 +499,33 @@ void Game :: mainLoop()
 		terrain.myTex.render(renderer,
             (int)terrain.posX,
             (int)terrain.posY,
-            RENDER_IN_CENTER);
+            MyTexture::RENDER_IN_CENTER);
      
         for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
         {
             (*bombIt).myTex.render(renderer,
                 getPosXOnScreen((*bombIt).posX),
                 getPosYOnScreen((*bombIt).posY),
-                RENDER_IN_CENTER);
+                MyTexture::RENDER_IN_CENTER);
         }
 
 		player.myTex.render(renderer,
             getPosXOnScreen(player.posX),
             getPosYOnScreen(player.posY),
-            RENDER_IN_CENTER);
+            MyTexture::RENDER_IN_CENTER);
 
 		for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
 			(*enemyIt).myTex.render(renderer,
                 getPosXOnScreen((*enemyIt).posX),
                 getPosYOnScreen((*enemyIt).posY),
-                RENDER_IN_CENTER);
+                MyTexture::RENDER_IN_CENTER);
 		}
 
 		for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
 			(*bulletIt).myTex.render(renderer,
                 getPosXOnScreen((*bulletIt).posX),
                 getPosYOnScreen((*bulletIt).posY),
-                RENDER_IN_CENTER,
+                MyTexture::RENDER_IN_CENTER,
                 (*bulletIt).getDirectionAngle()
                 );
 		}
@@ -535,20 +535,20 @@ void Game :: mainLoop()
 			flame.myTex.renderAnim(renderer,
                 getPosXOnScreen(flame.posX),
                 getPosYOnScreen(flame.posY),
-                RENDER_IN_CENTER, 5, flame.texFrame);
+                MyTexture::RENDER_IN_CENTER, 5, flame.texFrame);
 		}
 
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
             (*bricksIt).myTex.render(renderer,
                 getPosXOnScreen((*bricksIt).posX),
                 getPosYOnScreen((*bricksIt).posY),
-                RENDER_IN_CENTER);
+                MyTexture::RENDER_IN_CENTER);
         }
  
 		helpScreen.myTex.render(renderer,
             (int)helpScreen.posX, 
             (int)helpScreen.posY,
-            RENDER_IN_CENTER);
+            MyTexture::RENDER_IN_CENTER);
 
 		SDL_RenderPresent(renderer);
 		//wait

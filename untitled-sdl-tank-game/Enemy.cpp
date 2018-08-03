@@ -1,24 +1,26 @@
 
 #include "Enemy.h"
 
-Enemy :: Enemy()
+Enemy::Enemy()
 {
     energy = 100;
 }
 
-Enemy :: Enemy(float x, float y) : GameObject(x, y)
+Enemy::Enemy(float x, float y) : GameObject(x, y)
 {
+    displcmnt = 2.5;
     energy = 100;
 }
 
 Enemy::Enemy(float x, float y, float collisionRadius, MyTexture& texture) : GameObject(x, y)
 {
+    displcmnt = 2.5;
     energy = 100;
     radius = collisionRadius;
     myTex = texture;
 }
 
-bool Enemy:: checkHit(Bullet &b)
+bool Enemy::isHit(Bullet &b)
 {
 	double distance = pow(pow(b.posX - this->posX, 2) + pow(b.posY - this->posY, 2), 0.5);
 	bool hit = false;
@@ -60,8 +62,6 @@ void Enemy::follow(const GameObject& objectToFollow)
         dirY = 0;
     }
 
-    posX += dirX * ds;
-    posY += dirY * ds;
+    posX += dirX * displcmnt;
+    posY += dirY * displcmnt;
 }
-
-const float Enemy::ds = 2.5;

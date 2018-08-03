@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-MyTexture :: MyTexture()
+MyTexture::MyTexture()
 {
 	texture = NULL;
-	std::cout << "Empty texture created!" << std::endl;
+	std::cout << "MyTexture::MyTexture() : Empty texture created!" << std::endl;
 }
 
 MyTexture :: MyTexture(SDL_Renderer* renderer, std::string fileName)
@@ -16,7 +16,7 @@ MyTexture :: MyTexture(SDL_Renderer* renderer, std::string fileName)
 	textureSurface = IMG_Load(fileName.c_str());
 	if (textureSurface == NULL)
     {
-		std::cout << "Error: " << SDL_GetError() << std::endl;
+		std::cout << "MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
 	}
 
 	SDL_SetColorKey(textureSurface, SDL_TRUE, SDL_MapRGB(textureSurface->format, 0xFF, 0x00, 0xFF));
@@ -24,19 +24,21 @@ MyTexture :: MyTexture(SDL_Renderer* renderer, std::string fileName)
 	texture = SDL_CreateTextureFromSurface(renderer, textureSurface);
 	if (texture == NULL)
     {
-		std::cout << "Error: " << SDL_GetError() << std::endl;
+		std::cout << "MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
 	}
 	SDL_FreeSurface(textureSurface);
-	std::cout << "Texture created!" << std::endl;
+	std::cout << "MyTexture::MyTexture() : Texture created!" << std::endl;
 }
 
 MyTexture :: ~MyTexture()
 {
-	//SDL_DestroyTexture(texture);
-	std::cout << "Destructor called!" << std::endl;
+    // TODO this needs to be thought over.
+    // For now destroying texture results in segmentation faults.
+	// SDL_DestroyTexture(texture);
+	std::cout << "MyTexture::~MyTexture() : Destructor called!" << std::endl;
 }
 
-void MyTexture :: render(SDL_Renderer* renderer, int x, int y, int mode)
+void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode)
 {
 	SDL_Rect rect;
 
@@ -54,6 +56,10 @@ void MyTexture :: render(SDL_Renderer* renderer, int x, int y, int mode)
 		rect.x = x;
 		rect.y = y;
 	}
+    else
+    {
+        std::cout << "MyTexture::render() Incorrect mode used for rendering!\n";
+    }
 
 	rect.w = w;
 	rect.h = h;
@@ -61,7 +67,7 @@ void MyTexture :: render(SDL_Renderer* renderer, int x, int y, int mode)
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
 
-void MyTexture :: renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int numOfFrames, int frameIndex)
+void MyTexture::renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode, int numOfFrames, int frameIndex)
 {
 	SDL_Rect targetRect;
 	SDL_Rect sourceRect;
@@ -86,6 +92,10 @@ void MyTexture :: renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int
 		targetRect.x = x;
 		targetRect.y = y;
 	}
+    else
+    {
+        std::cout << "MyTexture::renderAnim() Incorrect mode used for rendering!\n";
+    }
 
 	targetRect.w = tileWidth;
 	targetRect.h = h;
@@ -93,7 +103,7 @@ void MyTexture :: renderAnim(SDL_Renderer* renderer, int x, int y, int mode, int
 	SDL_RenderCopy(renderer, texture, &sourceRect, &targetRect);
 }
 
-void MyTexture::render(SDL_Renderer* renderer, int x, int y, int mode, 
+void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode, 
     float angle)
 {
     SDL_Rect rect;
@@ -111,6 +121,10 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, int mode,
     {
         rect.x = x;
         rect.y = y;
+    }
+    else
+    {
+        std::cout << "MyTexture::render() Incorrect mode used for rendering!\n";
     }
 
     rect.w = w;

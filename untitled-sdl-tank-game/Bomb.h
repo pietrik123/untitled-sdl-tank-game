@@ -5,16 +5,29 @@
 class Bomb : public GameObject
 {
 public:
+    /**
+     * Maximum lifeCycle
+     */
+    int maxLifeCycle;
 
     float explosionRadius;
+    /**
+     * Current lifecycle.
+     */
     int lifeCycle;
     bool exploded;
 
+    /**
+     * Creates empty bomb object.
+     */
     Bomb();
+
+    /**
+     * Creates a concrete bomb object.
+     */
     Bomb(float x, float y, MyTexture &tex);
+
     void act();
 
     ~Bomb();
-
-    static const int maxLife;
 };

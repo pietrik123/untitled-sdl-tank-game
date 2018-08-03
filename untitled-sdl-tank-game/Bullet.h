@@ -5,7 +5,19 @@
 class Bullet : public GameObject
 {
 public:
+    /**
+     * delta displacement
+     */
+    int displcmnt;
+    /**
+     * maximum life cycle of a bullet
+     */
+    int maxLifeCycle;
+
 	bool destroyed;
+    /**
+     * current lifeCycle
+     */
 	int lifeCycle;
 	
 	Bullet();

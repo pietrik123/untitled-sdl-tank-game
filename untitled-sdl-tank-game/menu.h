@@ -22,8 +22,6 @@ protected:
 	int posY;
 	
 public:
-
-
 	std::string getName();
 	MenuItem() : img(nullptr), posX(0), posY(0) {}
 	~MenuItem() {}
@@ -34,7 +32,7 @@ public:
 	int getPosX();
 	int getPosY();
 
-	void displayItem(SDL_Renderer* r, int x, int y, int mode);
+	void displayItem(SDL_Renderer* r, int x, int y, MyTexture::RenderMode mode);
 	void displayItem(SDL_Renderer* r );
 
 	//TODO

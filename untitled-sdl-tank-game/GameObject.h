@@ -40,7 +40,7 @@ public:
     GameObject(float x, float y, float radius, MyTexture& texture);
     GameObject(float x, float y, float radius, MyTexture& texture, Direction dir);
 
-	~GameObject();
+	virtual ~GameObject();
 
     virtual void writePrevPositions();
 	virtual void moveObj(Direction direction);

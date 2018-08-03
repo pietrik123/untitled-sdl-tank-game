@@ -95,14 +95,14 @@ bool MenuItem::setItem (SDL_Renderer* r, std::string name, std::string imgFileNa
 	return true;
 }
 
-void MenuItem::displayItem(SDL_Renderer* r,int x, int y, int mode)
+void MenuItem::displayItem(SDL_Renderer* r,int x, int y, MyTexture::RenderMode mode)
 {
 	img->render(r, x, y, mode);
 }
 
 void MenuItem::displayItem(SDL_Renderer* r)
 {
-	img->render(r, posX, posY, RENDER_IN_CENTER);
+	img->render(r, posX, posY, MyTexture::RENDER_IN_CENTER);
 }
 
 std::string	MenuItem::getName()
@@ -138,7 +138,7 @@ void MenuWindow::setMenuWindow(SDL_Renderer* r, std::vector<MenuItem> items, std
 void MenuWindow::displayWindow(SDL_Renderer* r)
 {
 	//display menu background
-	backgroundTex->render(r, 0, 0, RENDER_IN_CORNER);
+	backgroundTex->render(r, 0, 0, MyTexture::RENDER_IN_CORNER);
 
 	for (MenuItem item : options)
 	{
@@ -151,7 +151,7 @@ void MenuWindow::displayWindow(SDL_Renderer* r)
 	int y = a.getPosY();
 	int x = a.getPosX() - 130;
 
-	indicatorTex->render(r, x, y, RENDER_IN_CENTER);
+	indicatorTex->render(r, x, y, MyTexture::RENDER_IN_CENTER);
 }
 
 void MenuWindow::setIndPos(int x, int y)

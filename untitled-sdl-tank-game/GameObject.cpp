@@ -3,12 +3,12 @@
 #include <iostream>
 #include <math.h>
 
-GameObject :: GameObject()
+GameObject::GameObject()
 {
     
 }
 
-GameObject :: GameObject(float x, float y)
+GameObject::GameObject(float x, float y)
 {   
 	posX = x;
 	posY = y;
@@ -49,13 +49,13 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture& texture,
     direction = dir;
 }
 
-GameObject :: ~GameObject()
+GameObject::~GameObject()
 {
 	//delete this->myTex;
 	std::cout << "Destroying game object!" << std::endl;
 }
 
-void GameObject :: moveObj(Direction direction)
+void GameObject::moveObj(Direction direction)
 {
 }
 

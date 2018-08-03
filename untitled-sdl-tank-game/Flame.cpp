@@ -2,24 +2,26 @@
 
 #include <iostream>
 
-Flame :: Flame() {}
+Flame::Flame() {}
 
-Flame :: Flame(float x, float y) : GameObject(x, y)
+Flame::Flame(float x, float y) : GameObject(x, y)
 {
 	std::cout << "Flame created!" << std::endl;
+    maxLifeCycle = 20;
 	texFrame = 0;
 	lifeCycle = 0;
 }
 
-Flame :: Flame(float x, float y, MyTexture& texture) : GameObject(x, y)
+Flame::Flame(float x, float y, MyTexture& texture) : GameObject(x, y)
 {
     std::cout << "Flame created!" << std::endl;
+    maxLifeCycle = 20;
     texFrame = 0;
     lifeCycle = 0;
     myTex = texture;
 }
 
-void Flame :: act()
+void Flame::act()
 {
 	lifeCycle += 1;
 
@@ -28,5 +30,3 @@ void Flame :: act()
 		texFrame += 1;
 	}
 }
-
-const int Flame::maxLifeCycle = 20;
