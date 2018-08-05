@@ -25,6 +25,7 @@ bool isEnemyDestroyed(const Enemy &e)
 
 bool isFlameCycleOver(const Flame &f)
 {
+
     return f.lifeCycle > f.maxLifeCycle;
 }
 
@@ -136,10 +137,13 @@ bool Game :: initGame()
     texDataStruct.flameTexture = MyTexture(renderer, "data\\gfx\\flame.png");
     texDataStruct.helpScreenTexture = MyTexture(renderer, "data\\gfx\\help.png");
     texDataStruct.bombTexture = MyTexture(renderer, "data\\gfx\\bomb.png");
-
+    texDataStruct.cannonInfo = MyTexture(renderer, "data\\gfx\\hud\\basic_cannon_hud.png");
+    texDataStruct.bombInfo = MyTexture(renderer, "data\\gfx\\hud\\bomb_hud.png");
+    
 	//game init
 	terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
 	player = Player(100.0, 100.0, 25.0, texDataStruct.playerTexture);
+    hud = HUD(texDataStruct.helpScreenTexture, texDataStruct.bombInfo, texDataStruct.cannonInfo);
 
     enemies.push_back(Enemy(0.0, 0.0, 25.0, texDataStruct.enemyTexture));
     enemies.push_back(Enemy(50.0, 50.0, 25.0, texDataStruct.enemyTexture));
@@ -151,8 +155,8 @@ bool Game :: initGame()
     flameTemplate = Flame(-10.0, -10.0, texDataStruct.flameTexture);
     bombTemplate = Bomb(-10.0, -10.0, texDataStruct.bombTexture);
 
-	helpScreen = GameObject(320, 450);
-    helpScreen.myTex = texDataStruct.helpScreenTexture;
+	//helpScreen = GameObject(320, 450);
+    //helpScreen.myTex = texDataStruct.helpScreenTexture;
 
 	music = Mix_LoadMUS("data\\bandit_radio.wav");
 
@@ -544,11 +548,14 @@ void Game :: mainLoop()
                 getPosYOnScreen((*bricksIt).posY),
                 MyTexture::RENDER_IN_CENTER);
         }
- 
+        /*
 		helpScreen.myTex.render(renderer,
             (int)helpScreen.posX, 
             (int)helpScreen.posY,
             MyTexture::RENDER_IN_CENTER);
+            */
+
+        hud.display(renderer, player);
 
 		SDL_RenderPresent(renderer);
 		//wait
