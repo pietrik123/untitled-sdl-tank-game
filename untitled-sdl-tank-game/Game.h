@@ -48,9 +48,7 @@ public:
 
     // GUI (menu etc.)
     GameMenu gameMenu;
-    HUD hud;
-    //GameObject helpScreen;
-    
+    HUD hud;    
 
     // game objects
     GameObject terrain;

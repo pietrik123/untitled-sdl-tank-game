@@ -155,9 +155,6 @@ bool Game :: initGame()
     flameTemplate = Flame(-10.0, -10.0, texDataStruct.flameTexture);
     bombTemplate = Bomb(-10.0, -10.0, texDataStruct.bombTexture);
 
-	//helpScreen = GameObject(320, 450);
-    //helpScreen.myTex = texDataStruct.helpScreenTexture;
-
 	music = Mix_LoadMUS("data\\bandit_radio.wav");
 
 	std::cout << "Game init done!" << std::endl;
@@ -548,12 +545,6 @@ void Game :: mainLoop()
                 getPosYOnScreen((*bricksIt).posY),
                 MyTexture::RENDER_IN_CENTER);
         }
-        /*
-		helpScreen.myTex.render(renderer,
-            (int)helpScreen.posX, 
-            (int)helpScreen.posY,
-            MyTexture::RENDER_IN_CENTER);
-            */
 
         hud.display(renderer, player);
 
