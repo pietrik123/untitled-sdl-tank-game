@@ -7,6 +7,7 @@
 #include "Flame.h"
 #include "Bomb.h"
 #include "menu.h"
+#include "HUD.h"
 
 #include<SDL.h>
 #include<SDL_image.h>
@@ -30,6 +31,8 @@ struct TextureDataStruct
     MyTexture flameTexture;
     MyTexture helpScreenTexture;
     MyTexture bombTexture;
+    MyTexture bombInfo;
+    MyTexture cannonInfo;
 };
 
 class Game
@@ -45,8 +48,8 @@ public:
 
     // GUI (menu etc.)
     GameMenu gameMenu;
-    GameObject helpScreen;
-    	
+    HUD hud;    
+
     // game objects
     GameObject terrain;
 	Player player;	
