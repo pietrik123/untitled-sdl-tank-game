@@ -13,7 +13,7 @@ public:
 	virtual bool trigger() { return false; }
 };
 
-enum WeaponIndex
+enum WeaponId
 {
     BASIC_CANNON,
     BOMB_DROP
