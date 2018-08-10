@@ -6,7 +6,7 @@
 class Player : public GameObject
 {
 public:
-    static const float ds; // unit displacement
+    float displcmt; // unit displacement
 
 	bool bulletReady;
 	int reloadingPhase;

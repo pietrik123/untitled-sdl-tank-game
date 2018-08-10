@@ -7,8 +7,6 @@ Bomb::Bomb(float x, float y, MyTexture &tex)
 {
     maxLifeCycle = 50;
 
-    posX = x;
-    posY = y;
     myTex = tex;
     exploded = false;
     explosionRadius = 25.0;

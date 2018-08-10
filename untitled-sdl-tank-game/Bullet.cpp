@@ -17,7 +17,7 @@ Bullet::Bullet(float x, float y) : GameObject(x, y)
 Bullet::Bullet(float x, float y, float collisionRadius, MyTexture& texture)
     : GameObject(x, y)
 {
-    displcmnt = 4;
+    displcmnt = 4.0;
     maxLifeCycle = 20;
 
     lifeCycle = 0;

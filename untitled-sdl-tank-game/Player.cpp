@@ -5,10 +5,9 @@ Player::Player()
 
 }
 
-Player :: Player(float x, float y) : GameObject(x, y)
+Player::Player(float x, float y) : GameObject(x, y)
 {
-	posX = x;
-	posY = y;
+    displcmt = 5.0;
 
 	bulletReady = true;
 	reloadingPhase = 100;
@@ -22,8 +21,7 @@ Player :: Player(float x, float y) : GameObject(x, y)
 Player::Player(float x, float y, float collisionRadius, MyTexture& texture)
     : GameObject(x, y, collisionRadius, texture)
 {
-    posX = x;
-    posY = y;
+    displcmt = 5.0;
 
     bulletReady = true;
     reloadingPhase = 100;
@@ -31,7 +29,7 @@ Player::Player(float x, float y, float collisionRadius, MyTexture& texture)
     prevShotFired = false;
     addBullet = false;
 
-    weaponIndex = WeaponIndex::BASIC_CANNON;
+    weaponIndex = WeaponId::BASIC_CANNON;
 
     weapons.push_back(new BasicCannon());
     weapons.push_back(new BombDrop());
@@ -46,19 +44,19 @@ void Player::moveObj(Direction direction)
 {
     if (direction == WEST)
     {
-        posX -= ds;
+        posX -= displcmt;
     }
     if (direction == EAST)
     {
-        posX += ds;
+        posX += displcmt;
     }
     if (direction == NORTH)
     {
-        posY += ds;
+        posY += displcmt;
     }
     if (direction == SOUTH)
     {
-        posY -= ds;
+        posY -= displcmt;
     }
 }
 
@@ -66,5 +64,3 @@ Weapon* Player::getCurrentWeapon()
 {
     return weapons[weaponIndex];
 }
-
-const float Player::ds = 5.0;

@@ -255,7 +255,7 @@ void Game :: mainLoop()
             {
                 switch (player.weaponIndex)
                 {
-                    case WeaponIndex::BASIC_CANNON:
+                    case WeaponId::BASIC_CANNON:
 
                         // this if statement is because of event loop race condition
                         if (!addBulletFlag)
@@ -264,7 +264,7 @@ void Game :: mainLoop()
                         }
                         std::cout << "add bullet flag: " << addBulletFlag << "\n";
                         break;
-                    case WeaponIndex::BOMB_DROP:
+                    case WeaponId::BOMB_DROP:
                         if (!addBombFlag)
                         {
                             addBombFlag = player.getCurrentWeapon()->trigger();

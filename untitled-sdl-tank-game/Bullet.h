@@ -8,7 +8,7 @@ public:
     /**
      * delta displacement
      */
-    int displcmnt;
+    float displcmnt;
     /**
      * maximum life cycle of a bullet
      */

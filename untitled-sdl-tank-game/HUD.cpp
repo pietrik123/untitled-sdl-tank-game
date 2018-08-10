@@ -3,11 +3,11 @@
 
 void HUD::display(SDL_Renderer* renderer, const Player& player)
 {
-    if (player.weaponIndex == WeaponIndex::BASIC_CANNON)
+    if (player.weaponIndex == WeaponId::BASIC_CANNON)
     {
         cannonInfo.render(renderer, (int)weaponScreenPosX, (int)weaponScreenPosY, MyTexture::RENDER_IN_CENTER);
     }
-    else if (player.weaponIndex == WeaponIndex::BOMB_DROP)
+    else if (player.weaponIndex == WeaponId::BOMB_DROP)
     {
         bombInfo.render(renderer, (int)weaponScreenPosX, (int)weaponScreenPosY, MyTexture::RENDER_IN_CENTER);
     }
