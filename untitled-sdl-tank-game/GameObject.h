@@ -10,8 +10,8 @@ enum Direction
 {
     EAST = 1,
     NORTH = 2,
-	WEST = 3,
-	SOUTH = 4
+    WEST = 3,
+    SOUTH = 4
 };
 
 enum BoundsType
@@ -24,28 +24,28 @@ enum BoundsType
 class GameObject
 {
 public:
-	float posX;
-	float posY;
+    float posX;
+    float posY;
     float prevPosX;
     float prevPosY;
     float radius;
 
-	MyTexture myTex;
+    MyTexture myTex;
     std::vector<MyTexture> additionalTextures;
 
     Direction direction;
 
-	GameObject();
-	GameObject(float x, float y);
+    GameObject();
+    GameObject(float x, float y);
     GameObject(float x, float y, float radius);
     GameObject(float x, float y, MyTexture& texture);
     GameObject(float x, float y, float radius, MyTexture& texture);
     GameObject(float x, float y, float radius, MyTexture& texture, Direction dir);
 
-	virtual ~GameObject();
+    virtual ~GameObject();
 
     virtual void writePrevPositions();
-	virtual void moveObj(Direction direction);
+    virtual void moveObj(Direction direction);
  
     void display(SDL_Renderer* renderer, Game* game);
 };

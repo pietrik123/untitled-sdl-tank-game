@@ -6,10 +6,10 @@ Flame::Flame() {}
 
 Flame::Flame(float x, float y) : GameObject(x, y)
 {
-	std::cout << "Flame created!" << std::endl;
+    std::cout << "Flame created!" << std::endl;
     maxLifeCycle = 20;
-	texFrame = 0;
-	lifeCycle = 0;
+    texFrame = 0;
+    lifeCycle = 0;
 }
 
 Flame::Flame(float x, float y, MyTexture& texture) : GameObject(x, y)
@@ -23,10 +23,10 @@ Flame::Flame(float x, float y, MyTexture& texture) : GameObject(x, y)
 
 void Flame::act()
 {
-	lifeCycle += 1;
+    lifeCycle += 1;
 
-	if (lifeCycle % 3 == 0)
+    if (lifeCycle % 3 == 0)
     {
-		texFrame += 1;
-	}
+        texFrame += 1;
+    }
 }

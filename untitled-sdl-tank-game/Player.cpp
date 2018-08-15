@@ -9,13 +9,13 @@ Player::Player(float x, float y) : GameObject(x, y)
 {
     displcmt = 5.0;
 
-	bulletReady = true;
-	reloadingPhase = 100;
-	shotFired = false;
-	prevShotFired = false;
-	addBullet = false;
+    bulletReady = true;
+    reloadingPhase = 100;
+    shotFired = false;
+    prevShotFired = false;
+    addBullet = false;
 
-	weapon = new BasicCannon();
+    weapon = new BasicCannon();
 }
 
 Player::Player(float x, float y, float collisionRadius, MyTexture& texture)

@@ -22,13 +22,13 @@ Enemy::Enemy(float x, float y, float collisionRadius, MyTexture& texture) : Game
 
 bool Enemy::isHit(Bullet &b)
 {
-	double distance = pow(pow(b.posX - this->posX, 2) + pow(b.posY - this->posY, 2), 0.5);
-	bool hit = false;
-	if (distance < 25.0)
+    double distance = pow(pow(b.posX - this->posX, 2) + pow(b.posY - this->posY, 2), 0.5);
+    bool hit = false;
+    if (distance < 25.0)
     {
-		hit = true;
-	}
-	return hit;
+        hit = true;
+    }
+    return hit;
 }
 
 void Enemy::follow(const GameObject& objectToFollow)

@@ -14,19 +14,19 @@ public:
      */
     int maxLifeCycle;
 
-	bool destroyed;
+    bool destroyed;
     /**
      * current lifeCycle
      */
-	int lifeCycle;
-	
-	Bullet();
-	Bullet(float x, float y);
+    int lifeCycle;
+    
+    Bullet();
+    Bullet(float x, float y);
     Bullet(float x, float y, float collisionRadius, MyTexture& texture);
 
-	~Bullet();
+    ~Bullet();
 
     float getDirectionAngle();
 
-	void move();
+    void move();
 };

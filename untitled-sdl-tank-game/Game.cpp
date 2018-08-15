@@ -6,10 +6,10 @@
 Game::Game() : window(NULL), renderer(NULL), screenSurface(NULL),
     music(NULL)
 {
-	std::cout << "Game started!" << std::endl;
+    std::cout << "Game started!" << std::endl;
 
-	renderer = NULL;
-	screenSurface = NULL;
+    renderer = NULL;
+    screenSurface = NULL;
 
     screenWidth = SCREEN_WIDTH;
     screenHeight = SCREEN_HEIGHT;
@@ -39,90 +39,90 @@ bool isBombExploded(const Bomb &b)
     return b.exploded;
 }
 
-Game :: ~Game() 
+Game::~Game() 
 {
-	std::cout << "Game finished!" << std::endl;
+    std::cout << "Game finished!" << std::endl;
 }
 
-bool Game :: initSDL()
+bool Game::initSDL()
 {
-	bool success = true;
+    bool success = true;
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 )
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 )
     {
-		success = false;
-		std::cout << "Error: " << SDL_GetError() << std::endl;
-	}
-	else
+        success = false;
+        std::cout << "Error: " << SDL_GetError() << std::endl;
+    }
+    else
     {
-		window = SDL_CreateWindow("Ziemniak", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        window = SDL_CreateWindow("Ziemniak", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-		if (window == NULL)
+        if (window == NULL)
         {
-			success = false;
-			std::cout << "Error: " << SDL_GetError() << std::endl;
-		}
-		else
+            success = false;
+            std::cout << "Error: " << SDL_GetError() << std::endl;
+        }
+        else
         {
-			int imgFlags = IMG_INIT_PNG;
+            int imgFlags = IMG_INIT_PNG;
 
-			if (!(IMG_Init(imgFlags) & imgFlags))
+            if (!(IMG_Init(imgFlags) & imgFlags))
             {
-				success = false;
-				std::cout << "Error: " << SDL_GetError() << std::endl;
-			}
-			else
+                success = false;
+                std::cout << "Error: " << SDL_GetError() << std::endl;
+            }
+            else
             {
-				renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+                renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-				SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				if (renderer == NULL)
+                SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                if (renderer == NULL)
                 {
-					success = false;
-					std::cout << "Error: " << SDL_GetError() << std::endl;
-				}
-			}
+                    success = false;
+                    std::cout << "Error: " << SDL_GetError() << std::endl;
+                }
+            }
 
-			screenSurface = SDL_GetWindowSurface(window);
-		}
-	}
+            screenSurface = SDL_GetWindowSurface(window);
+        }
+    }
 
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-	{
-		success = false;
-	}
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    {
+        success = false;
+    }
 
-	return success;
+    return success;
 }
 
-bool Game :: initGame()
+bool Game::initGame()
 {
-	//menu init
-	
-	MenuItem newGameItem;
-	MenuItem quitGameItem;
+    //menu init
+    
+    MenuItem newGameItem;
+    MenuItem quitGameItem;
 
-	MenuWindow mainMenuWindow;
-	
-	newGameItem.setItem(renderer, "new_game",  "data\\gfx\\menu\\new_game_item.png");
-	quitGameItem.setItem(renderer, "quit_game",  "data\\gfx\\menu\\quit_item.png");
+    MenuWindow mainMenuWindow;
+    
+    newGameItem.setItem(renderer, "new_game",  "data\\gfx\\menu\\new_game_item.png");
+    quitGameItem.setItem(renderer, "quit_game",  "data\\gfx\\menu\\quit_item.png");
 
-	newGameItem.setLocation(250, 250);
-	quitGameItem.setLocation(250, 370);
+    newGameItem.setLocation(250, 250);
+    quitGameItem.setLocation(250, 370);
 
-	std::vector<MenuItem> itemsVect;
-	itemsVect.push_back(newGameItem);
-	itemsVect.push_back(quitGameItem);
+    std::vector<MenuItem> itemsVect;
+    itemsVect.push_back(newGameItem);
+    itemsVect.push_back(quitGameItem);
 
-	mainMenuWindow.setMenuWindow(renderer, itemsVect, "data\\gfx\\menu\\menu_bg.png", "data\\gfx\\menu\\indicator.png");
+    mainMenuWindow.setMenuWindow(renderer, itemsVect, "data\\gfx\\menu\\menu_bg.png", "data\\gfx\\menu\\indicator.png");
 
-	gameMenu.addMenuWindow(mainMenuWindow);
-	
-	if (gameMenu.validate() == false)
-	{
+    gameMenu.addMenuWindow(mainMenuWindow);
+    
+    if (gameMenu.validate() == false)
+    {
         std::cout << "Error in game menu validation!" << "\n";
-		exit(EXIT_FAILURE);
-	}
+        exit(EXIT_FAILURE);
+    }
 
     // load textures
 
@@ -140,10 +140,10 @@ bool Game :: initGame()
     texDataStruct.cannonInfo = MyTexture(renderer, "data\\gfx\\hud\\basic_cannon_hud.png");
     texDataStruct.bombInfo = MyTexture(renderer, "data\\gfx\\hud\\bomb_hud.png");
     
-	//game init
-	//terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
+    //game init
+    //terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
     terrain = GameObject(0, 0, texDataStruct.terrainTex);
-	player = Player(100.0, 100.0, 25.0, texDataStruct.playerTexture);
+    player = Player(100.0, 100.0, 25.0, texDataStruct.playerTexture);
     hud = HUD(texDataStruct.helpScreenTexture, texDataStruct.bombInfo, texDataStruct.cannonInfo);
 
     enemies.push_back(Enemy(0.0, 0.0, 25.0, texDataStruct.enemyTexture));
@@ -156,17 +156,17 @@ bool Game :: initGame()
     flameTemplate = Flame(-10.0, -10.0, texDataStruct.flameTexture);
     bombTemplate = Bomb(-10.0, -10.0, texDataStruct.bombTexture);
 
-	music = Mix_LoadMUS("data\\bandit_radio.wav");
+    music = Mix_LoadMUS("data\\bandit_radio.wav");
 
-	std::cout << "Game init done!" << std::endl;
-	return true;
+    std::cout << "Game init done!" << std::endl;
+    return true;
 }
 
-bool Game :: endGame()
+bool Game::endGame()
 {
-	SDL_FreeSurface(screenSurface);
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
+    SDL_FreeSurface(screenSurface);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
 
     SDL_DestroyTexture(texDataStruct.terrainTex.texture);
     SDL_DestroyTexture(texDataStruct.playerTexture.texture);
@@ -177,80 +177,80 @@ bool Game :: endGame()
     SDL_DestroyTexture(texDataStruct.helpScreenTexture.texture);
     SDL_DestroyTexture(texDataStruct.bombTexture.texture);
 
-	Mix_FreeMusic(music);
+    Mix_FreeMusic(music);
 
-	Mix_Quit();
-	IMG_Quit();
-	SDL_Quit();
+    Mix_Quit();
+    IMG_Quit();
+    SDL_Quit();
 
-	return true;
+    return true;
 }
 
 bool Game::runGame()
 {
-	if (initSDL() != true)
-	{
-		exit(EXIT_FAILURE);
-	}
-	initGame();
+    if (initSDL() != true)
+    {
+        exit(EXIT_FAILURE);
+    }
+    initGame();
 
 
-	//put all functions here
-	int res = gameMenu.gameMenuLoop(renderer);
+    //put all functions here
+    int res = gameMenu.gameMenuLoop(renderer);
 
-	//play music
-	if (Mix_PlayingMusic() == 0)
-	{ 
-		Mix_PlayMusic( music, -1 );
-	}
+    //play music
+    if (Mix_PlayingMusic() == 0)
+    { 
+        Mix_PlayMusic( music, -1 );
+    }
 
-	if (res == START_GAME)
-	{
+    if (res == START_GAME)
+    {
         mainLoop();
-	}
-	else if (res == QUIT_GAME)
-	{
-		//quit game
-	}
-	return true;
+    }
+    else if (res == QUIT_GAME)
+    {
+        //quit game
+    }
+    return true;
 }
 
-void Game :: mainLoop()
+void Game::mainLoop()
 {
-	bool exit = false;
+    bool exit = false;
 
     bool addBulletFlag = false;
     bool addBombFlag = false;
     Direction bulletStartDir = EAST;
 
-	while (exit != true) {
+    while (exit != true) {
         float prevPosX = player.posX;
         float prevPosY = player.posY;
-		//game logic cycle
+        //game logic cycle
 
         //handle keyboard
-		SDL_Event e;
-		while (SDL_PollEvent(&e) != 0)
+        SDL_Event e;
+        while (SDL_PollEvent(&e) != 0)
         {
 
-			const Uint8* state = SDL_GetKeyboardState(NULL);
+            const Uint8* state = SDL_GetKeyboardState(NULL);
 
-			if (state[SDL_SCANCODE_UP])
+            if (state[SDL_SCANCODE_UP])
             {
-				player.moveObj(NORTH);
-			}
-			if (state[SDL_SCANCODE_DOWN])
+                player.moveObj(NORTH);
+            }
+            if (state[SDL_SCANCODE_DOWN])
             {
-				player.moveObj(SOUTH);
-			}
-			if (state[SDL_SCANCODE_LEFT])
+                player.moveObj(SOUTH);
+            }
+            if (state[SDL_SCANCODE_LEFT])
             {
-				player.moveObj(WEST);
-			}
-			if (state[SDL_SCANCODE_RIGHT])
+                player.moveObj(WEST);
+            }
+            if (state[SDL_SCANCODE_RIGHT])
             {
-				player.moveObj(EAST);
-			}
+                player.moveObj(EAST);
+            }
             
             if (state[SDL_SCANCODE_SPACE])
             {
@@ -292,7 +292,7 @@ void Game :: mainLoop()
                     bulletStartDir = NORTH;
                 }
             }
-			
+            
             if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
                 if (e.key.keysym.sym == SDLK_ESCAPE)
@@ -313,22 +313,22 @@ void Game :: mainLoop()
                     }
                     std::cout << "player weapon index : " << player.weaponIndex << "\n";
                 }
-			}
-		}
+            }
+        }
 
         player.getCurrentWeapon()->act();
-		
-		if (addBulletFlag == true)
+        
+        if (addBulletFlag == true)
         {
             std::cout << "add bullet flag: " << addBulletFlag << "\n";
-			Bullet b = bulletTemplate;
-			b.posX = player.posX;
-			b.posY = player.posY;
+            Bullet b = bulletTemplate;
+            b.posX = player.posX;
+            b.posY = player.posY;
             b.direction = bulletStartDir;
-			bullets.push_back(b);
-			std::cout << "bullet added!";
-			addBulletFlag = false;
-		}
+            bullets.push_back(b);
+            std::cout << "bullet added!";
+            addBulletFlag = false;
+        }
 
         if (addBombFlag == true)
         {
@@ -341,9 +341,9 @@ void Game :: mainLoop()
         }
 
         std::vector<Enemy>::iterator enemyIt;
-		std::vector<Bullet>::iterator bulletIt;
+        std::vector<Bullet>::iterator bulletIt;
         std::vector<Bomb>::iterator bombIt;
-		std::vector<Flame>::iterator flameIt;
+        std::vector<Flame>::iterator flameIt;
         std::vector<GameObject>::iterator bricksIt;
         
         // write previous positions of enemies
@@ -493,8 +493,8 @@ void Game :: mainLoop()
             std::remove_if(bombs.begin(), bombs.end(), isBombExploded),
             bombs.end());
 
-		//display
-		SDL_RenderClear(renderer);
+        //display
+        SDL_RenderClear(renderer);
 
         //tex->render(renderer, 0, 0, RENDER_IN_CENTER);
         
@@ -506,20 +506,20 @@ void Game :: mainLoop()
             (*bombIt).display(renderer, this);
         }
 
-		player.display(renderer, this);
+        player.display(renderer, this);
 
-		for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
             (*enemyIt).display(renderer, this);
-		}
+        }
 
-		for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
+        for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
             (*bulletIt).display(renderer, this);
-		}
+        }
 
-		for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
-			Flame &flame = (*flameIt);
-			flame.display(renderer, this);
-		}
+        for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
+            Flame &flame = (*flameIt);
+            flame.display(renderer, this);
+        }
 
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
             (*bricksIt).display(renderer, this);
@@ -527,10 +527,10 @@ void Game :: mainLoop()
 
         hud.display(renderer, player);
 
-		SDL_RenderPresent(renderer);
-		//wait
-		SDL_Delay(50);
-	}
+        SDL_RenderPresent(renderer);
+        //wait
+        SDL_Delay(50);
+    }
 }
 
 int Game::getPosXOnScreen(float worldX)
