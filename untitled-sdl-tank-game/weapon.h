@@ -4,13 +4,13 @@
 class Weapon
 {
 public:
-	static const int READY = 100;
+    static const int READY = 100;
 protected:
-	int readyCnt = 0;
-	int ammo = 0;
+    int readyCnt = 0;
+    int ammo = 0;
 public:
-	virtual void act() {}
-	virtual bool trigger() { return false; }
+    virtual void act() {}
+    virtual bool trigger() { return false; }
 };
 
 enum WeaponId
@@ -24,10 +24,10 @@ enum WeaponId
 class BasicCannon : public Weapon
 {
 public: 
-	BasicCannon();
-	static const int READY = 100;
-	void act();
-	bool trigger();
+    BasicCannon();
+    static const int READY = 100;
+    void act();
+    bool trigger();
 };
 
 class BombDrop : public Weapon

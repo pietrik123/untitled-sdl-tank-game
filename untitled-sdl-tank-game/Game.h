@@ -39,9 +39,9 @@ class Game
 {
 public:
     // SDL fields
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-	SDL_Surface* screenSurface;
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    SDL_Surface* screenSurface;
 
     // music
     Mix_Music *music;
@@ -52,20 +52,20 @@ public:
 
     // game objects
     GameObject terrain;
-	Player player;	
+    Player player;	
 
     // copyable objects
-	Bullet bulletTemplate;
-	Flame flameTemplate;
+    Bullet bulletTemplate;
+    Flame flameTemplate;
     Bomb bombTemplate;
 
     // groups of objects
-	std::vector<Enemy> enemies;
-	std::vector<Bullet> bullets;
-	std::vector<Flame> flames;
+    std::vector<Enemy> enemies;
+    std::vector<Bullet> bullets;
+    std::vector<Flame> flames;
     std::vector<GameObject> bricks;
     std::vector<Bomb> bombs;
-	
+    
     // texture struct	
     TextureDataStruct texDataStruct;
 
@@ -79,8 +79,8 @@ public:
 
     // constructors and destructors
 
-	Game();
-	~Game();
+    Game();
+    ~Game();
 
     // public methods
 
@@ -88,9 +88,9 @@ public:
 
     bool initGame();
     void mainLoop();
-	bool runGame();	
-	bool endGame();
-	
+    bool runGame();	
+    bool endGame();
+    
     // utils
 
     int getPosXOnScreen(float);

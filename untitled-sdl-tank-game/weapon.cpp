@@ -4,16 +4,16 @@
 // this method should be called every cycle of game main loop
 void BasicCannon::act()
 {
-	if (readyCnt < READY)
-	{
-		readyCnt += 5;
-	}
+    if (readyCnt < READY)
+    {
+        readyCnt += 5;
+    }
 }
 
 
-BasicCannon :: BasicCannon()
+BasicCannon::BasicCannon()
 {
-	readyCnt = 100;
+    readyCnt = 100;
 }
 
 // this method is called when player pushes 'fire' button
@@ -23,17 +23,17 @@ BasicCannon :: BasicCannon()
 // or send some signal, which would add a bullet to a game scene
 bool BasicCannon::trigger()
 {
-	// if cannon is ready ...
-	if (readyCnt >= READY)
-	{
-		// reset ready counter
-		readyCnt = 0;
-		return true;
-	}
+    // if cannon is ready ...
+    if (readyCnt >= READY)
+    {
+        // reset ready counter
+        readyCnt = 0;
+        return true;
+    }
 
-	return false;
+    return false;
 
-	// TODO add bullet to the scene
+    // TODO add bullet to the scene
 }
 
 BombDrop::BombDrop()

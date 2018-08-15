@@ -17,24 +17,24 @@ public:
         RENDER_IN_CENTER = 2
     };
 
-	SDL_Texture* texture;
+    SDL_Texture* texture;
 
     /**
      * Default constructor - creates object with no texture data (NULL).
      */
-	MyTexture();
+    MyTexture();
 
     /**
      * Constructor - creates concrete texture object.
      * \param renderer
      * \param fileName - texture filename (path + filename)
      */
-	MyTexture(SDL_Renderer* renderer, std::string fileName);
+    MyTexture(SDL_Renderer* renderer, std::string fileName);
 
     /**
      * Destructor.
      */
-	virtual ~MyTexture();
+    virtual ~MyTexture();
 
     /**
      * Renders texture on \c renderer.
@@ -42,7 +42,7 @@ public:
      * \y target coordinate
      * \mode
      */
-	void render(SDL_Renderer* renderer, int x, int y, RenderMode mode);
+    void render(SDL_Renderer* renderer, int x, int y, RenderMode mode);
 
     /**
     * Renders a rotated texture on \c renderer.
@@ -63,5 +63,5 @@ public:
     * Texure is divided into tiles. Tiles stay along each other in X direction.
     *
     */
-	void renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode, int numOfFrames, int frameIndex);
+    void renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode, int numOfFrames, int frameIndex);
 };
