@@ -1,7 +1,9 @@
 #include "GameObject.h"
-
+#include "Game.h"
 #include <iostream>
 #include <math.h>
+
+
 
 GameObject::GameObject()
 {
@@ -63,6 +65,14 @@ void GameObject::writePrevPositions()
 {
     prevPosX = posX;
     prevPosY = posY;
+}
+
+void GameObject::display(SDL_Renderer* renderer, Game* game)
+{
+    myTex.render(renderer,
+        game->getPosXOnScreen(posX),
+        game->getPosYOnScreen(posY),
+        MyTexture::RENDER_IN_CENTER);
 }
 
 float getDistance(const GameObject& obj1, const GameObject& obj2)

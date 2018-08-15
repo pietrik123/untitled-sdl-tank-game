@@ -4,6 +4,8 @@
 
 #include <vector>
 
+class Game;
+
 enum Direction
 {
     EAST = 1,
@@ -24,9 +26,9 @@ class GameObject
 public:
 	float posX;
 	float posY;
-
     float prevPosX;
     float prevPosY;
+    float radius;
 
 	MyTexture myTex;
     std::vector<MyTexture> additionalTextures;
@@ -44,8 +46,8 @@ public:
 
     virtual void writePrevPositions();
 	virtual void moveObj(Direction direction);
-
-    float radius;
+ 
+    void display(SDL_Renderer* renderer, Game* game);
 };
 
 float getDistance(const GameObject& obj1, const GameObject& obj2);
@@ -53,3 +55,4 @@ float getDistance(const GameObject& obj1, const GameObject& obj2);
 float getDistance(const GameObject& obj, float pointX, float pointY);
 
 bool collision(const GameObject &obj1, const GameObject &obj2, BoundsType bounds1, BoundsType bounds2);
+
