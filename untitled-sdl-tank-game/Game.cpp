@@ -141,7 +141,8 @@ bool Game :: initGame()
     texDataStruct.bombInfo = MyTexture(renderer, "data\\gfx\\hud\\bomb_hud.png");
     
 	//game init
-	terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
+	//terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
+    terrain = GameObject(0, 0, texDataStruct.terrainTex);
 	player = Player(100.0, 100.0, 25.0, texDataStruct.playerTexture);
     hud = HUD(texDataStruct.helpScreenTexture, texDataStruct.bombInfo, texDataStruct.cannonInfo);
 
@@ -497,53 +498,31 @@ void Game :: mainLoop()
 
         //tex->render(renderer, 0, 0, RENDER_IN_CENTER);
         
-		terrain.myTex.render(renderer,
-            (int)terrain.posX,
-            (int)terrain.posY,
-            MyTexture::RENDER_IN_CENTER);
+        terrain.display(renderer, this);
+
      
         for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
         {
-            (*bombIt).myTex.render(renderer,
-                getPosXOnScreen((*bombIt).posX),
-                getPosYOnScreen((*bombIt).posY),
-                MyTexture::RENDER_IN_CENTER);
+            (*bombIt).display(renderer, this);
         }
 
-		player.myTex.render(renderer,
-            getPosXOnScreen(player.posX),
-            getPosYOnScreen(player.posY),
-            MyTexture::RENDER_IN_CENTER);
+		player.display(renderer, this);
 
 		for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
-			(*enemyIt).myTex.render(renderer,
-                getPosXOnScreen((*enemyIt).posX),
-                getPosYOnScreen((*enemyIt).posY),
-                MyTexture::RENDER_IN_CENTER);
+            (*enemyIt).display(renderer, this);
 		}
 
 		for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
-			(*bulletIt).myTex.render(renderer,
-                getPosXOnScreen((*bulletIt).posX),
-                getPosYOnScreen((*bulletIt).posY),
-                MyTexture::RENDER_IN_CENTER,
-                (*bulletIt).getDirectionAngle()
-                );
+            (*bulletIt).display(renderer, this);
 		}
 
 		for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
 			Flame &flame = (*flameIt);
-			flame.myTex.renderAnim(renderer,
-                getPosXOnScreen(flame.posX),
-                getPosYOnScreen(flame.posY),
-                MyTexture::RENDER_IN_CENTER, 5, flame.texFrame);
+			flame.display(renderer, this);
 		}
 
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
-            (*bricksIt).myTex.render(renderer,
-                getPosXOnScreen((*bricksIt).posX),
-                getPosYOnScreen((*bricksIt).posY),
-                MyTexture::RENDER_IN_CENTER);
+            (*bricksIt).display(renderer, this);
         }
 
         hud.display(renderer, player);
