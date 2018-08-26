@@ -232,67 +232,7 @@ void Game::mainLoop()
         SDL_Event e;
         while (SDL_PollEvent(&e) != 0)
         {
-
-            const Uint8* state = SDL_GetKeyboardState(NULL);
-
-            if (state[SDL_SCANCODE_UP])
-            {
-                player.moveObj(NORTH);
-            }
-            if (state[SDL_SCANCODE_DOWN])
-            {
-                player.moveObj(SOUTH);
-            }
-            if (state[SDL_SCANCODE_LEFT])
-            {
-                player.moveObj(WEST);
-            }
-            if (state[SDL_SCANCODE_RIGHT])
-            {
-                player.moveObj(EAST);
-            }
-            
-            if (state[SDL_SCANCODE_SPACE])
-            {
-                switch (player.weaponIndex)
-                {
-                    case WeaponId::BASIC_CANNON:
-
-                        // this if statement is because of event loop race condition
-                        if (!addBulletFlag)
-                        {
-                            addBulletFlag = player.getCurrentWeapon()->trigger();
-                        }
-                        std::cout << "add bullet flag: " << addBulletFlag << "\n";
-                        break;
-                    case WeaponId::BOMB_DROP:
-                        if (!addBombFlag)
-                        {
-                            addBombFlag = player.getCurrentWeapon()->trigger();
-                        }  
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            if (addBulletFlag == true)
-            {
-                bulletStartDir = EAST;
-                if (state[SDL_SCANCODE_LEFT])
-                {
-                    bulletStartDir = WEST;
-                }
-                else if (state[SDL_SCANCODE_DOWN])
-                {
-                    bulletStartDir = SOUTH;
-                }
-                else if (state[SDL_SCANCODE_UP])
-                {
-                    bulletStartDir = NORTH;
-                }
-            }
-            
+                    
             if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
             {
                 if (e.key.keysym.sym == SDLK_ESCAPE)
@@ -313,6 +253,68 @@ void Game::mainLoop()
                     }
                     std::cout << "player weapon index : " << player.weaponIndex << "\n";
                 }
+            }
+        }
+        
+        std::cout << "event loop ... cycle\n";
+        const Uint8* state = SDL_GetKeyboardState(NULL);
+
+        if (state[SDL_SCANCODE_UP])
+        {
+            std::cout << "up pressed ... \n";
+            player.moveObj(NORTH);
+        }
+        if (state[SDL_SCANCODE_DOWN])
+        {
+            player.moveObj(SOUTH);
+        }
+        if (state[SDL_SCANCODE_LEFT])
+        {
+            player.moveObj(WEST);
+        }
+        if (state[SDL_SCANCODE_RIGHT])
+        {
+            player.moveObj(EAST);
+        }
+
+        if (state[SDL_SCANCODE_SPACE])
+        {
+            switch (player.weaponIndex)
+            {
+            case WeaponId::BASIC_CANNON:
+
+                // this if statement is because of event loop race condition
+                if (!addBulletFlag)
+                {
+                    addBulletFlag = player.getCurrentWeapon()->trigger();
+                }
+                std::cout << "add bullet flag: " << addBulletFlag << "\n";
+                break;
+            case WeaponId::BOMB_DROP:
+                if (!addBombFlag)
+                {
+                    addBombFlag = player.getCurrentWeapon()->trigger();
+                }
+                break;
+            default:
+                break;
+            }
+        }
+
+        if (addBulletFlag == true)
+        {
+            bulletStartDir = EAST;
+            if (state[SDL_SCANCODE_LEFT])
+            {
+                bulletStartDir = WEST;
+            }
+            else if (state[SDL_SCANCODE_DOWN])
+            {
+                bulletStartDir = SOUTH;
+            }
+            else if (state[SDL_SCANCODE_UP])
+            {
+                bulletStartDir = NORTH;
             }
         }
 
