@@ -515,12 +515,20 @@ void Game::mainLoop()
         }
 
         for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
-            (*bulletIt).display(renderer, this);
+            (*bulletIt).myTex.render(renderer,
+                getPosXOnScreen((*bulletIt).posX),
+                getPosYOnScreen((*bulletIt).posY),
+                MyTexture::RENDER_IN_CENTER,
+                (*bulletIt).getDirectionAngle());
+
         }
 
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
-            Flame &flame = (*flameIt);
-            flame.display(renderer, this);
+            Flame &flame = (*flameIt);    
+			flame.myTex.renderAnim(renderer,
+                getPosXOnScreen(flame.posX),
+                getPosYOnScreen(flame.posY),
+                MyTexture::RENDER_IN_CENTER, 5, flame.texFrame);
         }
 
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
