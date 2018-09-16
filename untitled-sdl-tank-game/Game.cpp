@@ -146,7 +146,7 @@ bool Game::initGame()
     player = Player(100.0, 100.0, 25.0, texDataStruct.playerTexture);
     hud = HUD(texDataStruct.helpScreenTexture, texDataStruct.bombInfo, texDataStruct.cannonInfo);
 
-    enemies.push_back(Enemy(0.0, 0.0, 25.0, texDataStruct.enemyTexture));
+    enemies.push_back(Enemy(-50.0, -100.0, 25.0, texDataStruct.enemyTexture));
     enemies.push_back(Enemy(50.0, 50.0, 25.0, texDataStruct.enemyTexture));
 
     bricks.push_back(GameObject(-100.0, -100.0, 25.0, texDataStruct.brickTexture));
@@ -256,7 +256,7 @@ void Game::mainLoop()
             }
         }
         
-        std::cout << "event loop ... cycle\n";
+        //std::cout << "event loop ... cycle\n";
         const Uint8* state = SDL_GetKeyboardState(NULL);
 
         if (state[SDL_SCANCODE_UP])
@@ -347,21 +347,15 @@ void Game::mainLoop()
         std::vector<Bomb>::iterator bombIt;
         std::vector<Flame>::iterator flameIt;
         std::vector<GameObject>::iterator bricksIt;
-        
-        // write previous positions of enemies
-        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
-        {
-            (*enemyIt).writePrevPositions();
-        }
 
         //check collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
         {
-        if (collision(player, *bricksIt, RADIUS, RADIUS))
-        {
-            player.posX = prevPosX;
-            player.posY = prevPosY;
-        }
+            if (collision(player, *bricksIt, RADIUS, RADIUS))
+            {
+                player.posX = prevPosX;
+                player.posY = prevPosY;
+            }
         }
 
         //handle bullets' actions
@@ -375,7 +369,6 @@ void Game::mainLoop()
             if ((*bulletIt).lifeCycle > BULLET_LIFE)
             {
                 (*bulletIt).destroyed = true;
-
             }
         }
 
@@ -466,10 +459,12 @@ void Game::mainLoop()
             std::remove_if(enemies.begin(), enemies.end(), isEnemyDestroyed),
             enemies.end());
         
+
         // handle enemies' collisions
         unsigned int j;
         for (i = 0; i < enemies.size(); i++)
         {
+            enemies[i].collided = false;
             for (j = 0; j < enemies.size(); j++)
             {
                 if (i == j) continue;
@@ -481,6 +476,7 @@ void Game::mainLoop()
                 {
                     enemies[i].posX = enemies[i].prevPosX;
                     enemies[i].posY = enemies[i].prevPosY;
+                    enemies[i].collided = true;
                 }
             }
         }
@@ -494,6 +490,13 @@ void Game::mainLoop()
         bombs.erase(
             std::remove_if(bombs.begin(), bombs.end(), isBombExploded),
             bombs.end());
+
+        // write previous positions of enemies
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            (*enemyIt).writePrevPositions();
+        }
+
 
         //display
         SDL_RenderClear(renderer);

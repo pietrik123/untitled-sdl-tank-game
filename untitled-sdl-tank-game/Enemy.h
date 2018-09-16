@@ -8,6 +8,12 @@ class Enemy : public GameObject
 public:
     float displcmnt;
     int energy;
+    bool isStuck;
+    bool collided;
+    unsigned int cnt;
+
+    short int dirX = 0;
+    short int dirY = 0;
 
     Enemy();
     Enemy(float x, float y);

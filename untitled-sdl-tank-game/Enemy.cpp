@@ -1,15 +1,21 @@
 
 #include "Enemy.h"
 
+#include <iostream>
+
 Enemy::Enemy()
 {
     energy = 100;
+    isStuck = false;
+    cnt = 0;
 }
 
 Enemy::Enemy(float x, float y) : GameObject(x, y)
 {
     displcmnt = 2.5;
     energy = 100;
+    isStuck = false;
+    cnt = 0;
 }
 
 Enemy::Enemy(float x, float y, float collisionRadius, MyTexture& texture) : GameObject(x, y)
@@ -18,6 +24,8 @@ Enemy::Enemy(float x, float y, float collisionRadius, MyTexture& texture) : Game
     energy = 100;
     radius = collisionRadius;
     myTex = texture;
+    isStuck = false;
+    cnt = 0;
 }
 
 bool Enemy::isHit(Bullet &b)
@@ -33,35 +41,64 @@ bool Enemy::isHit(Bullet &b)
 
 void Enemy::follow(const GameObject& objectToFollow)
 {   
-    short int dirX = 0;
-    short int dirY = 0;
-
-    if (objectToFollow.posX - posX > 0)
+    // reset cnt after fixed number of steps
+    if ( (isStuck == true) && (cnt > 30) )
     {
-        dirX = 1;
+        isStuck = false;
+        cnt = 0;
     }
-    else if (objectToFollow.posX - posX < 0)
+    
+    if (isStuck == true)
     {
-        dirX = -1;
-    }
-    else
-    {
-        dirX = 0;
-    }
-
-    if (objectToFollow.posY - posY > 0)
-    {
-        dirY = 1;
-    }
-    else if (objectToFollow.posY - posY < 0)
-    {
-        dirY = -1;
+        // at first choose a random direction to take, when stuck
+        if (cnt == 9)
+        {
+            dirX = (rand() % 3) - 1;
+            dirY = (rand() % 3) - 1;
+        }
+        cnt++;
     }
     else
     {
-        dirY = 0;
+        if (objectToFollow.posX - posX > 0)
+        {
+            dirX = 1;
+        }
+        else if (objectToFollow.posX - posX < 0)
+        {
+            dirX = -1;
+        }
+        else
+        {
+            dirX = 0;
+        }
+
+        if (objectToFollow.posY - posY > 0)
+        {
+            dirY = 1;
+        }
+        else if (objectToFollow.posY - posY < 0)
+        {
+            dirY = -1;
+        }
+        else
+        {
+            dirY = 0;
+        }
     }
 
     posX += dirX * displcmnt;
     posY += dirY * displcmnt;
+
+    // check if enemy is far from object to follow and does not move 
+    if ((getDistance(*this, objectToFollow) > radius)
+        && collided == true && isStuck == false)
+    {
+        cnt++;
+
+        if (cnt > 7)
+        {
+            isStuck = true;
+        }
+    }
 }
