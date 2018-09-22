@@ -223,9 +223,21 @@ void Game::mainLoop()
     bool addBombFlag = false;
     Direction bulletStartDir = EAST;
 
+    std::vector<Enemy>::iterator enemyIt;
+    std::vector<Bullet>::iterator bulletIt;
+    std::vector<Bomb>::iterator bombIt;
+    std::vector<Flame>::iterator flameIt;
+    std::vector<GameObject>::iterator bricksIt;
+
     while (exit != true) {
         float prevPosX = player.posX;
         float prevPosY = player.posY;
+
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            (*enemyIt).prevPosX = (*enemyIt).posX;
+            (*enemyIt).prevPosY = (*enemyIt).posY;
+        }
         //game logic cycle
 
         //handle keyboard
@@ -342,13 +354,22 @@ void Game::mainLoop()
             addBombFlag = false;
         }
 
+
         std::vector<Enemy>::iterator enemyIt;
         std::vector<Bullet>::iterator bulletIt;
         std::vector<Bomb>::iterator bombIt;
         std::vector<Flame>::iterator flameIt;
         std::vector<GameObject>::iterator bricksIt;
 
-        //check collision with the wall
+                
+        // write previous positions of enemies
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+        {
+            (*enemyIt).writePrevPositions();
+        }
+
+
+        //check player collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
         {
             if (collision(player, *bricksIt, RADIUS, RADIUS))
@@ -452,6 +473,19 @@ void Game::mainLoop()
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
             (*enemyIt).follow(player);
+        }
+
+        //check enemy collision with the wall
+        for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
+        {
+            for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
+            {
+                if (collision(*enemyIt, *bricksIt, RADIUS, RADIUS))
+                {
+                    (*enemyIt).posX = (*enemyIt).prevPosX;
+                    (*enemyIt).posY = (*enemyIt).prevPosY;
+                }
+            }
         }
 
         //erase enemies, who have energy below or equal 0
