@@ -41,17 +41,17 @@ bool isBombExploded(const Bomb &b)
 
 Game::~Game() 
 {
-    std::cout << "Game finished!" << std::endl;
+    std::cout << "Game finished!" << "\n";
 }
 
 bool Game::initSDL()
 {
-    bool success = true;
+    bool result = true;
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 )
     {
-        success = false;
-        std::cout << "Error: " << SDL_GetError() << std::endl;
+        result = false;
+        std::cout << "Error: " << SDL_GetError() << "\n";
     }
     else
     {
@@ -59,40 +59,42 @@ bool Game::initSDL()
 
         if (window == NULL)
         {
-            success = false;
-            std::cout << "Error: " << SDL_GetError() << std::endl;
+            result = false;
+            std::cout << "Error in window creation: " << SDL_GetError() << "\n";
         }
         else
         {
             int imgFlags = IMG_INIT_PNG;
-
             if (!(IMG_Init(imgFlags) & imgFlags))
             {
-                success = false;
-                std::cout << "Error: " << SDL_GetError() << std::endl;
+                result = false;
+                std::cout << "Error in IMG init creation: " << SDL_GetError() << "\n";
             }
-            else
+            
+            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);             
+            if (renderer == NULL)
             {
-                renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-                SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-                if (renderer == NULL)
-                {
-                    success = false;
-                    std::cout << "Error: " << SDL_GetError() << std::endl;
-                }
+                result = false;
+                std::cout << "Error in SDL renderer creation: " << SDL_GetError() << "\n";
             }
+            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
+            if (TTF_Init() == -1)
+            {
+                result = false;
+                std::cout << "Error in SDL font creation: " << SDL_GetError() << "\n";
+            }
             screenSurface = SDL_GetWindowSurface(window);
         }
     }
 
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
     {
-        success = false;
+        std::cout << "Error in audio setup\n";
+        return result;
     }
 
-    return success;
+    return result;
 }
 
 bool Game::initGame()
@@ -139,7 +141,8 @@ bool Game::initGame()
     texDataStruct.bombTexture = MyTexture(renderer, "data\\gfx\\bomb.png");
     texDataStruct.cannonInfo = MyTexture(renderer, "data\\gfx\\hud\\basic_cannon_hud.png");
     texDataStruct.bombInfo = MyTexture(renderer, "data\\gfx\\hud\\bomb_hud.png");
-    
+    texDataStruct.someText = MyTexture();
+
     //game init
     //terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
     terrain = GameObject(0, 0, texDataStruct.terrainTex);
@@ -157,6 +160,15 @@ bool Game::initGame()
     bombTemplate = Bomb(-10.0, -10.0, texDataStruct.bombTexture);
 
     music = Mix_LoadMUS("data\\bandit_radio.wav");
+
+    ttfFont = TTF_OpenFont("data\\cour.ttf", 28);
+    if (ttfFont == NULL)
+    {
+        std::cout << "Error in opening *.ttf file.\n";
+    }
+
+    SDL_Color color = { 200, 200, 200, 255 };
+    texDataStruct.someText.loadTextTexture("Hello Mr Ziemniak", color, renderer, ttfFont);
 
     std::cout << "Game init done!" << std::endl;
     return true;
@@ -176,9 +188,12 @@ bool Game::endGame()
     SDL_DestroyTexture(texDataStruct.flameTexture.texture);
     SDL_DestroyTexture(texDataStruct.helpScreenTexture.texture);
     SDL_DestroyTexture(texDataStruct.bombTexture.texture);
+    SDL_DestroyTexture(texDataStruct.someText.texture);
 
+    TTF_CloseFont(ttfFont);
     Mix_FreeMusic(music);
 
+    TTF_Quit();
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -573,6 +588,8 @@ void Game::mainLoop()
         }
 
         hud.display(renderer, player);
+
+        texDataStruct.someText.render(renderer, 200, 75, MyTexture::RENDER_IN_CENTER);
 
         SDL_RenderPresent(renderer);
         //wait

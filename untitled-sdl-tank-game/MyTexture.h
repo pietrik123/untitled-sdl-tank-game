@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
+#include <SDL_ttf.h>
 
 class MyTexture
 {
@@ -35,6 +36,8 @@ public:
      * Destructor.
      */
     virtual ~MyTexture();
+
+    bool MyTexture::loadTextTexture(const std::string& text, const SDL_Color& color, SDL_Renderer* renderer, TTF_Font* ttfFont);
 
     /**
      * Renders texture on \c renderer.
