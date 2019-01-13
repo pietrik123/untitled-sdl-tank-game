@@ -145,19 +145,19 @@ bool Game::initGame()
 
     //game init
     //terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
-    terrain = GameObject(0, 0, texDataStruct.terrainTex);
-    player = Player(100.0, 100.0, 25.0, texDataStruct.playerTexture);
-    hud = HUD(texDataStruct.helpScreenTexture, texDataStruct.bombInfo, texDataStruct.cannonInfo);
+    terrain = GameObject(0, 0, &texDataStruct.terrainTex);
+    player = Player(100.0, 100.0, 25.0, &texDataStruct.playerTexture);
+    hud = HUD(&texDataStruct.helpScreenTexture, &texDataStruct.bombInfo, &texDataStruct.cannonInfo);
 
-    enemies.push_back(Enemy(-50.0, -100.0, 25.0, texDataStruct.enemyTexture));
-    enemies.push_back(Enemy(50.0, 50.0, 25.0, texDataStruct.enemyTexture));
+    enemies.push_back(Enemy(-50.0, -100.0, 25.0, &texDataStruct.enemyTexture));
+    enemies.push_back(Enemy(50.0, 50.0, 25.0, &texDataStruct.enemyTexture));
 
-    bricks.push_back(GameObject(-100.0, -100.0, 25.0, texDataStruct.brickTexture));
-    bricks.push_back(GameObject(-100.0, -50.0, 25.0, texDataStruct.brickTexture));
+    bricks.push_back(GameObject(-100.0, -100.0, 25.0, &texDataStruct.brickTexture));
+    bricks.push_back(GameObject(-100.0, -50.0, 25.0, &texDataStruct.brickTexture));
 
-    bulletTemplate = Bullet(-10, -10, 10.0, texDataStruct.bulletTexture);
-    flameTemplate = Flame(-10.0, -10.0, texDataStruct.flameTexture);
-    bombTemplate = Bomb(-10.0, -10.0, texDataStruct.bombTexture);
+    bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
+    flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture);
+    bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
 
     music = Mix_LoadMUS("data\\bandit_radio.wav");
 
@@ -567,7 +567,7 @@ void Game::mainLoop()
         }
 
         for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
-            (*bulletIt).myTex.render(renderer,
+            (*bulletIt).myTex->render(renderer,
                 getPosXOnScreen((*bulletIt).posX),
                 getPosYOnScreen((*bulletIt).posY),
                 MyTexture::RENDER_IN_CENTER,
@@ -577,7 +577,7 @@ void Game::mainLoop()
 
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
             Flame &flame = (*flameIt);    
-			flame.myTex.renderAnim(renderer,
+			flame.myTex->renderAnim(renderer,
                 getPosXOnScreen(flame.posX),
                 getPosYOnScreen(flame.posY),
                 MyTexture::RENDER_IN_CENTER, 5, flame.texFrame);

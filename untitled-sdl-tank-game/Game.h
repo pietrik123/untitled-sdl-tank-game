@@ -8,6 +8,7 @@
 #include "Bomb.h"
 #include "menu.h"
 #include "HUD.h"
+#include "MyTexture.h"
 
 #include<SDL.h>
 #include<SDL_image.h>

@@ -12,7 +12,7 @@ Flame::Flame(float x, float y) : GameObject(x, y)
     lifeCycle = 0;
 }
 
-Flame::Flame(float x, float y, MyTexture& texture) : GameObject(x, y)
+Flame::Flame(float x, float y, MyTexture* texture) : GameObject(x, y)
 {
     std::cout << "Flame created!" << std::endl;
     maxLifeCycle = 20;

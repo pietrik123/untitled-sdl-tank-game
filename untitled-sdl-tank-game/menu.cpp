@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "MyTexture.h"
 
 #include <iostream>
 
@@ -95,9 +96,9 @@ bool MenuItem::setItem (SDL_Renderer* r, std::string name, std::string imgFileNa
     return true;
 }
 
-void MenuItem::displayItem(SDL_Renderer* r,int x, int y, MyTexture::RenderMode mode)
+void MenuItem::displayItem(SDL_Renderer* r,int x, int y)
 {
-    img->render(r, x, y, mode);
+    img->render(r, x, y, MyTexture::RENDER_IN_CENTER);
 }
 
 void MenuItem::displayItem(SDL_Renderer* r)

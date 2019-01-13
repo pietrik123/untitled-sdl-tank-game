@@ -1,5 +1,7 @@
+
 #include "GameObject.h"
 #include "Game.h"
+#include "MyTexture.h"
 #include <iostream>
 #include <math.h>
 
@@ -21,7 +23,7 @@ GameObject::GameObject(float x, float y, float parRadius)
 	radius = parRadius;
 }
 
-GameObject::GameObject(float x, float y, MyTexture& texture)
+GameObject::GameObject(float x, float y, MyTexture* texture)
 {
 	posX = x;
 	posY = y;
@@ -29,7 +31,7 @@ GameObject::GameObject(float x, float y, MyTexture& texture)
 	myTex = texture;
 }
 
-GameObject::GameObject(float x, float y, float parRadius, MyTexture& texture)
+GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
 {
 	posX = x;
 	posY = y;
@@ -38,7 +40,7 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture& texture)
 	direction = EAST;
 }
 
-GameObject::GameObject(float x, float y, float parRadius, MyTexture& texture,
+GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
 					   Direction dir)
 {
 	posX = x;
@@ -66,7 +68,7 @@ void GameObject::writePrevPositions()
 
 void GameObject::display(SDL_Renderer* renderer, Game* game)
 {
-	myTex.render(renderer,
+	myTex->render(renderer,
 		game->getPosXOnScreen(posX),
 		game->getPosYOnScreen(posY),
 		MyTexture::RENDER_IN_CENTER);

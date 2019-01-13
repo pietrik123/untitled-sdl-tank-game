@@ -1,7 +1,8 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Bullet.h"
+
+class Bullet;
 
 class Enemy : public GameObject
 {
@@ -15,15 +16,13 @@ public:
 
     short int dirX = 0;
     short int dirY = 0;
-
     
     float prevPosX;
     float prevPosY;
 
-
     Enemy();
     Enemy(float x, float y);
-    Enemy(float x, float y, float collisionRadius, MyTexture& texture);
+    Enemy(float x, float y, float collisionRadius, MyTexture* texture);
 
     void follow(const GameObject& objectToFollow);
 

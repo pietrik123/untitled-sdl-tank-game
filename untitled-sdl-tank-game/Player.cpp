@@ -18,7 +18,7 @@ Player::Player(float x, float y) : GameObject(x, y)
     weapon = new BasicCannon();
 }
 
-Player::Player(float x, float y, float collisionRadius, MyTexture& texture)
+Player::Player(float x, float y, float collisionRadius, MyTexture* texture)
     : GameObject(x, y, collisionRadius, texture)
 {
     displcmt = 5.0;
