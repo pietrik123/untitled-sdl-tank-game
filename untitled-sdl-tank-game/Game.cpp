@@ -97,35 +97,8 @@ bool Game::initSDL()
     return result;
 }
 
-bool Game::initGame()
+void Game::loadTextures()
 {
-    //menu init
-    
-    MenuItem newGameItem;
-    MenuItem quitGameItem;
-
-    MenuWindow mainMenuWindow;
-    
-    newGameItem.setItem(renderer, "new_game",  "data\\gfx\\menu\\new_game_item.png");
-    quitGameItem.setItem(renderer, "quit_game",  "data\\gfx\\menu\\quit_item.png");
-
-    newGameItem.setLocation(250, 250);
-    quitGameItem.setLocation(250, 370);
-
-    std::vector<MenuItem> itemsVect;
-    itemsVect.push_back(newGameItem);
-    itemsVect.push_back(quitGameItem);
-
-    mainMenuWindow.setMenuWindow(renderer, itemsVect, "data\\gfx\\menu\\menu_bg.png", "data\\gfx\\menu\\indicator.png");
-
-    gameMenu.addMenuWindow(mainMenuWindow);
-    
-    if (gameMenu.validate() == false)
-    {
-        std::cout << "Error in game menu validation!" << "\n";
-        exit(EXIT_FAILURE);
-    }
-
     // load textures
 
     texDataStruct.terrainTex = MyTexture(renderer, "data\\gfx\\terrain.png");
@@ -142,6 +115,45 @@ bool Game::initGame()
     texDataStruct.cannonInfo = MyTexture(renderer, "data\\gfx\\hud\\basic_cannon_hud.png");
     texDataStruct.bombInfo = MyTexture(renderer, "data\\gfx\\hud\\bomb_hud.png");
     texDataStruct.someText = MyTexture();
+    texDataStruct.treeTexture = MyTexture(renderer, "data\\gfx\\tree1.png");
+    texDataStruct.treeTexture2 = MyTexture(renderer, "data\\gfx\\tree2.png");
+}
+
+void Game::createGameMenu()
+{
+    MenuItem newGameItem;
+    MenuItem quitGameItem;
+
+    MenuWindow mainMenuWindow;
+
+    newGameItem.setItem(renderer, "new_game", "data\\gfx\\menu\\new_game_item.png");
+    quitGameItem.setItem(renderer, "quit_game", "data\\gfx\\menu\\quit_item.png");
+
+    newGameItem.setLocation(250, 250);
+    quitGameItem.setLocation(250, 370);
+
+    std::vector<MenuItem> itemsVect;
+    itemsVect.push_back(newGameItem);
+    itemsVect.push_back(quitGameItem);
+
+    mainMenuWindow.setMenuWindow(renderer, itemsVect, "data\\gfx\\menu\\menu_bg.png", "data\\gfx\\menu\\indicator.png");
+
+    gameMenu.addMenuWindow(mainMenuWindow);
+
+    if (gameMenu.validate() == false)
+    {
+        std::cout << "Error in game menu validation!" << "\n";
+        exit(EXIT_FAILURE);
+    }
+}
+
+bool Game::initGame()
+{
+    // creating menu
+    createGameMenu();
+
+    // loading textures
+    loadTextures();
 
     //game init
     //terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
@@ -154,6 +166,9 @@ bool Game::initGame()
 
     bricks.push_back(GameObject(-100.0, -100.0, 25.0, &texDataStruct.brickTexture));
     bricks.push_back(GameObject(-100.0, -50.0, 25.0, &texDataStruct.brickTexture));
+
+    trees.push_back(GameObject(35.0, 75.0, 25.0, &texDataStruct.treeTexture));
+    trees.push_back(GameObject(-75.0, 0.0, 25.0, &texDataStruct.treeTexture2));
 
     bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
     flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture);
@@ -189,6 +204,8 @@ bool Game::endGame()
     SDL_DestroyTexture(texDataStruct.helpScreenTexture.texture);
     SDL_DestroyTexture(texDataStruct.bombTexture.texture);
     SDL_DestroyTexture(texDataStruct.someText.texture);
+    SDL_DestroyTexture(texDataStruct.treeTexture.texture);
+    SDL_DestroyTexture(texDataStruct.treeTexture2.texture);
 
     TTF_CloseFont(ttfFont);
     Mix_FreeMusic(music);
@@ -369,25 +386,33 @@ void Game::mainLoop()
             addBombFlag = false;
         }
 
-
         std::vector<Enemy>::iterator enemyIt;
         std::vector<Bullet>::iterator bulletIt;
         std::vector<Bomb>::iterator bombIt;
         std::vector<Flame>::iterator flameIt;
         std::vector<GameObject>::iterator bricksIt;
-
-                
+        std::vector<GameObject>::iterator treesIt;
+               
         // write previous positions of enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
             (*enemyIt).writePrevPositions();
         }
 
-
         //check player collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
         {
             if (collision(player, *bricksIt, RADIUS, RADIUS))
+            {
+                player.posX = prevPosX;
+                player.posY = prevPosY;
+            }
+        }
+
+        //check player collision with trees
+        for (treesIt = trees.begin(); treesIt != trees.end(); ++treesIt)
+        {
+            if (collision(player, *treesIt, RADIUS, RADIUS))
             {
                 player.posX = prevPosX;
                 player.posY = prevPosY;
@@ -470,8 +495,6 @@ void Game::mainLoop()
                 }
             }
         }
-
-       
 
         //handle flames' actions
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt)
@@ -585,6 +608,10 @@ void Game::mainLoop()
 
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
             (*bricksIt).display(renderer, this);
+        }
+
+        for (treesIt = trees.begin(); treesIt != trees.end(); ++treesIt) {
+            (*treesIt).display(renderer, this);
         }
 
         hud.display(renderer, player);

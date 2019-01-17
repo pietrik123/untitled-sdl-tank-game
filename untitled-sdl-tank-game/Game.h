@@ -36,6 +36,8 @@ struct TextureDataStruct
     MyTexture bombInfo;
     MyTexture cannonInfo;
     MyTexture someText;
+    MyTexture treeTexture;
+    MyTexture treeTexture2;
 };
 
 class Game
@@ -69,6 +71,7 @@ public:
     std::vector<Flame> flames;
     std::vector<GameObject> bricks;
     std::vector<Bomb> bombs;
+    std::vector<GameObject> trees;
     
     // texture struct	
     TextureDataStruct texDataStruct;
@@ -90,6 +93,8 @@ public:
 
     bool initSDL();
 
+    void loadTextures();
+    void createGameMenu();
     bool initGame();
     void mainLoop();
     bool runGame();	
