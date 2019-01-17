@@ -1,5 +1,6 @@
 
 #include "Enemy.h"
+#include "Bullet.h"
 
 #include <iostream>
 
@@ -18,7 +19,7 @@ Enemy::Enemy(float x, float y) : GameObject(x, y)
     cnt = 0;
 }
 
-Enemy::Enemy(float x, float y, float collisionRadius, MyTexture& texture) : GameObject(x, y)
+Enemy::Enemy(float x, float y, float collisionRadius, MyTexture* texture) : GameObject(x, y)
 {
     displcmnt = 2.5;
     energy = 100;

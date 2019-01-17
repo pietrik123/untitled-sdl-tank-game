@@ -1,11 +1,10 @@
 #pragma once
 
-#include "MyTexture.h"
-
 #include <vector>
 #include <string>
-#include <SDL.h>
-#include <SDL_image.h>
+
+class MyTexture;
+struct SDL_Renderer;
 
 enum GameOptionNames
 {
@@ -32,7 +31,7 @@ public:
     int getPosX();
     int getPosY();
 
-    void displayItem(SDL_Renderer* r, int x, int y, MyTexture::RenderMode mode);
+    void displayItem(SDL_Renderer* r, int x, int y);
     void displayItem(SDL_Renderer* r );
 
     //TODO

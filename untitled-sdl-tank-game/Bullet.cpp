@@ -14,7 +14,7 @@ Bullet::Bullet(float x, float y) : GameObject(x, y)
     std::cout << "Bullet created!" << std::endl;
 }
 
-Bullet::Bullet(float x, float y, float collisionRadius, MyTexture& texture)
+Bullet::Bullet(float x, float y, float collisionRadius, MyTexture* texture)
     : GameObject(x, y)
 {
     displcmnt = 4.0;

@@ -1,10 +1,9 @@
 #pragma once
-
-#include "MyTexture.h"
-
 #include <vector>
 
 class Game;
+class MyTexture;
+struct SDL_Renderer;
 
 enum Direction
 {
@@ -30,7 +29,7 @@ public:
     float prevPosY;
     float radius;
 
-    MyTexture myTex;
+    MyTexture* myTex;
     std::vector<MyTexture> additionalTextures;
 
     Direction direction;
@@ -38,9 +37,9 @@ public:
     GameObject();
     GameObject(float x, float y);
     GameObject(float x, float y, float radius);
-    GameObject(float x, float y, MyTexture& texture);
-    GameObject(float x, float y, float radius, MyTexture& texture);
-    GameObject(float x, float y, float radius, MyTexture& texture, Direction dir);
+    GameObject(float x, float y, MyTexture* texture);
+    GameObject(float x, float y, float radius, MyTexture* texture);
+    GameObject(float x, float y, float radius, MyTexture* texture, Direction dir);
 
     virtual ~GameObject();
 

@@ -25,7 +25,7 @@ public:
     /**
      * Creates a concrete bomb object.
      */
-    Bomb(float x, float y, MyTexture &tex);
+    Bomb(float x, float y, MyTexture *tex);
 
     void act();
 

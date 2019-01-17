@@ -3,7 +3,7 @@
 
 Bomb::Bomb() {}
 
-Bomb::Bomb(float x, float y, MyTexture &tex)
+Bomb::Bomb(float x, float y, MyTexture *tex)
 {
     maxLifeCycle = 50;
 

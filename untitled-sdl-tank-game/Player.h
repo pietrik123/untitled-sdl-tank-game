@@ -20,7 +20,7 @@ public:
 
     Player();
     Player(float x, float y);
-    Player(float x, float y, float collisionRadius, MyTexture& texture);
+    Player(float x, float y, float collisionRadius, MyTexture* texture);
 
     Weapon* getCurrentWeapon();
 
