@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "untitled-sdl-tank-game", "untitled-sdl-tank-game\untitled-sdl-tank-game.vcxproj", "{C9010400-C373-47B2-9341-8A33C0BA718F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_dep_proj2", "test_dep_proj2\test_dep_proj2.vcxproj", "{E485D5C9-63AB-4E90-9BC5-6C157781452C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,8 +23,19 @@ Global
 		{C9010400-C373-47B2-9341-8A33C0BA718F}.Release|x64.Build.0 = Release|x64
 		{C9010400-C373-47B2-9341-8A33C0BA718F}.Release|x86.ActiveCfg = Release|Win32
 		{C9010400-C373-47B2-9341-8A33C0BA718F}.Release|x86.Build.0 = Release|Win32
+		{E485D5C9-63AB-4E90-9BC5-6C157781452C}.Debug|x64.ActiveCfg = Debug|x64
+		{E485D5C9-63AB-4E90-9BC5-6C157781452C}.Debug|x64.Build.0 = Debug|x64
+		{E485D5C9-63AB-4E90-9BC5-6C157781452C}.Debug|x86.ActiveCfg = Debug|Win32
+		{E485D5C9-63AB-4E90-9BC5-6C157781452C}.Debug|x86.Build.0 = Debug|Win32
+		{E485D5C9-63AB-4E90-9BC5-6C157781452C}.Release|x64.ActiveCfg = Release|x64
+		{E485D5C9-63AB-4E90-9BC5-6C157781452C}.Release|x64.Build.0 = Release|x64
+		{E485D5C9-63AB-4E90-9BC5-6C157781452C}.Release|x86.ActiveCfg = Release|Win32
+		{E485D5C9-63AB-4E90-9BC5-6C157781452C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D45B8DD-1054-43EB-BEAF-72D01A3E67A1}
 	EndGlobalSection
 EndGlobal
