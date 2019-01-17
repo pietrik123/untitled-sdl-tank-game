@@ -38,6 +38,28 @@ MyTexture::~MyTexture()
     std::cout << "MyTexture::~MyTexture() : Destructor called!" << std::endl;
 }
 
+bool MyTexture::loadTextTexture(const std::string& text, const SDL_Color& color, SDL_Renderer* renderer, TTF_Font* ttfFont)
+{
+    //free();
+    SDL_Surface* textSurface = TTF_RenderText_Solid(ttfFont, text.c_str(), color);
+    if (textSurface == NULL)
+    {
+        std::cout << "Error in creating text surface\n";
+        return false;
+    }
+
+    texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (texture == NULL)
+    {
+        std::cout << "Error in creating texture out of text surface\n";
+        return false;
+    }
+    
+    SDL_FreeSurface(textSurface);
+
+    return true;
+}
+
 void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode)
 {
     SDL_Rect rect;

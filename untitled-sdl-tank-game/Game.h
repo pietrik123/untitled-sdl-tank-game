@@ -12,6 +12,7 @@
 #include<SDL.h>
 #include<SDL_image.h>
 #include<SDL_mixer.h>
+#include<SDL_ttf.h>
 
 #include<vector>
 
@@ -33,6 +34,7 @@ struct TextureDataStruct
     MyTexture bombTexture;
     MyTexture bombInfo;
     MyTexture cannonInfo;
+    MyTexture someText;
 };
 
 class Game
@@ -42,6 +44,7 @@ public:
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Surface* screenSurface;
+    TTF_Font* ttfFont;
 
     // music
     Mix_Music *music;

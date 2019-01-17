@@ -23,7 +23,7 @@
     <ProjectGuid>{c9010400-c373-47b2-9341-8a33c0ba718f}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>untitled_sdl_tank_game</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\development\sdl2_visual\sdl2_mixer\include;C:\development\sdl2_visual\sdl2_image\include;C:\development\sdl2_visual\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\development\sdl2_visual\sdl2_ttf\include;C:\development\sdl2_visual\sdl2_mixer\include;C:\development\sdl2_visual\sdl2_image\include;C:\development\sdl2_visual\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -94,8 +94,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>c:\development\sdl2_visual\sdl2_mixer\lib\x86;C:\development\sdl2_visual\sdl2_image\lib\x86;C:\development\sdl2_visual\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\development\sdl2_visual\sdl2_ttf\lib\x86;c:\development\sdl2_visual\sdl2_mixer\lib\x86;C:\development\sdl2_visual\sdl2_image\lib\x86;C:\development\sdl2_visual\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
