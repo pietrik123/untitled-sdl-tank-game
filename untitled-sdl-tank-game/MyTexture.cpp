@@ -4,7 +4,7 @@
 
 MyTexture::MyTexture()
 {
-    texture = NULL;
+    sdlTexture = NULL;
     std::cout << "MyTexture::MyTexture() : Empty texture created!" << std::endl;
 }
 
@@ -21,8 +21,8 @@ MyTexture::MyTexture(SDL_Renderer* renderer, std::string fileName)
 
     SDL_SetColorKey(textureSurface, SDL_TRUE, SDL_MapRGB(textureSurface->format, 0xFF, 0x00, 0xFF));
 
-    texture = SDL_CreateTextureFromSurface(renderer, textureSurface);
-    if (texture == NULL)
+    sdlTexture = SDL_CreateTextureFromSurface(renderer, textureSurface);
+    if (sdlTexture == NULL)
     {
         std::cout << "MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
     }
@@ -48,8 +48,8 @@ bool MyTexture::loadTextTexture(const std::string& text, const SDL_Color& color,
         return false;
     }
 
-    texture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    if (texture == NULL)
+    sdlTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    if (sdlTexture == NULL)
     {
         std::cout << "Error in creating texture out of text surface\n";
         return false;
@@ -66,7 +66,7 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode)
 
     int w, h;
 
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(sdlTexture, NULL, NULL, &w, &h);
 
     if (mode == RENDER_IN_CENTER)
     {
@@ -86,7 +86,7 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode)
     rect.w = w;
     rect.h = h;
 
-    SDL_RenderCopy(renderer, texture, NULL, &rect);
+    SDL_RenderCopy(renderer, sdlTexture, NULL, &rect);
 }
 
 void MyTexture::renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode, int numOfFrames, int frameIndex)
@@ -96,7 +96,7 @@ void MyTexture::renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode
 
     int w, h;
 
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(sdlTexture, NULL, NULL, &w, &h);
     int tileWidth = w / numOfFrames;
 
     sourceRect.x = frameIndex*tileWidth;
@@ -122,7 +122,7 @@ void MyTexture::renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode
     targetRect.w = tileWidth;
     targetRect.h = h;
 
-    SDL_RenderCopy(renderer, texture, &sourceRect, &targetRect);
+    SDL_RenderCopy(renderer, sdlTexture, &sourceRect, &targetRect);
 }
 
 void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode, 
@@ -132,7 +132,7 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode,
 
     int w, h;
 
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(sdlTexture, NULL, NULL, &w, &h);
 
     if (mode == RENDER_IN_CENTER)
     {
@@ -152,5 +152,5 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode,
     rect.w = w;
     rect.h = h;
 
-    SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, sdlTexture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 }

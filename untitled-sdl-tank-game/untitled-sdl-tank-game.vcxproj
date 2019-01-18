@@ -157,6 +157,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="weapon.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="MyText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="MyText.h" />
     <ClInclude Include="MyTexture.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Bomb.h" />

@@ -5,6 +5,10 @@
 #include <string>
 #include <SDL_ttf.h>
 
+/**
+ * \c Wrapper for \c SDL_Texture.
+ * Can load a texture from file or create a texture out of \c std::string, using \c TTF_Font.
+ */
 class MyTexture
 {
 public:
@@ -18,7 +22,7 @@ public:
         RENDER_IN_CENTER = 2
     };
 
-    SDL_Texture* texture;
+    SDL_Texture* sdlTexture;
 
     /**
      * Default constructor - creates object with no texture data (NULL).
@@ -37,33 +41,40 @@ public:
      */
     virtual ~MyTexture();
 
+    /**
+     * Loads a texture, which represents a text.
+     * \param text a text to be displayed
+     * \param color a color of the \c text
+     * \param renderer
+     * \param ttfFont a font to be used
+     */
     bool MyTexture::loadTextTexture(const std::string& text, const SDL_Color& color, SDL_Renderer* renderer, TTF_Font* ttfFont);
 
     /**
      * Renders texture on \c renderer.
-     * \x target coordinate
-     * \y target coordinate
+     * \param x target coordinate
+     * \param y target coordinate
      * \mode
      */
     void render(SDL_Renderer* renderer, int x, int y, RenderMode mode);
 
     /**
-    * Renders a rotated texture on \c renderer.
-    * \x target coordinate
-    * \y target coordinate
-    * \mode
-    * \angle - angle in radians
-    */
+     * Renders a rotated texture on \c renderer.
+     * \param x target coordinate
+     * \param y target coordinate
+     * \param mode
+     * \param angle - angle in radians
+     */
     void render(SDL_Renderer* renderer, int x, int y, RenderMode mode, float angle);
 
     /**
     * Renders an animated texture on \c renderer.
-    * \x coordinate
-    * \y coordinate
-    * \mode
-    * \numOfFrames - number in, which is texture divided
+    * \param x coordinate
+    * \param y coordinate
+    * \param mode
+    * \param numOfFrames - number in, which is texture divided
     * \frameIndex - index of frame, which is to be displayed
-    * Texure is divided into tiles. Tiles stay along each other in X direction.
+    * Texture is divided into tiles. Tiles stay along each other in X direction.
     *
     */
     void renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode, int numOfFrames, int frameIndex);

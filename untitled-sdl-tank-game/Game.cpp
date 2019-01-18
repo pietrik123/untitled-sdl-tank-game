@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Game::Game() : window(NULL), renderer(NULL), screenSurface(NULL),
-    music(NULL)
+music(NULL), someText(NULL)
 {
     std::cout << "Game started!" << std::endl;
 
@@ -185,6 +185,8 @@ bool Game::initGame()
     SDL_Color color = { 200, 200, 200, 255 };
     texDataStruct.someText.loadTextTexture("Hello Mr Ziemniak", color, renderer, ttfFont);
 
+    someText = new MyText(renderer, ttfFont, { 127, 127, 127, 255 });
+
     std::cout << "Game init done!" << std::endl;
     return true;
 }
@@ -195,17 +197,19 @@ bool Game::endGame()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
-    SDL_DestroyTexture(texDataStruct.terrainTex.texture);
-    SDL_DestroyTexture(texDataStruct.playerTexture.texture);
-    SDL_DestroyTexture(texDataStruct.enemyTexture.texture);
-    SDL_DestroyTexture(texDataStruct.brickTexture.texture);
-    SDL_DestroyTexture(texDataStruct.bulletTexture.texture);
-    SDL_DestroyTexture(texDataStruct.flameTexture.texture);
-    SDL_DestroyTexture(texDataStruct.helpScreenTexture.texture);
-    SDL_DestroyTexture(texDataStruct.bombTexture.texture);
-    SDL_DestroyTexture(texDataStruct.someText.texture);
-    SDL_DestroyTexture(texDataStruct.treeTexture.texture);
-    SDL_DestroyTexture(texDataStruct.treeTexture2.texture);
+    SDL_DestroyTexture(texDataStruct.terrainTex.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.playerTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.enemyTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.brickTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.bulletTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.flameTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.helpScreenTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.bombTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.someText.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.treeTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.treeTexture2.sdlTexture);
+
+    delete someText;
 
     TTF_CloseFont(ttfFont);
     Mix_FreeMusic(music);
@@ -595,7 +599,6 @@ void Game::mainLoop()
                 getPosYOnScreen((*bulletIt).posY),
                 MyTexture::RENDER_IN_CENTER,
                 (*bulletIt).getDirectionAngle());
-
         }
 
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
@@ -616,9 +619,11 @@ void Game::mainLoop()
 
         hud.display(renderer, player);
 
-        texDataStruct.someText.render(renderer, 200, 75, MyTexture::RENDER_IN_CENTER);
-
+        // display as an example
+        someText->printText("hello", 200, 75, renderer, ttfFont, { 127, 127, 127, 255 });
+     
         SDL_RenderPresent(renderer);
+
         //wait
         SDL_Delay(50);
     }
