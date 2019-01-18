@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "HUD.h"
 #include "MyTexture.h"
+#include "MyText.h"
 
 #include<SDL.h>
 #include<SDL_image.h>
@@ -56,6 +57,9 @@ public:
     GameMenu gameMenu;
     HUD hud;    
 
+    // text
+    MyText* someText;
+
     // game objects
     GameObject terrain;
     Player player;	
@@ -99,6 +103,8 @@ public:
     void mainLoop();
     bool runGame();	
     bool endGame();
+
+    void printText(std::string text, int x, int y);
     
     // utils
 
