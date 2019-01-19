@@ -68,6 +68,12 @@ In configuration (general) please expand: "Windows SDK" and select version of SD
 
 From upper menu select:
 
-Compilation -> Compile solution ...  
+Compilation -> Compile solution ...
+
+# Build server
+
+http://137.117.72.228:8080/
+
+More information soon ...
 
 
