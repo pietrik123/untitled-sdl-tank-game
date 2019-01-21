@@ -68,7 +68,7 @@ In configuration (general) please expand: "Windows SDK" and select version of SD
 
 From upper menu select:
 
-Compilation -> Compile solution ...
+Compilation -> Compile solution ... 
 
 # Build server
 
