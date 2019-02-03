@@ -1,6 +1,5 @@
 #include "weapon.h"
 
-
 // this method should be called every cycle of game main loop
 void BasicCannon::act()
 {
@@ -9,7 +8,6 @@ void BasicCannon::act()
         readyCnt += 5;
     }
 }
-
 
 BasicCannon::BasicCannon()
 {
@@ -51,7 +49,6 @@ void BombDrop::act()
 
 bool BombDrop::trigger()
 {
-   
     if (readyCnt >= READY)
     {       
         readyCnt = 0;

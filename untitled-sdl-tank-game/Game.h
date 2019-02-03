@@ -39,6 +39,7 @@ struct TextureDataStruct
     MyTexture someText;
     MyTexture treeTexture;
     MyTexture treeTexture2;
+    MyTexture coinTexture;
 };
 
 class Game
@@ -68,6 +69,7 @@ public:
     Bullet bulletTemplate;
     Flame flameTemplate;
     Bomb bombTemplate;
+    GameObject coinTemplate;
 
     // groups of objects
     std::vector<Enemy> enemies;
@@ -76,6 +78,7 @@ public:
     std::vector<GameObject> bricks;
     std::vector<Bomb> bombs;
     std::vector<GameObject> trees;
+    std::vector<GameObject> coins;
     
     // texture struct	
     TextureDataStruct texDataStruct;

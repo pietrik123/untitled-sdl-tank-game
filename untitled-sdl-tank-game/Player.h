@@ -15,6 +15,7 @@ public:
     bool addBullet;
     Weapon* weapon;
     std::vector<Weapon*> weapons;
+    int coinsCollected;
 
     unsigned int weaponIndex;
 

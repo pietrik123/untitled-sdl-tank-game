@@ -2,7 +2,7 @@
 
 Player::Player()
 {
-
+    coinsCollected = 0;
 }
 
 Player::Player(float x, float y) : GameObject(x, y)
@@ -16,6 +16,7 @@ Player::Player(float x, float y) : GameObject(x, y)
     addBullet = false;
 
     weapon = new BasicCannon();
+    coinsCollected = 0;
 }
 
 Player::Player(float x, float y, float collisionRadius, MyTexture* texture)
@@ -33,6 +34,8 @@ Player::Player(float x, float y, float collisionRadius, MyTexture* texture)
 
     weapons.push_back(new BasicCannon());
     weapons.push_back(new BombDrop());
+
+    coinsCollected = 0;
 }
 
 Player::~Player()

@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "ObjectAdder.h"
 
 #include <iostream>
 #include <algorithm>
@@ -117,6 +118,7 @@ void Game::loadTextures()
     texDataStruct.someText = MyTexture();
     texDataStruct.treeTexture = MyTexture(renderer, "data\\gfx\\tree1.png");
     texDataStruct.treeTexture2 = MyTexture(renderer, "data\\gfx\\tree2.png");
+    texDataStruct.coinTexture = MyTexture(renderer, "data\\gfx\\coin.png");
 }
 
 void Game::createGameMenu()
@@ -173,7 +175,15 @@ bool Game::initGame()
     bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
     flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture);
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
+    coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture);
+    coinTemplate.radius = 12.0;
 
+    // add some coins
+    GameObject c = coinTemplate;
+    c.posX = 80.0;
+    c.posY = -50.0;
+    coins.push_back(c);
+       
     music = Mix_LoadMUS("data\\bandit_radio.wav");
 
     ttfFont = TTF_OpenFont("data\\cour.ttf", 28);
@@ -208,6 +218,7 @@ bool Game::endGame()
     SDL_DestroyTexture(texDataStruct.someText.sdlTexture);
     SDL_DestroyTexture(texDataStruct.treeTexture.sdlTexture);
     SDL_DestroyTexture(texDataStruct.treeTexture2.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.coinTexture.sdlTexture);
 
     delete someText;
 
@@ -264,6 +275,10 @@ void Game::mainLoop()
     std::vector<Bomb>::iterator bombIt;
     std::vector<Flame>::iterator flameIt;
     std::vector<GameObject>::iterator bricksIt;
+    std::vector<GameObject>::iterator coinsIt;
+
+    CoinAdder coinAdder(4);
+    MyText scoreText(renderer, ttfFont, {127, 127, 127, 255});
 
     while (exit != true) {
         float prevPosX = player.posX;
@@ -396,6 +411,7 @@ void Game::mainLoop()
         std::vector<Flame>::iterator flameIt;
         std::vector<GameObject>::iterator bricksIt;
         std::vector<GameObject>::iterator treesIt;
+        std::vector<GameObject>::iterator coinsIt;
                
         // write previous positions of enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
@@ -609,6 +625,18 @@ void Game::mainLoop()
                 MyTexture::RENDER_IN_CENTER, 5, flame.texFrame);
         }
 
+        for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt)
+        {
+            if (collision(player, *coinsIt, RADIUS, RADIUS))
+            {
+                coins.erase(coinsIt);
+                player.coinsCollected++;
+                break;
+            }
+        }
+
+        coinAdder.act(coins, coinTemplate);
+
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
             (*bricksIt).display(renderer, this);
         }
@@ -617,10 +645,18 @@ void Game::mainLoop()
             (*treesIt).display(renderer, this);
         }
 
+        for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt) {
+            (*coinsIt).display(renderer, this);
+        }
+
         hud.display(renderer, player);
 
         // display as an example
         someText->printText("hello", 200, 75, renderer, ttfFont, { 127, 127, 127, 255 });
+
+        // display player's score (coins collected)
+        scoreText.printText("score: " + std::to_string(player.coinsCollected), 75, 50,
+            renderer, ttfFont, { 255, 255, 255, 255 });
      
         SDL_RenderPresent(renderer);
 
