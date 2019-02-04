@@ -1,23 +1,7 @@
 #pragma once
-
-struct Line
-{
-	int Acoef;
-	int Bcoef;
-	int Ccoef;
-};
-
-struct Point
-{
-	int PosX;
-	int PosY;
-};
-
-struct Round
-{
-	Point center;
-	int radius;
-};
+#include "figures.h"
 
 int distanceFromPointToLine(Line line, Point point);
 bool isRoundAndLineIntersecting(Line line, Round round);
+double coutDelta(double a, double b, double c);
+std::tuple<double, double> countSolutions(double a, double b, double c, double delta);

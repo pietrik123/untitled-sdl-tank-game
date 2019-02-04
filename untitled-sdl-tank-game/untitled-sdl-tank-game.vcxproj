@@ -155,6 +155,7 @@
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="MyTexture.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="utils\figures.cpp" />
     <ClCompile Include="utils\utils.cpp" />
     <ClCompile Include="weapon.cpp" />
     <ClCompile Include="Bomb.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="ObjectAdder.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="utils\figures.h" />
     <ClInclude Include="utils\utils.h" />
     <ClInclude Include="weapon.h" />
   </ItemGroup>
