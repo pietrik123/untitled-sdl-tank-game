@@ -62,6 +62,9 @@
     <ClCompile Include="utils\utils.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="utils\figures.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyTexture.h">
@@ -103,6 +106,9 @@
     <ClInclude Include="ObjectAdder.h">
       <Filter>Pliki nagłówkowe</Filter>
     <ClInclude Include="utils\utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\figures.h">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
