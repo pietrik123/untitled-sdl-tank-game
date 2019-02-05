@@ -3,25 +3,36 @@
 
 struct Line
 {
-	int Acoef;
-	int Bcoef;
-	int Ccoef;
+	double Acoef;
+	double Bcoef;
+	double Ccoef;
 
-	friend std::ostream& operator << (std::ostream& out, Line line);
+	friend std::ostream& operator << (std::ostream& out, const Line line);
 };
 
 struct Point
 {
-	int PosX;
-	int PosY;
+	double PosX;
+	double PosY;
 
-	friend std::ostream& operator << (std::ostream& out, Point point);
+	friend std::ostream& operator << (std::ostream& out, const Point point);
 };
 
 struct Round
 {
 	Point center;
-	int radius;
+	double radius;
 
-	friend std::ostream& operator << (std::ostream& out, Round round);
+	friend std::ostream& operator << (std::ostream& out, const Round round);
+};
+
+struct Rectangle
+{
+	// better represent as vector?
+	Point topLeftCorner;
+	Point topRightCorner;
+	Point bottomLeftCorner;
+	Point bottomRightCorner;
+
+	friend std::ostream& operator << (std::ostream& out, const Rectangle rectangle);
 };
