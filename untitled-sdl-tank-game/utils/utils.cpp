@@ -1,7 +1,6 @@
 #include "utils.h"
 #include "figures.h"
-#include <math.h>
-#include <tuple> 
+#include <math.h> 
 #include <vector>
 
 double distanceFromPointToLine(Line line, Point point)
@@ -10,37 +9,41 @@ double distanceFromPointToLine(Line line, Point point)
 		sqrt( pow(line.Acoef, 2) + pow(line.Bcoef, 2) );
 }
 
-bool isRoundAndLineIntersecting(Line line, Round round)
+bool isCircleAndLineIntersecting(Line line, Circle circle)
 {
-	if(distanceFromPointToLine(line, round.center) > round.radius)
+	if(distanceFromPointToLine(line, circle.center) > circle.radius)
 		return false;
 	else
 		return true;
 }
 
-double coutDelta(double a, double b, double c)
+double getDelta(double a, double b, double c)
 {
 	// a*(x^2) + bx + c = 0
 	return pow(b , 2) - 4 * a * c;
 }
 
-std::tuple<double, double> countSolutions(double a, double b, double c, double delta)
+std::vector<double> countSolutions(double a, double b, double c, double delta)
 {
+	// function returns vector which size depends on number of solutions. This can also be empty vector, so checking is required outside of function
 	if (a != 0 && delta > 0)
-		return std::make_tuple<double, double>((pow(b, 2) - sqrt(delta)) / (2 * a), ((pow(b, 2) + sqrt(delta)) / (2 * a)));
+		return std::vector<double>{(pow(b, 2) - sqrt(delta)) / (2 * a), ((pow(b, 2) + sqrt(delta)) / (2 * a))};
 	else if (a != 0 && delta == 0)
-		return std::make_tuple<double, double>((-b / (2 * a)), (-b / (2 * a)));
+		return std::vector<double>{-b / (2 * a)};
+	else
+		return std::vector<double>{};
 }
+
 
 double distanceFromPointToPoint(Point firstPoint, Point secondPoint)
 {
 	return sqrt(pow(firstPoint.PosX - secondPoint.PosX, 2) - pow(firstPoint.PosY - secondPoint.PosY, 2));
 }
 
-bool areRoundsIntersecting(Round firstRound, Round secondRound)
+bool areCirclesIntersecting(Circle firstCircle, Circle secondCircle)
 {
 	// one or two points of intersection
-	if (distanceFromPointToPoint(firstRound.center, secondRound.center) <= firstRound.radius + secondRound.radius)
+	if (distanceFromPointToPoint(firstCircle.center, secondCircle.center) <= firstCircle.radius + secondCircle.radius)
 		return true;
 	else
 		return false;
@@ -70,5 +73,3 @@ bool areRectanglesIntersecting(Rectangle firstRectangle, Rectangle secondRectang
 	else
 		return false;
 }
-
-
