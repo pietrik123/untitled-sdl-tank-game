@@ -13,7 +13,7 @@ std::ostream & operator<<(std::ostream & out, const Point point)
 	return out;
 }
 
-std::ostream & operator<<(std::ostream & out, const Round round)
+std::ostream & operator<<(std::ostream & out, const Circle round)
 {
 	out << "Center point = (" << round.center << " ) , radius = " << round.radius;
 	return out;

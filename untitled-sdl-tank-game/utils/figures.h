@@ -18,12 +18,12 @@ struct Point
 	friend std::ostream& operator << (std::ostream& out, const Point point);
 };
 
-struct Round
+struct Circle
 {
 	Point center;
 	double radius;
 
-	friend std::ostream& operator << (std::ostream& out, const Round round);
+	friend std::ostream& operator << (std::ostream& out, const Circle circle);
 };
 
 struct Rectangle
