@@ -11,7 +11,7 @@ Bullet::Bullet(float x, float y) : GameObject(x, y)
 
     lifeCycle = 0;
     destroyed = false;
-    std::cout << "Bullet created!" << std::endl;
+    std::cout << __FUNCTION__ << " : Bullet created!\n";
 }
 
 Bullet::Bullet(float x, float y, float collisionRadius, MyTexture* texture)
@@ -22,7 +22,7 @@ Bullet::Bullet(float x, float y, float collisionRadius, MyTexture* texture)
 
     lifeCycle = 0;
     destroyed = false;
-    std::cout << "Bullet created!" << std::endl;
+    std::cout << __FUNCTION__ << " : Bullet created!" << std::endl;
     radius = collisionRadius;
     myTex = texture;
 }
@@ -30,7 +30,7 @@ Bullet::Bullet(float x, float y, float collisionRadius, MyTexture* texture)
 
 Bullet::~Bullet()
 {
-    std::cout << "Bullet destroyed!" << std::endl;
+    std::cout << __FUNCTION__ << " : Bullet destroyed!" << std::endl;
 }
 
 void Bullet::move()

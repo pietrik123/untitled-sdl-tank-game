@@ -7,7 +7,7 @@
 Game::Game() : window(NULL), renderer(NULL), screenSurface(NULL),
 music(NULL), someText(NULL)
 {
-    std::cout << "Game started!" << std::endl;
+    std::cout << __FUNCTION__ << " : Game started!" << std::endl;
 
     renderer = NULL;
     screenSurface = NULL;
@@ -42,7 +42,7 @@ bool isBombExploded(const Bomb &b)
 
 Game::~Game() 
 {
-    std::cout << "Game finished!" << "\n";
+    std::cout << __FUNCTION__ << " : Game finished!" << "\n";
 }
 
 bool Game::initSDL()
@@ -52,7 +52,7 @@ bool Game::initSDL()
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 )
     {
         result = false;
-        std::cout << "Error: " << SDL_GetError() << "\n";
+        std::cout << __FUNCTION__ << " : Error: " << SDL_GetError() << "\n";
     }
     else
     {
@@ -61,7 +61,7 @@ bool Game::initSDL()
         if (window == NULL)
         {
             result = false;
-            std::cout << "Error in window creation: " << SDL_GetError() << "\n";
+            std::cout << __FUNCTION__ << " : Error in window creation: " << SDL_GetError() << "\n";
         }
         else
         {
@@ -69,21 +69,21 @@ bool Game::initSDL()
             if (!(IMG_Init(imgFlags) & imgFlags))
             {
                 result = false;
-                std::cout << "Error in IMG init creation: " << SDL_GetError() << "\n";
+                std::cout << __FUNCTION__ << " : Error in IMG init creation: " << SDL_GetError() << "\n";
             }
             
             renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);             
             if (renderer == NULL)
             {
                 result = false;
-                std::cout << "Error in SDL renderer creation: " << SDL_GetError() << "\n";
+                std::cout << __FUNCTION__ << " : Error in SDL renderer creation: " << SDL_GetError() << "\n";
             }
             SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
             if (TTF_Init() == -1)
             {
                 result = false;
-                std::cout << "Error in SDL font creation: " << SDL_GetError() << "\n";
+                std::cout << __FUNCTION__ << " : Error in SDL font creation: " << SDL_GetError() << "\n";
             }
             screenSurface = SDL_GetWindowSurface(window);
         }
@@ -91,7 +91,7 @@ bool Game::initSDL()
 
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
     {
-        std::cout << "Error in audio setup\n";
+        std::cout << __FUNCTION__ << " : Error in audio setup\n";
         return result;
     }
 
@@ -144,7 +144,7 @@ void Game::createGameMenu()
 
     if (gameMenu.validate() == false)
     {
-        std::cout << "Error in game menu validation!" << "\n";
+        std::cout << __FUNCTION__ << "Error in game menu validation!" << "\n";
         exit(EXIT_FAILURE);
     }
 }
@@ -172,6 +172,8 @@ bool Game::initGame()
     trees.push_back(GameObject(35.0, 75.0, 25.0, &texDataStruct.treeTexture));
     trees.push_back(GameObject(-75.0, 0.0, 25.0, &texDataStruct.treeTexture2));
 
+    // create copyable objects
+
     bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
     flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture);
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
@@ -189,7 +191,7 @@ bool Game::initGame()
     ttfFont = TTF_OpenFont("data\\cour.ttf", 28);
     if (ttfFont == NULL)
     {
-        std::cout << "Error in opening *.ttf file.\n";
+        std::cout << __FUNCTION__ << " : Error in opening *.ttf file.\n";
     }
 
     SDL_Color color = { 200, 200, 200, 255 };
@@ -197,7 +199,7 @@ bool Game::initGame()
 
     someText = new MyText(renderer, ttfFont, { 127, 127, 127, 255 });
 
-    std::cout << "Game init done!" << std::endl;
+    std::cout << __FUNCTION__ << " : Game init done!" << std::endl;
     return true;
 }
 
@@ -312,19 +314,15 @@ void Game::mainLoop()
                     if (player.weaponIndex > player.weapons.size() - 1)
                     {
                         player.weaponIndex = 0;
-                        //exit = true;
                     }
-                    std::cout << "player weapon index : " << player.weaponIndex << "\n";
                 }
             }
         }
         
-        //std::cout << "event loop ... cycle\n";
         const Uint8* state = SDL_GetKeyboardState(NULL);
 
         if (state[SDL_SCANCODE_UP])
         {
-            std::cout << "up pressed ... \n";
             player.moveObj(NORTH);
         }
         if (state[SDL_SCANCODE_DOWN])
@@ -351,7 +349,6 @@ void Game::mainLoop()
                 {
                     addBulletFlag = player.getCurrentWeapon()->trigger();
                 }
-                std::cout << "add bullet flag: " << addBulletFlag << "\n";
                 break;
             case WeaponId::BOMB_DROP:
                 if (!addBombFlag)
@@ -385,13 +382,11 @@ void Game::mainLoop()
         
         if (addBulletFlag == true)
         {
-            std::cout << "add bullet flag: " << addBulletFlag << "\n";
             Bullet b = bulletTemplate;
             b.posX = player.posX;
             b.posY = player.posY;
             b.direction = bulletStartDir;
             bullets.push_back(b);
-            std::cout << "bullet added!";
             addBulletFlag = false;
         }
 
@@ -401,7 +396,6 @@ void Game::mainLoop()
             b.posX = player.posX;
             b.posY = player.posY;
             bombs.push_back(b);
-            std::cout << "bomb added!";
             addBombFlag = false;
         }
 
