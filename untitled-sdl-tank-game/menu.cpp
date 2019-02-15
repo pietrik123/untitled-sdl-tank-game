@@ -186,7 +186,7 @@ bool MenuItem::validate()
     }
     if (res == false)
     {
-        std::cout << "Error in menu item validation!\n";
+        std::cout << __FUNCTION__ << " : Error in menu item validation!\n";
     }
     return res;
 }
@@ -226,7 +226,7 @@ bool MenuWindow::validate()
     }
     if (res == false)
     {
-        std::cout << "Error in menu window validation!\n";
+        std::cout << __FUNCTION__ << " : Error in menu window validation!\n";
     }
     return res;
 }
@@ -250,7 +250,7 @@ bool GameMenu::validate()
     }
     if (res == false)
     {
-        std::cout << "Error in game menu validation!\n";
+        std::cout << __FUNCTION__ << " : Error in game menu validation!\n";
     }
     return res;
 }

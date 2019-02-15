@@ -53,7 +53,7 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
 GameObject::~GameObject()
 {
 	//delete this->myTex;
-	std::cout << "Destroying game object!" << std::endl;
+	std::cout << __FUNCTION__ << " : Destroying game object!" << std::endl;
 }
 
 void GameObject::moveObj(Direction direction)

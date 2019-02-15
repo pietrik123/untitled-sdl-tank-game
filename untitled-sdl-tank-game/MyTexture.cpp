@@ -1,11 +1,12 @@
 #include "MyTexture.h"
 
 #include <iostream>
+#include <stdlib.h>
 
 MyTexture::MyTexture()
 {
     sdlTexture = NULL;
-    std::cout << "MyTexture::MyTexture() : Empty texture created!" << std::endl;
+    std::cout << __FUNCTION__ << " : MyTexture::MyTexture() : Empty texture created!" << std::endl;
 }
 
 MyTexture::MyTexture(SDL_Renderer* renderer, std::string fileName)
@@ -16,7 +17,8 @@ MyTexture::MyTexture(SDL_Renderer* renderer, std::string fileName)
     textureSurface = IMG_Load(fileName.c_str());
     if (textureSurface == NULL)
     {
-        std::cout << "MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
+        std::cout << __FUNCTION__ << " : MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
+        exit(EXIT_FAILURE);
     }
 
     SDL_SetColorKey(textureSurface, SDL_TRUE, SDL_MapRGB(textureSurface->format, 0xFF, 0x00, 0xFF));
@@ -24,10 +26,10 @@ MyTexture::MyTexture(SDL_Renderer* renderer, std::string fileName)
     sdlTexture = SDL_CreateTextureFromSurface(renderer, textureSurface);
     if (sdlTexture == NULL)
     {
-        std::cout << "MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
+        std::cout << __FUNCTION__ << " : MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
     }
     SDL_FreeSurface(textureSurface);
-    std::cout << "MyTexture::MyTexture() : Texture created!" << std::endl;
+    std::cout << __FUNCTION__ << " : MyTexture::MyTexture() : Texture created!" << std::endl;
 }
 
 MyTexture::~MyTexture()
@@ -35,7 +37,7 @@ MyTexture::~MyTexture()
     // TODO this needs to be thought over.
     // For now destroying texture results in segmentation faults.
     // SDL_DestroyTexture(texture);
-    std::cout << "MyTexture::~MyTexture() : Destructor called!" << std::endl;
+    std::cout << __FUNCTION__ << " : MyTexture::~MyTexture() : Destructor called!" << std::endl;
 }
 
 bool MyTexture::loadTextTexture(const std::string& text, const SDL_Color& color, SDL_Renderer* renderer, TTF_Font* ttfFont)
@@ -44,14 +46,14 @@ bool MyTexture::loadTextTexture(const std::string& text, const SDL_Color& color,
     SDL_Surface* textSurface = TTF_RenderText_Solid(ttfFont, text.c_str(), color);
     if (textSurface == NULL)
     {
-        std::cout << "Error in creating text surface\n";
+        std::cout << __FUNCTION__ << " : Error in creating text surface\n";
         return false;
     }
 
     sdlTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     if (sdlTexture == NULL)
     {
-        std::cout << "Error in creating texture out of text surface\n";
+        std::cout << __FUNCTION__ << " : Error in creating texture out of text surface\n";
         return false;
     }
     
@@ -80,7 +82,7 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode)
     }
     else
     {
-        std::cout << "MyTexture::render() Incorrect mode used for rendering!\n";
+        std::cout << __FUNCTION__ << " : MyTexture::render() Incorrect mode used for rendering!\n";
     }
 
     rect.w = w;
@@ -116,7 +118,7 @@ void MyTexture::renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode
     }
     else
     {
-        std::cout << "MyTexture::renderAnim() Incorrect mode used for rendering!\n";
+        std::cout << __FUNCTION__ << " : MyTexture::renderAnim() Incorrect mode used for rendering!\n";
     }
 
     targetRect.w = tileWidth;
@@ -146,7 +148,7 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode,
     }
     else
     {
-        std::cout << "MyTexture::render() Incorrect mode used for rendering!\n";
+        std::cout << __FUNCTION__ << " : MyTexture::render() Incorrect mode used for rendering!\n";
     }
 
     rect.w = w;
