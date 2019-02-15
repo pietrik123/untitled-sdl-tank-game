@@ -70,9 +70,6 @@ From upper menu select:
 
 Compilation -> Compile solution ... 
 
-# Build server
-
-http://137.117.72.228:8080/
 
 More information soon ...
 
