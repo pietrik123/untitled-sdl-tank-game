@@ -161,10 +161,12 @@
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="MyText.cpp" />
     <ClCompile Include="ObjectAdder.cpp" />
+    <ClCompile Include="EnemyAdder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyAdder.h" />
     <ClInclude Include="Flame.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HUD.h" />

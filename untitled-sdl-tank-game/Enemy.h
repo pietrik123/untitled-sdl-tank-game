@@ -14,8 +14,8 @@ public:
     bool collided;
     unsigned int cnt;
 
-    short int dirX = 0;
-    short int dirY = 0;
+    short int dirX;
+    short int dirY;
     
     float prevPosX;
     float prevPosY;

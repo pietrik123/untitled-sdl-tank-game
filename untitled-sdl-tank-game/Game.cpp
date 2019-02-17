@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "ObjectAdder.h"
+#include "EnemyAdder.h"
 
 #include <iostream>
 #include <algorithm>
@@ -280,6 +281,8 @@ void Game::mainLoop()
     std::vector<GameObject>::iterator coinsIt;
 
     CoinAdder coinAdder(4);
+    Enemy enemyTemplate(0.0, 0.0, 25.0, &texDataStruct.enemyTexture);
+    EnemyAdder enemyAdder(enemyTemplate, 4, player);
     MyText scoreText(renderer, ttfFont, {127, 127, 127, 255});
 
     while (exit != true) {
@@ -628,6 +631,7 @@ void Game::mainLoop()
         }
 
         coinAdder.act(coins, coinTemplate);
+        enemyAdder.run(enemies);
 
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
             (*bricksIt).display(renderer, this);
@@ -660,11 +664,11 @@ void Game::mainLoop()
 int Game::getPosXOnScreen(float localPosX)
 {
     float posXinPlayerAxisSystem = localPosX - player.posX;
-    return (int)(scaleX * posXinPlayerAxisSystem + Game::screenWidth / 2.0);
+    return static_cast<int>(scaleX * posXinPlayerAxisSystem + Game::screenWidth / 2.0);
 }
 
 int Game::getPosYOnScreen(float localPosY)
 {
     float posYinPlayerAxisSystem = localPosY - player.posY;
-    return (int)(-scaleY * posYinPlayerAxisSystem + Game::screenHeight / 2.0);
+    return static_cast<int>(-scaleY * posYinPlayerAxisSystem + Game::screenHeight / 2.0);
 }
