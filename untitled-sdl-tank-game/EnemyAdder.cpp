@@ -4,10 +4,22 @@
 #include "utils/utils.h"
 #include "Player.h"
 
+Uint32 timerCallback(Uint32 interval, void *param)
+{
+    bool* p = static_cast<bool*>(param);
+    *p = true;
+    return 0;
+}
+
 EnemyAdder::EnemyAdder(const Enemy& paramEnemyTemplate, int parammaxNumOfEnemies, const Player& paramPlayer)
-    : enemyTemplate(paramEnemyTemplate), player(paramPlayer), maxNumOfEnemies(parammaxNumOfEnemies)
+    : enemyTemplate(paramEnemyTemplate), player(paramPlayer), maxNumOfEnemies(parammaxNumOfEnemies), timerElapsed(false)
 {
 
+    timerId = static_cast<int>(SDL_AddTimer(5000, timerCallback, &timerElapsed));
+    if (timerId == 0)
+    {
+        std::cout << __FUNCTION__ << " : Error in adding a timer!\n";
+    }
 }
 
 void EnemyAdder::run(std::vector<Enemy>& enemies)
@@ -56,5 +68,18 @@ void EnemyAdder::run(std::vector<Enemy>& enemies)
     if (cnt < 100)
     {
         cnt++;
+    }
+
+    if (timerElapsed)
+    {
+
+        std::cout << __FUNCTION__ << " : timer elapsed!\n";
+        SDL_RemoveTimer(timerId);
+        timerElapsed = false;
+        timerId = SDL_AddTimer(2000, timerCallback, &timerElapsed);
+        if (timerId == 0)
+        {
+            std::cout << __FUNCTION__ << " : Error in adding a timer!\n";
+        }
     }
 }

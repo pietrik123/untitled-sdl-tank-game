@@ -50,7 +50,7 @@ bool Game::initSDL()
 {
     bool result = true;
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 )
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0 )
     {
         result = false;
         std::cout << __FUNCTION__ << " : Error: " << SDL_GetError() << "\n";
