@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "../untitled-sdl-tank-game/utils/utils.cpp"
 
-TEST(TestCaseName, TestName) 
+TEST(UtilsTestSuite, distanceFromPointToLineBasicTest) 
 {
 	Point point{ 0, 0 };
 	Line line{ 1, 1, 0 };
