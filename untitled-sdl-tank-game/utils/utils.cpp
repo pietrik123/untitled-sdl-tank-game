@@ -3,15 +3,15 @@
 #include <math.h> 
 #include <vector>
 
-double distanceFromPointToLine(Line line, Point point)
+double distanceFromPointToLine(Point point, Line line)
 {
-	return (line.Acoef * point.PosX + line.Bcoef * point.PosY + line.Ccoef) /
-		sqrt( pow(line.Acoef, 2) + pow(line.Bcoef, 2) );
+	return abs( (line.Acoef * point.PosX + line.Bcoef * point.PosY + line.Ccoef) /
+		sqrt( pow(line.Acoef, 2) + pow(line.Bcoef, 2) ) );
 }
 
 bool isCircleAndLineIntersecting(Line line, Circle circle)
 {
-	if(distanceFromPointToLine(line, circle.center) > circle.radius)
+	if(distanceFromPointToLine(circle.center, line) > circle.radius)
 		return false;
 	else
 		return true;
