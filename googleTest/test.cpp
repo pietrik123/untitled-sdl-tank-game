@@ -1,6 +1,7 @@
 #include "pch.h"
-#include "../untitled-sdl-tank-game/utils/utils.cpp"
 #include "math.h"
+#include "utils/utils.h"
+#include "gtest/gtest.h"
 
 TEST(UtilsTestSuite, distanceFromPointToLineBasicCaseTest1) 
 {
@@ -30,7 +31,7 @@ TEST(UtilsTestSuite, distanceFromPointToLineHorizontalLineTest)
 	EXPECT_EQ(4, distanceFromPointToLine(point, line));
 }
 
-TEST(UtilsTestSuite, distanceFromPointToLineHorizontalLineTest)
+TEST(UtilsTestSuite, distanceFromPointToLineHorizontalLineTest2)
 {
 	Point point{ 0, 0 };
 	Line line{ 1, 0, -4 };
