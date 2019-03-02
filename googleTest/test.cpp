@@ -12,7 +12,7 @@ TEST(UtilsTestSuite, distanceFromPointToLineBasicCaseTest1)
 TEST(UtilsTestSuite, distanceFromPointToLineBasicCaseTest2)
 {
 	Point point{ 0, 0 };
-	Line line{ 1, 1, 4 };
+	Line line{ 1, 1, -4 };
 	EXPECT_EQ( roundf( sqrt(2) * 2 * 100 ) / 100, roundf( distanceFromPointToLine(point, line) * 100 ) / 100 );
 }
 
@@ -30,9 +30,39 @@ TEST(UtilsTestSuite, distanceFromPointToLineHorizontalLineTest)
 	EXPECT_EQ(4, distanceFromPointToLine(point, line));
 }
 
-TEST(UtilsTestSuite, distanceFromPointToLineHorizontalLineTest)
+TEST(UtilsTestSuite, LineCoefficentsDoNotRepresentLine)
 {
-	Point point{ 0, 0 };
-	Line line{ 1, 0, -4 };
-	EXPECT_EQ(4, distanceFromPointToLine(point, line));
+	bool wasExceptionCaught = false;
+
+	try
+	{
+		Line line{ 0, 0, -4 };
+	}
+	catch(std::invalid_argument)
+	{
+		wasExceptionCaught = true;
+	}
+
+	EXPECT_EQ(true, wasExceptionCaught);
+}
+
+TEST(UtilsTestSuite, areLineAndCircleIntersectingTwoPointsOfIntersection)
+{
+	Circle circle{ { 0, 0 }, 1 };
+	Line line{ 1, -1, 0 };
+	EXPECT_EQ(true, areLineAndCircleIntersecting(line, circle));
+}
+
+TEST(UtilsTestSuite, areLineAndCircleIntersectingOnePointOfIntersection)
+{
+	Circle circle{ { 0, 0 }, 1 };
+	Line line{ 1, 0, 1 };
+	EXPECT_EQ(true, areLineAndCircleIntersecting(line, circle));
+}
+
+TEST(UtilsTestSuite, areLineAndCircleIntersectingNoIntersection)
+{
+	Circle circle{ { 0, 0 }, 1 };
+	Line line{ 1, 0, 2 };
+	EXPECT_EQ(false, areLineAndCircleIntersecting(line, circle));
 }

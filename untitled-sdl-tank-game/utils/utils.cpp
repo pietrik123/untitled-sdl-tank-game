@@ -5,11 +5,12 @@
 
 double distanceFromPointToLine(Point point, Line line)
 {
+	// Acoef == Bcoef == 0 case secured in Line constructor
 	return abs( (line.Acoef * point.PosX + line.Bcoef * point.PosY + line.Ccoef) /
 		sqrt( pow(line.Acoef, 2) + pow(line.Bcoef, 2) ) );
 }
 
-bool isCircleAndLineIntersecting(Line line, Circle circle)
+bool areLineAndCircleIntersecting(Line line, Circle circle)
 {
 	if(distanceFromPointToLine(circle.center, line) > circle.radius)
 		return false;

@@ -3,7 +3,7 @@
 #include <vector>
 
 double distanceFromPointToLine(Point point, Line line);
-bool isCircleAndLineIntersecting(Line line, Circle circle);
+bool areLineAndCircleIntersecting(Line line, Circle circle);
 double getDelta(double a, double b, double c);
 std::vector<double> countSolutions(double a, double b, double c, double delta);
 
