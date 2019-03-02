@@ -38,7 +38,7 @@ std::vector<double> countSolutions(double a, double b, double c, double delta)
 
 double distanceFromPointToPoint(Point firstPoint, Point secondPoint)
 {
-	return sqrt(pow(firstPoint.PosX - secondPoint.PosX, 2) - pow(firstPoint.PosY - secondPoint.PosY, 2));
+	return sqrt(pow(firstPoint.PosX - secondPoint.PosX, 2) + pow(firstPoint.PosY - secondPoint.PosY, 2));
 }
 
 bool areCirclesIntersecting(Circle firstCircle, Circle secondCircle)
