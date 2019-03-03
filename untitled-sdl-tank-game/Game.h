@@ -111,7 +111,15 @@ public:
     
     // utils
 
-    int getPosXOnScreen(float);
-    int getPosYOnScreen(float);
+    /**
+     * get X coord in screen axis system
+     * param localPosX - x coord in local axis system
+     */
+    int getPosXOnScreen(float localPosX);
+    /**
+     * get Y coord in screen axis system
+     * param localPosX - y coord in local axis system
+     */
+    int getPosYOnScreen(float localPosY);
 };
 

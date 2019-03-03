@@ -586,11 +586,9 @@ void Game::mainLoop()
 
         //display
         SDL_RenderClear(renderer);
-
-        //tex->render(renderer, 0, 0, RENDER_IN_CENTER);
-        
-        terrain.display(renderer, this);
-
+   
+        // displaying background terrain
+        terrain.myTex->render(renderer, 0, 0, MyTexture::RENDER_IN_CORNER);
      
         for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
         {
@@ -659,12 +657,14 @@ void Game::mainLoop()
     }
 }
 
-int Game::getPosXOnScreen(float worldX)
+int Game::getPosXOnScreen(float localPosX)
 {
-    return (int)(scaleX * worldX + Game::screenWidth / 2.0);
+    float posXinPlayerAxisSystem = localPosX - player.posX;
+    return (int)(scaleX * posXinPlayerAxisSystem + Game::screenWidth / 2.0);
 }
 
-int Game::getPosYOnScreen(float worldY)
+int Game::getPosYOnScreen(float localPosY)
 {
-    return (int)(-scaleY * worldY + Game::screenHeight / 2.0);
+    float posYinPlayerAxisSystem = localPosY - player.posY;
+    return (int)(-scaleY * posYinPlayerAxisSystem + Game::screenHeight / 2.0);
 }
