@@ -111,3 +111,46 @@ TEST(UtilsTestSuite, distanceFromPointToPoint)
 	Point pointTwo{ 5, 5 };
 	EXPECT_EQ(sqrt(2) * 5, distanceFromPointToPoint(pointOne, pointTwo));
 }
+
+TEST(UtilsTestSuite, areCirclesIntersectingFalse)
+{
+	Circle firstCircle{ {0, 0}, {5} };
+	Circle secondCircle{ {15, 0}, {5} }; 
+	EXPECT_EQ(false, areCirclesIntersecting(firstCircle, secondCircle));
+}
+
+TEST(UtilsTestSuite, areCirclesIntersectingOneIntersectionPoint)
+{
+	Circle firstCircle{ {0, 0}, {5} };
+	Circle secondCircle{ {10, 0}, {5} };
+	EXPECT_EQ(true, areCirclesIntersecting(firstCircle, secondCircle));
+}
+
+
+TEST(UtilsTestSuite, areCirclesIntersectingTwoIntersectionPoints)
+{
+	Circle firstCircle{ {0, 0}, {5} };
+	Circle secondCircle{ {7, 0}, {5} };
+	EXPECT_EQ(true, areCirclesIntersecting(firstCircle, secondCircle));
+}
+
+TEST(UtilsTestSuite, isPointInRectangleFalse)
+{
+	Rectangle rectangle{ {0, 5}, {5, 5}, {0, 0}, {5, 0} };
+	Point point{ 10, 10 };
+	EXPECT_EQ(false, isPointInRectangle(point, rectangle));
+}
+
+TEST(UtilsTestSuite, isPointInRectangleTrue)
+{
+	Rectangle rectangle{ {0, 5}, {5, 5}, {0, 0}, {5, 0} };
+	Point point{ 1, 1 };
+	EXPECT_EQ(true, isPointInRectangle(point, rectangle));
+}
+
+TEST(UtilsTestSuite, isPointInRectangleTrueCorner)
+{
+	Rectangle rectangle{ {0, 5}, {5, 5}, {0, 0}, {5, 0} };
+	Point point{ 5, 5 };
+	EXPECT_EQ(true, isPointInRectangle(point, rectangle));
+}

@@ -53,10 +53,8 @@ bool areCirclesIntersecting(Circle firstCircle, Circle secondCircle)
 bool isPointInRectangle(Point point, Rectangle rectangle)
 {
 	// does NOT apply to twisted ractangles
-	if (point.PosX >= rectangle.bottomLeftCorner.PosX
-		&& point.PosX <= rectangle.bottomRightCorner.PosX
-		&& point.PosY >= rectangle.bottomLeftCorner.PosY
-		&& point.PosY <= rectangle.topLeftCorner.PosY)
+	if ((point.PosX >= rectangle.bottomLeftCorner.PosX && point.PosX <= rectangle.bottomRightCorner.PosX)
+		&& (point.PosY >= rectangle.bottomLeftCorner.PosY && point.PosY <= rectangle.topLeftCorner.PosY))
 		return true;
 	else
 		return false;
