@@ -62,12 +62,16 @@ bool isPointInRectangle(Point point, Rectangle rectangle)
 
 bool areRectanglesIntersecting(Rectangle firstRectangle, Rectangle secondRectangle)
 {
-	// std::vector<Point> rect {firstRectangle.topLeftCorner, firstRectangle.topRightCorner, firstRectangle.bottomRightCorner, firstRectangle.bottomLeftCorner};
-	// vector and for ... each better?
+	//first in second  ...
 	if (isPointInRectangle(firstRectangle.topLeftCorner, secondRectangle)
 		|| isPointInRectangle(firstRectangle.topRightCorner, secondRectangle)
 		|| isPointInRectangle(firstRectangle.bottomRightCorner, secondRectangle)
-		|| isPointInRectangle(firstRectangle.bottomLeftCorner, secondRectangle))
+		|| isPointInRectangle(firstRectangle.bottomLeftCorner, secondRectangle)
+		// second in first...
+		|| isPointInRectangle(secondRectangle.topLeftCorner, firstRectangle)
+		|| isPointInRectangle(secondRectangle.topRightCorner, firstRectangle)
+		|| isPointInRectangle(secondRectangle.bottomRightCorner, firstRectangle)
+		|| isPointInRectangle(secondRectangle.bottomLeftCorner, firstRectangle))
 		return true;
 	else
 		return false;

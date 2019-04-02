@@ -154,3 +154,31 @@ TEST(UtilsTestSuite, isPointInRectangleTrueCorner)
 	Point point{ 5, 5 };
 	EXPECT_EQ(true, isPointInRectangle(point, rectangle));
 }
+
+TEST(UtilsTestSuite, areRectanglesIntersectingTrue)
+{
+	Rectangle rectangleOne{ {0, 5}, {5, 5}, {0, 0}, {5, 0} };
+	Rectangle rectangleTwo{ {1, 6}, {6, 6}, {1, 1}, {6, 1} };
+	EXPECT_EQ(true, areRectanglesIntersecting(rectangleOne, rectangleTwo));
+}
+
+TEST(UtilsTestSuite, areRectanglesIntersectingTrueSecondInFirst)
+{
+	Rectangle rectangleOne{ {0, 5}, {5, 5}, {0, 0}, {5, 0} };
+	Rectangle rectangleTwo{ {1, 4}, {4, 4}, {1, 1}, {4, 1} };
+	EXPECT_EQ(true, areRectanglesIntersecting(rectangleOne, rectangleTwo));
+}
+
+TEST(UtilsTestSuite, areRectanglesIntersectingTrueFirstInSecond)
+{
+	Rectangle rectangleOne{ {0, 5}, {5, 5}, {0, 0}, {5, 0} };
+	Rectangle rectangleTwo{ {1, 4}, {4, 4}, {1, 1}, {4, 1} };
+	EXPECT_EQ(true, areRectanglesIntersecting(rectangleTwo, rectangleOne));
+}
+
+TEST(UtilsTestSuite, areRectanglesIntersectingFalse)
+{
+	Rectangle rectangleOne{ {0, 5}, {5, 5}, {0, 0}, {5, 0} };
+	Rectangle rectangleTwo{ {6, 10}, {10, 10}, {6, 6}, {10, 6} };
+	EXPECT_EQ(false, areRectanglesIntersecting(rectangleOne, rectangleTwo));
+}
