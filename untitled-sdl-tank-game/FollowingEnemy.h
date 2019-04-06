@@ -3,13 +3,13 @@
 
 class FollowingEnemy : public Enemy
 {
-	bool iAmChasing;
-	Point destinationPoint;
-	Point patrolPointA;
-	Point patrolPointB;
-	double minDinstanceForChase;
+	bool m_iAmChasing;
+	Point m_destinationPoint;
+	Point m_patrolPointA;
+	Point m_patrolPointB;
+	double m_minDinstanceForChase;
 public:
-	FollowingEnemy(float x, float y, float collisionRadius, MyTexture* texture, Point dstPoint, Point patPointA, Point patPointB, double minDinstanceForChase);
+	FollowingEnemy(float x, float y, float collisionRadius, MyTexture* texture, Point destinationPoint, Point patrolPointA, Point patrolPointB, double minDinstanceForChase);
 	virtual void follow(const GameObject& objectToFollow);
 	void patrolArea();
 	void GoToObject(const GameObject& objectToFollow);
