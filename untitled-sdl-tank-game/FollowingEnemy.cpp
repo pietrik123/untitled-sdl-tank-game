@@ -1,24 +1,25 @@
 #include "FollowingEnemy.h"
 
-FollowingEnemy::FollowingEnemy(float x, float y, float collisionRadius, MyTexture* texture, Point dstPoint, Point patPointA, Point patPointB, double minDist)
+FollowingEnemy::FollowingEnemy(float x, float y, float collisionRadius, MyTexture * texture, Point destinationPoint, Point patrolPointA, Point patrolPointB, double minDinstanceForChase)
+	: Enemy(x, y, collisionRadius, texture)
 {
-	Enemy(x, y, collisionRadius, texture);
-	patrolPointA = patPointA;
-	patrolPointB = patPointB;
-	minDinstanceForChase = minDist;
-	destinationPoint = dstPoint;
+	std::cout << "CREATED FOLLOWING ENEMY!" << std::endl;
+	m_patrolPointA = patrolPointA;
+	m_patrolPointB = patrolPointB;
+	m_minDinstanceForChase = minDinstanceForChase;
+	m_destinationPoint = destinationPoint;
 }
 
 void FollowingEnemy::follow(const GameObject & objectToFollow)
 {
-	
-	if (distanceFromPointToPoint({ objectToFollow.posX, objectToFollow.posY }, { posX, posY }) <= minDinstanceForChase)
+	if (distanceFromPointToPoint({ objectToFollow.posX, objectToFollow.posY }, { posX, posY }) <= m_minDinstanceForChase)
 	{
-		iAmChasing = true;
+		m_iAmChasing = true;
 		GoToObject(objectToFollow);
 	}
 	else
 	{
+		//m_iAmChasing = false;
 		patrolArea();
 	}
 }
@@ -26,14 +27,14 @@ void FollowingEnemy::follow(const GameObject & objectToFollow)
 void FollowingEnemy::patrolArea()
 {
 	// chose point only if stoping chasing or one of point already reached
-	if(iAmChasing = true 
-		|| (posX == patrolPointA.PosX && posY == patrolPointA.PosY)
-		|| (posX == patrolPointB.PosX && posY == patrolPointB.PosY))
+	if(m_iAmChasing == true 
+		|| (posX == m_patrolPointA.PosX && posY == m_patrolPointA.PosY)
+		|| (posX == m_patrolPointB.PosX && posY == m_patrolPointB.PosY))
 	{ 
-		iAmChasing = false;
-		destinationPoint = chosePointToGoTo();
+		m_iAmChasing = false;
+		m_destinationPoint = chosePointToGoTo();
 	}
-	GoToPoint(destinationPoint);
+	GoToPoint(m_destinationPoint);
 }
 
 void FollowingEnemy::GoToObject(const GameObject& object)
@@ -101,5 +102,5 @@ void FollowingEnemy::GoToPoint(Point point)
 Point FollowingEnemy::chosePointToGoTo()
 {
 	// between patrolPointA and patrolPointB go to further one if you have to pick
-	return distanceFromPointToPoint({ posX, posY }, patrolPointA) > distanceFromPointToPoint({ posX, posY }, patrolPointB) ? patrolPointA : patrolPointB;
+	return distanceFromPointToPoint({ posX, posY }, m_patrolPointA) > distanceFromPointToPoint({ posX, posY }, m_patrolPointB) ? m_patrolPointA : m_patrolPointB;
 }

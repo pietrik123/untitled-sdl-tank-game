@@ -166,6 +166,8 @@ bool Game::initGame()
     enemies.push_back(Enemy(-50.0, -100.0, 25.0, &texDataStruct.enemyTexture));
     enemies.push_back(Enemy(50.0, 50.0, 25.0, &texDataStruct.enemyTexture));
 
+	followingEnemies.push_back(FollowingEnemy(0.0, 200.0, 0.0, &texDataStruct.enemyTexture, { -100, 200.0 }, { -100, 200.0 }, { 100, 200.0 }, 100.0));
+
     bricks.push_back(GameObject(-100.0, -100.0, 25.0, &texDataStruct.brickTexture));
     bricks.push_back(GameObject(-100.0, -50.0, 25.0, &texDataStruct.brickTexture));
 
@@ -273,6 +275,7 @@ void Game::mainLoop()
     Direction bulletStartDir = EAST;
 
     std::vector<Enemy>::iterator enemyIt;
+	std::vector<FollowingEnemy>::iterator followingEnemyIt;
     std::vector<Bullet>::iterator bulletIt;
     std::vector<Bomb>::iterator bombIt;
     std::vector<Flame>::iterator flameIt;
@@ -291,6 +294,12 @@ void Game::mainLoop()
             (*enemyIt).prevPosX = (*enemyIt).posX;
             (*enemyIt).prevPosY = (*enemyIt).posY;
         }
+
+		for (followingEnemyIt = followingEnemies.begin(); followingEnemyIt != followingEnemies.end(); ++followingEnemyIt)
+		{
+			(*followingEnemyIt).prevPosX = (*followingEnemyIt).posX;
+			(*followingEnemyIt).prevPosY = (*followingEnemyIt).posY;
+		}
         //game logic cycle
 
         //handle keyboard
@@ -413,6 +422,13 @@ void Game::mainLoop()
             (*enemyIt).writePrevPositions();
         }
 
+		// write previous positions of enemies
+		for (followingEnemyIt = followingEnemies.begin(); followingEnemyIt != followingEnemies.end(); ++followingEnemyIt)
+		{
+			(*followingEnemyIt).writePrevPositions();
+		}
+
+
         //check player collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
         {
@@ -526,6 +542,10 @@ void Game::mainLoop()
         {
             (*enemyIt).follow(player);
         }
+		for (followingEnemyIt = followingEnemies.begin(); followingEnemyIt != followingEnemies.end(); ++followingEnemyIt)
+		{
+			(*followingEnemyIt).follow(player);
+		}
 
         //check enemy collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
@@ -600,6 +620,11 @@ void Game::mainLoop()
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
             (*enemyIt).display(renderer, this);
         }
+
+		for (followingEnemyIt = followingEnemies.begin(); followingEnemyIt != followingEnemies.end(); ++followingEnemyIt) {
+			(*followingEnemyIt).display(renderer, this);
+		}
+			   
 
         for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
             (*bulletIt).myTex->render(renderer,
