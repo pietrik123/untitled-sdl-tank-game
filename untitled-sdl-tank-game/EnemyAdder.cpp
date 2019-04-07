@@ -14,7 +14,6 @@ Uint32 timerCallback(Uint32 interval, void *param)
 EnemyAdder::EnemyAdder(const Enemy& paramEnemyTemplate, int parammaxNumOfEnemies, const Player& paramPlayer)
     : enemyTemplate(paramEnemyTemplate), player(paramPlayer), maxNumOfEnemies(parammaxNumOfEnemies), timerElapsed(false)
 {
-
     timerId = static_cast<int>(SDL_AddTimer(5000, timerCallback, &timerElapsed));
     if (timerId == 0)
     {
@@ -31,7 +30,6 @@ void EnemyAdder::run(std::vector<Enemy>& enemies)
         Point playerPos;
         playerPos.PosX = player.posX;
         playerPos.PosY = player.posY;
-        //std::cout << __FUNCTION__ << " : player : " << player.posX << " " << player.posY << "\n";
 
         Point newEnemyPosCandidate;
         newEnemyPosCandidate.PosX = 0.0;
@@ -44,7 +42,7 @@ void EnemyAdder::run(std::vector<Enemy>& enemies)
             newEnemyPosCandidate.PosX = static_cast<float>(rand() % 300 - 150);
             newEnemyPosCandidate.PosY = static_cast<float>(rand() % 300 - 150);
             double dist = distanceFromPointToPoint(playerPos, newEnemyPosCandidate);
-            //std::cout << __FUNCTION__ << " : dist : " << dist << "\n";
+            
             if ( dist > 50.0)
             {               
                 isEnemyPositionSelected = true;
@@ -72,7 +70,6 @@ void EnemyAdder::run(std::vector<Enemy>& enemies)
 
     if (timerElapsed)
     {
-
         std::cout << __FUNCTION__ << " : timer elapsed!\n";
         SDL_RemoveTimer(timerId);
         timerElapsed = false;
