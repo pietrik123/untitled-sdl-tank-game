@@ -3,15 +3,16 @@
 #include <math.h> 
 #include <vector>
 
-double distanceFromPointToLine(Line line, Point point)
+double distanceFromPointToLine(Point point, Line line)
 {
-	return (line.Acoef * point.PosX + line.Bcoef * point.PosY + line.Ccoef) /
-		sqrt( pow(line.Acoef, 2) + pow(line.Bcoef, 2) );
+	// Acoef == Bcoef == 0 case secured in Line constructor
+	return abs( (line.Acoef * point.PosX + line.Bcoef * point.PosY + line.Ccoef) /
+		sqrt( pow(line.Acoef, 2) + pow(line.Bcoef, 2) ) );
 }
 
-bool isCircleAndLineIntersecting(Line line, Circle circle)
+bool areLineAndCircleIntersecting(Line line, Circle circle)
 {
-	if(distanceFromPointToLine(line, circle.center) > circle.radius)
+	if(distanceFromPointToLine(circle.center, line) > circle.radius)
 		return false;
 	else
 		return true;
@@ -37,7 +38,7 @@ std::vector<double> countSolutions(double a, double b, double c, double delta)
 
 double distanceFromPointToPoint(Point firstPoint, Point secondPoint)
 {
-	return sqrt(pow(firstPoint.PosX - secondPoint.PosX, 2) - pow(firstPoint.PosY - secondPoint.PosY, 2));
+	return sqrt(pow(firstPoint.PosX - secondPoint.PosX, 2) + pow(firstPoint.PosY - secondPoint.PosY, 2));
 }
 
 bool areCirclesIntersecting(Circle firstCircle, Circle secondCircle)
@@ -52,10 +53,8 @@ bool areCirclesIntersecting(Circle firstCircle, Circle secondCircle)
 bool isPointInRectangle(Point point, Rectangle rectangle)
 {
 	// does NOT apply to twisted ractangles
-	if (point.PosX >= rectangle.bottomLeftCorner.PosX
-		&& point.PosX <= rectangle.bottomRightCorner.PosX
-		&& point.PosY >= rectangle.bottomLeftCorner.PosY
-		&& point.PosY <= rectangle.topLeftCorner.PosY)
+	if ((point.PosX >= rectangle.bottomLeftCorner.PosX && point.PosX <= rectangle.bottomRightCorner.PosX)
+		&& (point.PosY >= rectangle.bottomLeftCorner.PosY && point.PosY <= rectangle.topLeftCorner.PosY))
 		return true;
 	else
 		return false;
@@ -63,12 +62,16 @@ bool isPointInRectangle(Point point, Rectangle rectangle)
 
 bool areRectanglesIntersecting(Rectangle firstRectangle, Rectangle secondRectangle)
 {
-	// std::vector<Point> rect {firstRectangle.topLeftCorner, firstRectangle.topRightCorner, firstRectangle.bottomRightCorner, firstRectangle.bottomLeftCorner};
-	// vector and for ... each better?
+	//first in second  ...
 	if (isPointInRectangle(firstRectangle.topLeftCorner, secondRectangle)
 		|| isPointInRectangle(firstRectangle.topRightCorner, secondRectangle)
 		|| isPointInRectangle(firstRectangle.bottomRightCorner, secondRectangle)
-		|| isPointInRectangle(firstRectangle.bottomLeftCorner, secondRectangle))
+		|| isPointInRectangle(firstRectangle.bottomLeftCorner, secondRectangle)
+		// second in first...
+		|| isPointInRectangle(secondRectangle.topLeftCorner, firstRectangle)
+		|| isPointInRectangle(secondRectangle.topRightCorner, firstRectangle)
+		|| isPointInRectangle(secondRectangle.bottomRightCorner, firstRectangle)
+		|| isPointInRectangle(secondRectangle.bottomLeftCorner, firstRectangle))
 		return true;
 	else
 		return false;

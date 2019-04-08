@@ -2,8 +2,8 @@
 #include "figures.h"
 #include <vector>
 
-double distanceFromPointToLine(Line line, Point point);
-bool isCircleAndLineIntersecting(Line line, Circle circle);
+double distanceFromPointToLine(Point point, Line line);
+bool areLineAndCircleIntersecting(Line line, Circle circle);
 double getDelta(double a, double b, double c);
 std::vector<double> countSolutions(double a, double b, double c, double delta);
 
