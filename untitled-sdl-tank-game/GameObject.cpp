@@ -7,6 +7,12 @@
 
 GameObject::GameObject()
 {
+    radius = 1.0;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y)
@@ -14,6 +20,10 @@ GameObject::GameObject(float x, float y)
 	posX = x;
 	posY = y;
 	radius = 1.0;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y, float parRadius)
@@ -21,6 +31,10 @@ GameObject::GameObject(float x, float y, float parRadius)
 	posX = x;
 	posY = y;
 	radius = parRadius;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y, MyTexture* texture)
@@ -29,6 +43,10 @@ GameObject::GameObject(float x, float y, MyTexture* texture)
 	posY = y;
 	radius = 1.0;
 	myTex = texture;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
@@ -38,6 +56,10 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
 	radius = parRadius;
 	myTex = texture;
 	direction = EAST;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
@@ -48,6 +70,10 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
 	radius = parRadius;
 	myTex = texture;
 	direction = dir;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::~GameObject()

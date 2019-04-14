@@ -41,6 +41,11 @@ bool isBombExploded(const Bomb &b)
     return b.exploded;
 }
 
+bool isObjectToRemove(const GameObject &o)
+{
+    return o.isToRemove;   
+}
+
 Game::~Game() 
 {
     std::cout << __FUNCTION__ << " : Game finished!" << "\n";
@@ -120,6 +125,7 @@ void Game::loadTextures()
     texDataStruct.treeTexture = MyTexture(renderer, "data\\gfx\\tree1.png");
     texDataStruct.treeTexture2 = MyTexture(renderer, "data\\gfx\\tree2.png");
     texDataStruct.coinTexture = MyTexture(renderer, "data\\gfx\\coin.png");
+    texDataStruct.sparkTexture = MyTexture(renderer, "data\\gfx\\spark.png");
 }
 
 void Game::createGameMenu()
@@ -181,13 +187,13 @@ bool Game::initGame()
     flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture);
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
     coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture);
+    sparkTemplate = GameObject(-10.0, -10.0, &texDataStruct.sparkTexture);
     coinTemplate.radius = 12.0;
 
     // add some coins
     GameObject c = coinTemplate;
     c.posX = 80.0;
     c.posY = -50.0;
-    coins.push_back(c);
        
     music = Mix_LoadMUS("data\\bandit_radio.wav");
 
@@ -224,6 +230,7 @@ bool Game::endGame()
     SDL_DestroyTexture(texDataStruct.treeTexture.sdlTexture);
     SDL_DestroyTexture(texDataStruct.treeTexture2.sdlTexture);
     SDL_DestroyTexture(texDataStruct.coinTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.sparkTexture.sdlTexture);
 
     delete someText;
 
@@ -283,12 +290,14 @@ void Game::mainLoop()
     std::vector<GameObject>::iterator bricksIt;
     std::vector<GameObject>::iterator coinsIt;
 
-    CoinAdder coinAdder(4);
     Enemy enemyTemplate(0.0, 0.0, 25.0, &texDataStruct.enemyTexture);
     EnemyAdder enemyAdder(enemyTemplate, 4, player);
+    CoinAdder coinAdder(2);
     MyText scoreText(renderer, ttfFont, {127, 127, 127, 255});
 
+    mainLoopCnt = 0;
     while (exit != true) {
+        
         float prevPosX = player.posX;
         float prevPosY = player.posY;
 
@@ -419,6 +428,7 @@ void Game::mainLoop()
         std::vector<GameObject>::iterator bricksIt;
         std::vector<GameObject>::iterator treesIt;
         std::vector<GameObject>::iterator coinsIt;
+        std::vector<GameObject>::iterator sparkIt;
                
         // write previous positions of enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
@@ -576,17 +586,44 @@ void Game::mainLoop()
 			}
         }
 
+        coinAdder.act(coins, sparks, coinTemplate, sparkTemplate);
+
         //erase enemies, who have energy below or equal 0
         enemies.erase(
             std::remove_if(enemies.begin(), enemies.end(), isEnemyDestroyed),
             enemies.end());
 
+
 		patrollingEnemies.erase(
 			std::remove_if(patrollingEnemies.begin(), patrollingEnemies.end(), isEnemyDestroyed),
 			patrollingEnemies.end());
 
-        
+        for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt)
+        {
+            if (collision(player, *coinsIt, RADIUS, RADIUS))
+            {
+                if ((*coinsIt).childId != 0)
+                {
+                    for (sparkIt = sparks.begin(); sparkIt != sparks.end(); ++sparkIt)
+                    {
+                        if ((*sparkIt).id == (*coinsIt).childId)
+                        {
+                            break;
+                        }
+                    }
+                    (*sparkIt).isToRemove = true;
+                }
+                coins.erase(coinsIt);
+                player.coinsCollected++;
+                break;
+            }
+        }
 
+        // delete sparks if coin is no longer there
+        sparks.erase(
+            std::remove_if(sparks.begin(), sparks.end(), isObjectToRemove),
+            sparks.end());
+        
         // handle enemies' collisions
 		std::vector<Enemy*> extendedEnemies;
 		for (int i = 0; i < enemies.size(); ++i)
@@ -677,19 +714,24 @@ void Game::mainLoop()
                 MyTexture::RENDER_IN_CENTER, 5, flame.texFrame);
         }
 
-        for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt)
-        {
-            if (collision(player, *coinsIt, RADIUS, RADIUS))
+        for (sparkIt = sparks.begin(); sparkIt != sparks.end(); ++sparkIt) {
+            GameObject &spark = (*sparkIt);
+            spark.myTex->renderAnim(renderer,
+                getPosXOnScreen(spark.posX),
+                getPosYOnScreen(spark.posY),
+                MyTexture::RENDER_IN_CENTER, 5, spark.texFrame);
+            if (mainLoopCnt % 3 == 0)
             {
-                coins.erase(coinsIt);
-                player.coinsCollected++;
-                break;
+                spark.texFrame++;
+            }
+            if (spark.texFrame > 10)
+            {
+                spark.texFrame = 0;
             }
         }
 
-        coinAdder.act(coins, coinTemplate);
         enemyAdder.run(enemies);
-
+     
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
             (*bricksIt).display(renderer, this);
         }
@@ -712,6 +754,8 @@ void Game::mainLoop()
             renderer, ttfFont, { 255, 255, 255, 255 });
      
         SDL_RenderPresent(renderer);
+
+        mainLoopCnt++;
 
         //wait
         SDL_Delay(50);
