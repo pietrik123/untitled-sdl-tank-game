@@ -24,11 +24,24 @@ enum BoundsType
 class GameObject
 {
 public:
+    /** 
+     * equals (-1) be default, has to be set manually. Can be used for (parent/child) handling
+     */
+    int id;
+    /**
+     * equals (-10) be default, has to be set manually. Can be used for (parent/child) handling
+     */
+    int childId;
+
     float posX;
     float posY;
     float prevPosX;
     float prevPosY;
     float radius;
+
+    int texFrame;
+    
+    bool isToRemove;
 
     MyTexture* myTex;
     std::vector<MyTexture> additionalTextures;

@@ -41,6 +41,7 @@ struct TextureDataStruct
     MyTexture treeTexture;
     MyTexture treeTexture2;
     MyTexture coinTexture;
+    MyTexture sparkTexture;
 };
 
 class Game
@@ -71,6 +72,7 @@ public:
     Flame flameTemplate;
     Bomb bombTemplate;
     GameObject coinTemplate;
+    GameObject sparkTemplate;
 
     // groups of objects
     std::vector<Enemy> enemies;
@@ -81,6 +83,7 @@ public:
     std::vector<Bomb> bombs;
     std::vector<GameObject> trees;
     std::vector<GameObject> coins;
+    std::vector<GameObject> sparks;
     
     // texture struct	
     TextureDataStruct texDataStruct;
@@ -92,6 +95,8 @@ public:
 
     float scaleX; // screen_dx/world_dx
     float scaleY; // screen_dy/world_dy
+
+    unsigned long int mainLoopCnt = 0;
 
     // constructors and destructors
 
