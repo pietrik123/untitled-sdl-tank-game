@@ -589,7 +589,6 @@ void Game::mainLoop()
 		{
 			extendedEnemies.push_back(&followingEnemies[i]);
 		}
-		std::cout << extendedEnemies.size() << std::endl;
         for (i = 0; i < extendedEnemies.size(); i++)
         {
 			extendedEnemies[i]->collided = false;
@@ -602,7 +601,6 @@ void Game::mainLoop()
 
                 if (res == true)
                 {
-					std::cout << "COLLISION!" << std::endl;
 					extendedEnemies[i]->posX = extendedEnemies[i]->prevPosX;
 					extendedEnemies[i]->posY = extendedEnemies[i]->prevPosY;
 					extendedEnemies[i]->collided = true;
