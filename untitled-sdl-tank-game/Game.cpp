@@ -561,31 +561,54 @@ void Game::mainLoop()
                     (*enemyIt).posY = (*enemyIt).prevPosY;
                 }
             }
+			for (followingEnemyIt = followingEnemies.begin(); followingEnemyIt != followingEnemies.end(); ++followingEnemyIt)
+			{
+				if (collision(*followingEnemyIt, *bricksIt, RADIUS, RADIUS))
+				{
+					(*followingEnemyIt).posX = (*followingEnemyIt).prevPosX;
+					(*followingEnemyIt).posY = (*followingEnemyIt).prevPosY;
+				}
+			}
         }
 
         //erase enemies, who have energy below or equal 0
         enemies.erase(
             std::remove_if(enemies.begin(), enemies.end(), isEnemyDestroyed),
             enemies.end());
+
+		followingEnemies.erase(
+			std::remove_if(followingEnemies.begin(), followingEnemies.end(), isEnemyDestroyed),
+			followingEnemies.end());
+
         
 
         // handle enemies' collisions
-        unsigned int j;
-        for (i = 0; i < enemies.size(); i++)
+		std::vector<Enemy*> extendedEnemies;
+		for (int i = 0; i < enemies.size(); ++i)
+		{
+			extendedEnemies.push_back(&enemies[i]);
+		}
+		for (int i = 0; i < followingEnemies.size(); ++i)
+		{
+			extendedEnemies.push_back(&followingEnemies[i]);
+		}
+		std::cout << extendedEnemies.size() << std::endl;
+        for (i = 0; i < extendedEnemies.size(); i++)
         {
-            enemies[i].collided = false;
-            for (j = 0; j < enemies.size(); j++)
+			extendedEnemies[i]->collided = false;
+            for (unsigned int j = 0; j < extendedEnemies.size(); j++)
             {
                 if (i == j) continue;
 
-                bool res = collision(enemies[i], enemies[j],
+                bool res = collision( *(extendedEnemies[i]), *(extendedEnemies[j]),
                     BoundsType::RADIUS, BoundsType::RADIUS);
 
                 if (res == true)
                 {
-                    enemies[i].posX = enemies[i].prevPosX;
-                    enemies[i].posY = enemies[i].prevPosY;
-                    enemies[i].collided = true;
+					std::cout << "COLLISION!" << std::endl;
+					extendedEnemies[i]->posX = extendedEnemies[i]->prevPosX;
+					extendedEnemies[i]->posY = extendedEnemies[i]->prevPosY;
+					extendedEnemies[i]->collided = true;
                 }
             }
         }
@@ -606,7 +629,11 @@ void Game::mainLoop()
             (*enemyIt).writePrevPositions();
         }
 
-
+		for (followingEnemyIt = followingEnemies.begin(); followingEnemyIt != followingEnemies.end(); ++followingEnemyIt)
+		{
+			(*followingEnemyIt).writePrevPositions();
+		}
+		
         //display
         SDL_RenderClear(renderer);
    
@@ -620,11 +647,13 @@ void Game::mainLoop()
 
         player.display(renderer, this);
 
-        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) 
+		{
             (*enemyIt).display(renderer, this);
         }
 
-		for (followingEnemyIt = followingEnemies.begin(); followingEnemyIt != followingEnemies.end(); ++followingEnemyIt) {
+		for (followingEnemyIt = followingEnemies.begin(); followingEnemyIt != followingEnemies.end(); ++followingEnemyIt)
+		{
 			(*followingEnemyIt).display(renderer, this);
 		}
 			   
