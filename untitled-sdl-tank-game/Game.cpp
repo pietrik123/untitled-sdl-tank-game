@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "ObjectAdder.h"
 #include "EnemyAdder.h"
+#include "PlayerHealthBar.h"
 
 #include <iostream>
 #include <algorithm>
@@ -296,6 +297,9 @@ void Game::mainLoop()
     MyText scoreText(renderer, ttfFont, {127, 127, 127, 255});
 
     mainLoopCnt = 0;
+
+    PlayerHealthBar healthBar(player);
+
     while (exit != true) {
         
         float prevPosX = player.posX;
@@ -743,6 +747,8 @@ void Game::mainLoop()
         for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt) {
             (*coinsIt).display(renderer, this);
         }
+
+        healthBar.display(0, 0, renderer);
 
         hud.display(renderer, player);
 

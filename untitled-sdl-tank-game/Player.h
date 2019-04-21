@@ -25,6 +25,9 @@ public:
 
     Weapon* getCurrentWeapon();
 
+    unsigned int energy;
+    unsigned int maxEnergy;
+
     ~Player();
 
     void moveObj(Direction direction);

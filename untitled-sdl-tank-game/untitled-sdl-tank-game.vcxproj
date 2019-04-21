@@ -163,6 +163,7 @@
     <ClCompile Include="MyText.cpp" />
     <ClCompile Include="ObjectAdder.cpp" />
     <ClCompile Include="EnemyAdder.cpp" />
+    <ClCompile Include="PlayerHealthBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="MyTexture.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="PlayerHealthBar.h" />
     <ClInclude Include="ObjectAdder.h" />
     <ClInclude Include="PatrollingEnemy.h" />
     <ClInclude Include="Player.h" />
