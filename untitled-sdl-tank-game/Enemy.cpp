@@ -9,6 +9,8 @@ Enemy::Enemy()
     energy = 100;
     isStuck = false;
     cnt = 0;
+    dirX = 0;
+    dirY = 0;
 }
 
 Enemy::Enemy(float x, float y) : GameObject(x, y)
@@ -17,6 +19,8 @@ Enemy::Enemy(float x, float y) : GameObject(x, y)
     energy = 100;
     isStuck = false;
     cnt = 0;
+    dirX = 0;
+    dirY = 0;
 }
 
 Enemy::Enemy(float x, float y, float collisionRadius, MyTexture* texture) : GameObject(x, y)
@@ -27,6 +31,8 @@ Enemy::Enemy(float x, float y, float collisionRadius, MyTexture* texture) : Game
     myTex = texture;
     isStuck = false;
     cnt = 0;
+    dirX = 0;
+    dirY = 0;
 }
 
 bool Enemy::isHit(Bullet &b)
@@ -38,6 +44,8 @@ bool Enemy::isHit(Bullet &b)
         hit = true;
     }
     return hit;
+    dirX = 0;
+    dirY = 0;
 }
 
 void Enemy::follow(const GameObject& objectToFollow)
