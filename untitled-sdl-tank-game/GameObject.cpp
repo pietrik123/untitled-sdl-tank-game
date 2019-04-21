@@ -76,14 +76,12 @@ void GameObject::display(SDL_Renderer* renderer, Game* game)
 
 float getDistance(const GameObject& obj1, const GameObject& obj2)
 {
-	return
-		powf(powf(obj1.posX - obj2.posX, 2.0) + powf(obj1.posY - obj2.posY, 2.0), 0.5);
+	return distanceFromPointToPoint({ obj1.posX, obj1.posY }, { obj2.posX, obj2.posY });
 }
 
 float getDistance(const GameObject& obj1, float pointX, float pointY)
 {
-	return
-		powf(powf(obj1.posX - pointX, 2.0) + powf(obj1.posY - pointY, 2.0), 0.5);
+	return distanceFromPointToPoint({ obj1.posX, obj1.posY }, { pointX, pointY });
 }
 
 bool collision(const GameObject& obj1, const GameObject& obj2,
