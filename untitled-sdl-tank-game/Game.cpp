@@ -303,6 +303,7 @@ void Game::mainLoop()
 			(*patrollingEnemyIt).prevPosX = (*patrollingEnemyIt).posX;
 			(*patrollingEnemyIt).prevPosY = (*patrollingEnemyIt).posY;
 		}
+
         //game logic cycle
 
         //handle keyboard
@@ -425,7 +426,8 @@ void Game::mainLoop()
             (*enemyIt).writePrevPositions();
         }
 
-		// write previous positions of enemies
+		// write previous positions of patrolling enemies
+
 		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 		{
 			(*patrollingEnemyIt).writePrevPositions();
@@ -545,6 +547,7 @@ void Game::mainLoop()
         {
             (*enemyIt).follow(player);
         }
+
 		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 		{
 			(*patrollingEnemyIt).follow(player);
@@ -561,12 +564,14 @@ void Game::mainLoop()
                     (*enemyIt).posY = (*enemyIt).prevPosY;
                 }
             }
+
 			for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 			{
 				if (collision(*patrollingEnemyIt, *bricksIt, RADIUS, RADIUS))
 				{
 					(*patrollingEnemyIt).posX = (*patrollingEnemyIt).prevPosX;
 					(*patrollingEnemyIt).posY = (*patrollingEnemyIt).prevPosY;
+
 				}
 			}
         }
@@ -715,8 +720,8 @@ void Game::mainLoop()
 
 int Game::getPosXOnScreen(float localPosX)
 {
-    float posXinPlayerAxisSystem = localPosX - player.posX;
-    return static_cast<int>(scaleX * posXinPlayerAxisSystem + Game::screenWidth / 2.0);
+	float posXinPlayerAxisSystem = localPosX - player.posX;
+	return static_cast<int>(scaleX * posXinPlayerAxisSystem + Game::screenWidth / 2.0);
 }
 
 int Game::getPosYOnScreen(float localPosY)
@@ -724,3 +729,4 @@ int Game::getPosYOnScreen(float localPosY)
     float posYinPlayerAxisSystem = localPosY - player.posY;
     return static_cast<int>(-scaleY * posYinPlayerAxisSystem + Game::screenHeight / 2.0);
 }
+
