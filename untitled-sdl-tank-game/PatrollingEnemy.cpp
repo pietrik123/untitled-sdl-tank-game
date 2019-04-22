@@ -18,7 +18,6 @@ void PatrollingEnemy::follow(const GameObject& objectToFollow)
 	}
 	else
 	{
-		//m_iAmChasing = false;
 		patrolArea();
 	}
 }

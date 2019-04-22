@@ -276,7 +276,7 @@ void Game::mainLoop()
     Direction bulletStartDir = EAST;
 
     std::vector<Enemy>::iterator enemyIt;
-	std::vector<PatrollingEnemy>::iterator PatrollingEnemyIt;
+	std::vector<PatrollingEnemy>::iterator patrollingEnemyIt;
     std::vector<Bullet>::iterator bulletIt;
     std::vector<Bomb>::iterator bombIt;
     std::vector<Flame>::iterator flameIt;
@@ -298,10 +298,10 @@ void Game::mainLoop()
             (*enemyIt).prevPosY = (*enemyIt).posY;
         }
 
-		for (PatrollingEnemyIt = patrollingEnemies.begin(); PatrollingEnemyIt != patrollingEnemies.end(); ++PatrollingEnemyIt)
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 		{
-			(*PatrollingEnemyIt).prevPosX = (*PatrollingEnemyIt).posX;
-			(*PatrollingEnemyIt).prevPosY = (*PatrollingEnemyIt).posY;
+			(*patrollingEnemyIt).prevPosX = (*patrollingEnemyIt).posX;
+			(*patrollingEnemyIt).prevPosY = (*patrollingEnemyIt).posY;
 		}
         //game logic cycle
 
@@ -426,9 +426,9 @@ void Game::mainLoop()
         }
 
 		// write previous positions of enemies
-		for (PatrollingEnemyIt = patrollingEnemies.begin(); PatrollingEnemyIt != patrollingEnemies.end(); ++PatrollingEnemyIt)
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 		{
-			(*PatrollingEnemyIt).writePrevPositions();
+			(*patrollingEnemyIt).writePrevPositions();
 		}
 
 
@@ -545,9 +545,9 @@ void Game::mainLoop()
         {
             (*enemyIt).follow(player);
         }
-		for (PatrollingEnemyIt = patrollingEnemies.begin(); PatrollingEnemyIt != patrollingEnemies.end(); ++PatrollingEnemyIt)
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 		{
-			(*PatrollingEnemyIt).follow(player);
+			(*patrollingEnemyIt).follow(player);
 		}
 
         //check enemy collision with the wall
@@ -561,12 +561,12 @@ void Game::mainLoop()
                     (*enemyIt).posY = (*enemyIt).prevPosY;
                 }
             }
-			for (PatrollingEnemyIt = patrollingEnemies.begin(); PatrollingEnemyIt != patrollingEnemies.end(); ++PatrollingEnemyIt)
+			for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 			{
-				if (collision(*PatrollingEnemyIt, *bricksIt, RADIUS, RADIUS))
+				if (collision(*patrollingEnemyIt, *bricksIt, RADIUS, RADIUS))
 				{
-					(*PatrollingEnemyIt).posX = (*PatrollingEnemyIt).prevPosX;
-					(*PatrollingEnemyIt).posY = (*PatrollingEnemyIt).prevPosY;
+					(*patrollingEnemyIt).posX = (*patrollingEnemyIt).prevPosX;
+					(*patrollingEnemyIt).posY = (*patrollingEnemyIt).prevPosY;
 				}
 			}
         }
@@ -627,9 +627,9 @@ void Game::mainLoop()
             (*enemyIt).writePrevPositions();
         }
 
-		for (PatrollingEnemyIt = patrollingEnemies.begin(); PatrollingEnemyIt != patrollingEnemies.end(); ++PatrollingEnemyIt)
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 		{
-			(*PatrollingEnemyIt).writePrevPositions();
+			(*patrollingEnemyIt).writePrevPositions();
 		}
 		
         //display
@@ -650,9 +650,9 @@ void Game::mainLoop()
             (*enemyIt).display(renderer, this);
         }
 
-		for (PatrollingEnemyIt = patrollingEnemies.begin(); PatrollingEnemyIt != patrollingEnemies.end(); ++PatrollingEnemyIt)
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 		{
-			(*PatrollingEnemyIt).display(renderer, this);
+			(*patrollingEnemyIt).display(renderer, this);
 		}
 			   
 
