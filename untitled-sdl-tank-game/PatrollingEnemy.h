@@ -13,6 +13,6 @@ public:
 	virtual void follow(const GameObject& objectToFollow);
 	void patrolArea();
 	void GoToObject(const GameObject& objectToFollow);
-	Point chosePointToGoTo();
+	Point choosePointToGoTo();
 	void GoToPoint(const Point& point);
 };

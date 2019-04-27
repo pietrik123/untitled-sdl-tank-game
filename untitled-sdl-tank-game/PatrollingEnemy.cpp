@@ -2,10 +2,10 @@
 
 PatrollingEnemy::PatrollingEnemy(float x, float y, float collisionRadius, MyTexture * texture, Point destinationPoint, Point patrolPointA, Point patrolPointB, double minDinstanceForChase)
 	: Enemy(std::move(x), std::move(y), std::move(collisionRadius), std::move(texture)),
-	m_patrolPointA{ std::move(patrolPointA) },
-	m_patrolPointB{ std::move(patrolPointB) },
-	m_minDinstanceForChase{ std::move(minDinstanceForChase) },
-	m_destinationPoint{ std::move(destinationPoint) }
+	m_patrolPointA{ patrolPointA },
+	m_patrolPointB{ patrolPointB },
+	m_minDinstanceForChase{ minDinstanceForChase },
+	m_destinationPoint{ destinationPoint }
 {
 }
 
@@ -30,7 +30,7 @@ void PatrollingEnemy::patrolArea()
 		|| (posX == m_patrolPointB.PosX && posY == m_patrolPointB.PosY))
 	{ 
 		m_iAmChasing = false;
-		m_destinationPoint = chosePointToGoTo();
+		m_destinationPoint = choosePointToGoTo();
 	}
 	GoToPoint(m_destinationPoint);
 }
@@ -71,7 +71,7 @@ void PatrollingEnemy::GoToPoint(const Point& point)
 	posY += dirY * displcmnt;
 }
 
-Point PatrollingEnemy::chosePointToGoTo()
+Point PatrollingEnemy::choosePointToGoTo()
 {
 	// between patrolPointA and patrolPointB go to further one if you have to pick
 	return distanceFromPointToPoint({ posX, posY }, m_patrolPointA) > distanceFromPointToPoint({ posX, posY }, m_patrolPointB) ? m_patrolPointA : m_patrolPointB;
