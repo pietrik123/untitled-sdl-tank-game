@@ -10,6 +10,7 @@
 #include "HUD.h"
 #include "MyTexture.h"
 #include "MyText.h"
+#include "PatrollingEnemy.h"
 
 #include<SDL.h>
 #include<SDL_image.h>
@@ -73,6 +74,7 @@ public:
 
     // groups of objects
     std::vector<Enemy> enemies;
+	std::vector<PatrollingEnemy> patrollingEnemies;
     std::vector<Bullet> bullets;
     std::vector<Flame> flames;
     std::vector<GameObject> bricks;

@@ -154,6 +154,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="MyTexture.cpp" />
+    <ClCompile Include="PatrollingEnemy.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="utils\figures.cpp" />
     <ClCompile Include="utils\utils.cpp" />
@@ -176,10 +177,14 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="ObjectAdder.h" />
+    <ClInclude Include="PatrollingEnemy.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="utils\figures.h" />
     <ClInclude Include="utils\utils.h" />
     <ClInclude Include="weapon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="enemyGoTo.tpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
