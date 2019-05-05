@@ -26,7 +26,7 @@ GameObject::GameObject(float x, float y)
     isToRemove = false;
 }
 
-GameObject::GameObject(float x, float y, float parRadius)
+GameObject::GameObject(float x, float y, float parRadius) : GameObject(x,y)
 {   
 	posX = x;
 	posY = y;

@@ -11,6 +11,6 @@ public:
     PlayerHealthBar(const Player& p);
     virtual ~PlayerHealthBar();
 
-    void display(int screenPosX, int screenPosY, SDL_Renderer* r);
+    void display(int screenPosX, int screenPosY, SDL_Renderer* r, float scale);
  
 };

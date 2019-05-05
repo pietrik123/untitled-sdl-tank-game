@@ -5,6 +5,8 @@
 
 class Player : public GameObject
 {
+private:
+    void basicInit();
 public:
     float displcmt; // unit displacement
 

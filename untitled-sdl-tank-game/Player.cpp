@@ -1,41 +1,36 @@
 #include "Player.h"
 
-Player::Player()
+void Player::basicInit()
 {
-    coinsCollected = 0;
-}
-
-Player::Player(float x, float y) : GameObject(x, y)
-{
-    displcmt = 5.0;
-
+    energy = 100u;
+    maxEnergy = 100u;
     bulletReady = true;
     reloadingPhase = 100;
     shotFired = false;
     prevShotFired = false;
     addBullet = false;
-
-    weapon = new BasicCannon();
+    displcmt = 5.0;
     coinsCollected = 0;
+
+    weaponIndex = WeaponId::BASIC_CANNON;
+    weapons.push_back(new BasicCannon());
+    weapons.push_back(new BombDrop());
+}
+
+Player::Player()
+{
+    basicInit();
+}
+
+Player::Player(float x, float y) : GameObject(x, y)
+{
+    basicInit();
 }
 
 Player::Player(float x, float y, float collisionRadius, MyTexture* texture)
     : GameObject(x, y, collisionRadius, texture)
 {
-    displcmt = 5.0;
-
-    bulletReady = true;
-    reloadingPhase = 100;
-    shotFired = false;
-    prevShotFired = false;
-    addBullet = false;
-
-    weaponIndex = WeaponId::BASIC_CANNON;
-
-    weapons.push_back(new BasicCannon());
-    weapons.push_back(new BombDrop());
-
-    coinsCollected = 0;
+    basicInit();
 }
 
 Player::~Player()

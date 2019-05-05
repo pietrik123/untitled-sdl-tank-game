@@ -748,7 +748,7 @@ void Game::mainLoop()
             (*coinsIt).display(renderer, this);
         }
 
-        healthBar.display(0, 0, renderer);
+        healthBar.display(0, 0, renderer, 1.5);
 
         hud.display(renderer, player);
 

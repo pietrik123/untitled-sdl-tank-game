@@ -12,21 +12,21 @@ PlayerHealthBar::~PlayerHealthBar()
 
 }
 
-void PlayerHealthBar::display(int screenPosX, int screenPosY, SDL_Renderer* r)
+void PlayerHealthBar::display(int screenPosX, int screenPosY, SDL_Renderer* r, float scale)
 {
     // green - remaining energy
     SDL_Rect rectRemEnergy;
     rectRemEnergy.x = screenPosX;
     rectRemEnergy.y = screenPosY;
-    rectRemEnergy.w = playerRef.energy * 100 / playerRef.maxEnergy;
-    rectRemEnergy.h = screenPosY + 10;
+    rectRemEnergy.w = static_cast<int>(playerRef.energy * 100 / playerRef.maxEnergy * scale);
+    rectRemEnergy.h = static_cast < int>(10 * scale);
 
     // red - lost energy
     SDL_Rect rectLostEnergy;
     rectLostEnergy.x = rectRemEnergy.x + rectRemEnergy.w;
     rectLostEnergy.y = screenPosY;
-    rectLostEnergy.w = (playerRef.maxEnergy - playerRef.energy) * 100 / playerRef.maxEnergy;
-    rectLostEnergy.h = screenPosY + 10;
+    rectLostEnergy.w = static_cast<int>((playerRef.maxEnergy - playerRef.energy) * 100 / playerRef.maxEnergy * scale);
+    rectLostEnergy.h = static_cast<int>(10 * scale);
 
     //SDL_SetRenderDrawColor(r, 34, 177, 76, 255);
     SDL_SetRenderDrawColor(r, 0, 255, 0, 255);
