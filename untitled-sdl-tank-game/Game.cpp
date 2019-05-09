@@ -551,6 +551,9 @@ void Game::mainLoop()
             (*flameIt).act();
         }
 
+        //player actions
+        player.act();
+
         flames.erase(
             std::remove_if(flames.begin(), flames.end(), isFlameCycleOver),
             flames.end());
@@ -567,7 +570,8 @@ void Game::mainLoop()
 			(*patrollingEnemyIt).follow(player);
 		}
 
-        //check enemy collision with the wall
+
+        //check enemy collision with the wall and player
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
         {
             for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
@@ -576,6 +580,14 @@ void Game::mainLoop()
                 {
                     (*enemyIt).posX = (*enemyIt).prevPosX;
                     (*enemyIt).posY = (*enemyIt).prevPosY;
+                }
+
+                if (collision(*enemyIt, player, RADIUS, RADIUS))
+                {
+                    if (player.afterHitCounter == 0)
+                    {
+                        player.afterHitCounter = 1;
+                    }
                 }
             }
 
@@ -587,6 +599,14 @@ void Game::mainLoop()
 					(*patrollingEnemyIt).posY = (*patrollingEnemyIt).prevPosY;
 
 				}
+
+                if (collision(*patrollingEnemyIt, player, RADIUS, RADIUS))
+                {
+                    if (player.afterHitCounter == 0)
+                    {
+                        player.afterHitCounter = 1;
+                    }
+                }
 			}
         }
 
@@ -753,10 +773,10 @@ void Game::mainLoop()
         hud.display(renderer, player);
 
         // display as an example
-        someText->printText("hello", 200, 75, renderer, ttfFont, { 127, 127, 127, 255 });
+        someText->printText("Player Energy", 115, 35, renderer, ttfFont, { 255, 255, 255, 255 });
 
         // display player's score (coins collected)
-        scoreText.printText("score: " + std::to_string(player.coinsCollected), 75, 50,
+        scoreText.printText("score: " + std::to_string(player.coinsCollected), 75, 75,
             renderer, ttfFont, { 255, 255, 255, 255 });
      
         SDL_RenderPresent(renderer);

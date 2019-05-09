@@ -11,6 +11,7 @@ void Player::basicInit()
     addBullet = false;
     displcmt = 5.0;
     coinsCollected = 0;
+    afterHitCounter = 0;
 
     weaponIndex = WeaponId::BASIC_CANNON;
     weapons.push_back(new BasicCannon());
@@ -55,6 +56,33 @@ void Player::moveObj(Direction direction)
     if (direction == SOUTH)
     {
         posY -= displcmt;
+    }
+}
+
+void Player::act()
+{
+    // handle hits by enemies - player loses energy
+    // lose energy only on the 1st tick
+    if (afterHitCounter == 1)
+    {
+        if (static_cast<int>(energy - 10) < 0)
+        {
+            energy = 0;
+        }
+        else
+        {
+            energy -= 10;
+        }
+    }
+    // inc. counter
+    if (afterHitCounter > 0 && afterHitCounter < 100)
+    {
+        afterHitCounter += 1;
+    }
+    // overflow - reset counter
+    if (afterHitCounter >= 100)
+    {
+        afterHitCounter = 0;
     }
 }
 
