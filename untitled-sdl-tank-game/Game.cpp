@@ -41,6 +41,11 @@ bool isBombExploded(const Bomb &b)
     return b.exploded;
 }
 
+bool isObjectToRemove(const GameObject &o)
+{
+    return o.isToRemove;   
+}
+
 Game::~Game() 
 {
     std::cout << __FUNCTION__ << " : Game finished!" << "\n";
@@ -120,6 +125,7 @@ void Game::loadTextures()
     texDataStruct.treeTexture = MyTexture(renderer, "data\\gfx\\tree1.png");
     texDataStruct.treeTexture2 = MyTexture(renderer, "data\\gfx\\tree2.png");
     texDataStruct.coinTexture = MyTexture(renderer, "data\\gfx\\coin.png");
+    texDataStruct.sparkTexture = MyTexture(renderer, "data\\gfx\\spark.png");
 }
 
 void Game::createGameMenu()
@@ -167,6 +173,8 @@ bool Game::initGame()
     enemies.push_back(Enemy(-50.0, -100.0, 25.0, &texDataStruct.enemyTexture));
     enemies.push_back(Enemy(50.0, 50.0, 25.0, &texDataStruct.enemyTexture));
 
+	patrollingEnemies.push_back(PatrollingEnemy(0.0, 200.0, 0.0, &texDataStruct.enemyTexture, { -100, 200.0 }, { -100, 200.0 }, { 100, 200.0 }, 100.0));
+
     bricks.push_back(GameObject(-100.0, -100.0, 25.0, &texDataStruct.brickTexture));
     bricks.push_back(GameObject(-100.0, -50.0, 25.0, &texDataStruct.brickTexture));
 
@@ -179,13 +187,13 @@ bool Game::initGame()
     flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture);
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
     coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture);
+    sparkTemplate = GameObject(-10.0, -10.0, &texDataStruct.sparkTexture);
     coinTemplate.radius = 12.0;
 
     // add some coins
     GameObject c = coinTemplate;
     c.posX = 80.0;
     c.posY = -50.0;
-    coins.push_back(c);
        
     music = Mix_LoadMUS("data\\bandit_radio.wav");
 
@@ -222,6 +230,7 @@ bool Game::endGame()
     SDL_DestroyTexture(texDataStruct.treeTexture.sdlTexture);
     SDL_DestroyTexture(texDataStruct.treeTexture2.sdlTexture);
     SDL_DestroyTexture(texDataStruct.coinTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.sparkTexture.sdlTexture);
 
     delete someText;
 
@@ -274,18 +283,21 @@ void Game::mainLoop()
     Direction bulletStartDir = EAST;
 
     std::vector<Enemy>::iterator enemyIt;
+	std::vector<PatrollingEnemy>::iterator patrollingEnemyIt;
     std::vector<Bullet>::iterator bulletIt;
     std::vector<Bomb>::iterator bombIt;
     std::vector<Flame>::iterator flameIt;
     std::vector<GameObject>::iterator bricksIt;
     std::vector<GameObject>::iterator coinsIt;
 
-    CoinAdder coinAdder(4);
     Enemy enemyTemplate(0.0, 0.0, 25.0, &texDataStruct.enemyTexture);
     EnemyAdder enemyAdder(enemyTemplate, 4, player);
+    CoinAdder coinAdder(2);
     MyText scoreText(renderer, ttfFont, {127, 127, 127, 255});
 
+    mainLoopCnt = 0;
     while (exit != true) {
+        
         float prevPosX = player.posX;
         float prevPosY = player.posY;
 
@@ -294,6 +306,13 @@ void Game::mainLoop()
             (*enemyIt).prevPosX = (*enemyIt).posX;
             (*enemyIt).prevPosY = (*enemyIt).posY;
         }
+
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
+		{
+			(*patrollingEnemyIt).prevPosX = (*patrollingEnemyIt).posX;
+			(*patrollingEnemyIt).prevPosY = (*patrollingEnemyIt).posY;
+		}
+
         //game logic cycle
 
         //handle keyboard
@@ -409,12 +428,21 @@ void Game::mainLoop()
         std::vector<GameObject>::iterator bricksIt;
         std::vector<GameObject>::iterator treesIt;
         std::vector<GameObject>::iterator coinsIt;
+        std::vector<GameObject>::iterator sparkIt;
                
         // write previous positions of enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
             (*enemyIt).writePrevPositions();
         }
+
+		// write previous positions of patrolling enemies
+
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
+		{
+			(*patrollingEnemyIt).writePrevPositions();
+		}
+
 
         //check player collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
@@ -530,6 +558,11 @@ void Game::mainLoop()
             (*enemyIt).follow(player);
         }
 
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
+		{
+			(*patrollingEnemyIt).follow(player);
+		}
+
         //check enemy collision with the wall
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
         {
@@ -541,31 +574,94 @@ void Game::mainLoop()
                     (*enemyIt).posY = (*enemyIt).prevPosY;
                 }
             }
+
+			for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
+			{
+				if (collision(*patrollingEnemyIt, *bricksIt, RADIUS, RADIUS))
+				{
+					(*patrollingEnemyIt).posX = (*patrollingEnemyIt).prevPosX;
+					(*patrollingEnemyIt).posY = (*patrollingEnemyIt).prevPosY;
+
+				}
+			}
         }
+
+        coinAdder.act(coins, sparks, coinTemplate, sparkTemplate);
+
+		//check if coin is not inside wall
+		for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt)
+		{
+			for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt)
+			{
+				while (collision(*bricksIt, *coinsIt, RADIUS, RADIUS))
+				{
+					coinsIt->posX = static_cast<float>(rand() % 400 - 200);
+					coinsIt->posY = static_cast<float>(rand() % 400 - 200);
+				}
+			}
+		}
 
         //erase enemies, who have energy below or equal 0
         enemies.erase(
             std::remove_if(enemies.begin(), enemies.end(), isEnemyDestroyed),
             enemies.end());
-        
 
-        // handle enemies' collisions
-        unsigned int j;
-        for (i = 0; i < enemies.size(); i++)
+
+		patrollingEnemies.erase(
+			std::remove_if(patrollingEnemies.begin(), patrollingEnemies.end(), isEnemyDestroyed),
+			patrollingEnemies.end());
+
+        for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt)
         {
-            enemies[i].collided = false;
-            for (j = 0; j < enemies.size(); j++)
+            if (collision(player, *coinsIt, RADIUS, RADIUS))
+            {
+                if ((*coinsIt).childId != 0)
+                {
+                    for (sparkIt = sparks.begin(); sparkIt != sparks.end(); ++sparkIt)
+                    {
+                        if ((*sparkIt).id == (*coinsIt).childId)
+                        {
+                            break;
+                        }
+                    }
+                    (*sparkIt).isToRemove = true;
+                }
+                coins.erase(coinsIt);
+                player.coinsCollected++;
+                break;
+            }
+        }
+
+        // delete sparks if coin is no longer there
+        sparks.erase(
+            std::remove_if(sparks.begin(), sparks.end(), isObjectToRemove),
+            sparks.end());
+        
+        // handle enemies' collisions
+		std::vector<Enemy*> extendedEnemies;
+		for (int i = 0; i < enemies.size(); ++i)
+		{
+			extendedEnemies.push_back(&enemies[i]);
+		}
+		for (int i = 0; i < patrollingEnemies.size(); ++i)
+		{
+			extendedEnemies.push_back(&patrollingEnemies[i]);
+		}
+        for (i = 0; i < extendedEnemies.size(); i++)
+        {
+			extendedEnemies[i]->collided = false;
+            for (unsigned int j = 0; j < extendedEnemies.size(); j++)
             {
                 if (i == j) continue;
 
-                bool res = collision(enemies[i], enemies[j],
+                bool res = collision( *(extendedEnemies[i]), *(extendedEnemies[j]),
                     BoundsType::RADIUS, BoundsType::RADIUS);
 
                 if (res == true)
                 {
-                    enemies[i].posX = enemies[i].prevPosX;
-                    enemies[i].posY = enemies[i].prevPosY;
-                    enemies[i].collided = true;
+					extendedEnemies[i]->posX = extendedEnemies[i]->prevPosX;
+					extendedEnemies[i]->posY = extendedEnemies[i]->prevPosY;
+					extendedEnemies[i]->collided = true;
                 }
             }
         }
@@ -586,7 +682,11 @@ void Game::mainLoop()
             (*enemyIt).writePrevPositions();
         }
 
-
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
+		{
+			(*patrollingEnemyIt).writePrevPositions();
+		}
+		
         //display
         SDL_RenderClear(renderer);
    
@@ -600,9 +700,16 @@ void Game::mainLoop()
 
         player.display(renderer, this);
 
-        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) {
+        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt) 
+		{
             (*enemyIt).display(renderer, this);
         }
+
+		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
+		{
+			(*patrollingEnemyIt).display(renderer, this);
+		}
+			   
 
         for (bulletIt = bullets.begin();bulletIt != bullets.end(); ++bulletIt) {
             (*bulletIt).myTex->render(renderer,
@@ -620,19 +727,24 @@ void Game::mainLoop()
                 MyTexture::RENDER_IN_CENTER, 5, flame.texFrame);
         }
 
-        for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt)
-        {
-            if (collision(player, *coinsIt, RADIUS, RADIUS))
+        for (sparkIt = sparks.begin(); sparkIt != sparks.end(); ++sparkIt) {
+            GameObject &spark = (*sparkIt);
+            spark.myTex->renderAnim(renderer,
+                getPosXOnScreen(spark.posX),
+                getPosYOnScreen(spark.posY),
+                MyTexture::RENDER_IN_CENTER, 5, spark.texFrame);
+            if (mainLoopCnt % 3 == 0)
             {
-                coins.erase(coinsIt);
-                player.coinsCollected++;
-                break;
+                spark.texFrame++;
+            }
+            if (spark.texFrame > 10)
+            {
+                spark.texFrame = 0;
             }
         }
 
-        coinAdder.act(coins, coinTemplate);
         enemyAdder.run(enemies);
-
+     
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
             (*bricksIt).display(renderer, this);
         }
@@ -656,6 +768,8 @@ void Game::mainLoop()
      
         SDL_RenderPresent(renderer);
 
+        mainLoopCnt++;
+
         //wait
         SDL_Delay(50);
     }
@@ -663,8 +777,8 @@ void Game::mainLoop()
 
 int Game::getPosXOnScreen(float localPosX)
 {
-    float posXinPlayerAxisSystem = localPosX - player.posX;
-    return static_cast<int>(scaleX * posXinPlayerAxisSystem + Game::screenWidth / 2.0);
+	float posXinPlayerAxisSystem = localPosX - player.posX;
+	return static_cast<int>(scaleX * posXinPlayerAxisSystem + Game::screenWidth / 2.0);
 }
 
 int Game::getPosYOnScreen(float localPosY)
@@ -672,3 +786,4 @@ int Game::getPosYOnScreen(float localPosY)
     float posYinPlayerAxisSystem = localPosY - player.posY;
     return static_cast<int>(-scaleY * posYinPlayerAxisSystem + Game::screenHeight / 2.0);
 }
+

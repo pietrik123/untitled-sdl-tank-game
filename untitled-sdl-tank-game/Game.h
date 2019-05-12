@@ -10,6 +10,7 @@
 #include "HUD.h"
 #include "MyTexture.h"
 #include "MyText.h"
+#include "PatrollingEnemy.h"
 
 #include<SDL.h>
 #include<SDL_image.h>
@@ -40,6 +41,7 @@ struct TextureDataStruct
     MyTexture treeTexture;
     MyTexture treeTexture2;
     MyTexture coinTexture;
+    MyTexture sparkTexture;
 };
 
 class Game
@@ -70,15 +72,18 @@ public:
     Flame flameTemplate;
     Bomb bombTemplate;
     GameObject coinTemplate;
+    GameObject sparkTemplate;
 
     // groups of objects
     std::vector<Enemy> enemies;
+	std::vector<PatrollingEnemy> patrollingEnemies;
     std::vector<Bullet> bullets;
     std::vector<Flame> flames;
     std::vector<GameObject> bricks;
     std::vector<Bomb> bombs;
     std::vector<GameObject> trees;
     std::vector<GameObject> coins;
+    std::vector<GameObject> sparks;
     
     // texture struct	
     TextureDataStruct texDataStruct;
@@ -90,6 +95,8 @@ public:
 
     float scaleX; // screen_dx/world_dx
     float scaleY; // screen_dy/world_dy
+
+    unsigned long int mainLoopCnt = 0;
 
     // constructors and destructors
 

@@ -7,6 +7,12 @@
 
 GameObject::GameObject()
 {
+    radius = 1.0;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y)
@@ -14,6 +20,10 @@ GameObject::GameObject(float x, float y)
 	posX = x;
 	posY = y;
 	radius = 1.0;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y, float parRadius)
@@ -21,6 +31,10 @@ GameObject::GameObject(float x, float y, float parRadius)
 	posX = x;
 	posY = y;
 	radius = parRadius;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y, MyTexture* texture)
@@ -29,6 +43,10 @@ GameObject::GameObject(float x, float y, MyTexture* texture)
 	posY = y;
 	radius = 1.0;
 	myTex = texture;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
@@ -38,6 +56,10 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
 	radius = parRadius;
 	myTex = texture;
 	direction = EAST;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
@@ -48,6 +70,10 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
 	radius = parRadius;
 	myTex = texture;
 	direction = dir;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
 }
 
 GameObject::~GameObject()
@@ -76,14 +102,12 @@ void GameObject::display(SDL_Renderer* renderer, Game* game)
 
 float getDistance(const GameObject& obj1, const GameObject& obj2)
 {
-	return
-		powf(powf(obj1.posX - obj2.posX, 2.0) + powf(obj1.posY - obj2.posY, 2.0), 0.5);
+	return distanceFromPointToPoint({ obj1.posX, obj1.posY }, { obj2.posX, obj2.posY });
 }
 
 float getDistance(const GameObject& obj1, float pointX, float pointY)
 {
-	return
-		powf(powf(obj1.posX - pointX, 2.0) + powf(obj1.posY - pointY, 2.0), 0.5);
+	return distanceFromPointToPoint({ obj1.posX, obj1.posY }, { pointX, pointY });
 }
 
 bool collision(const GameObject& obj1, const GameObject& obj2,

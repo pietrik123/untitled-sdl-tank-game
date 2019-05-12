@@ -6,7 +6,6 @@ class Flame : public GameObject
 {
 public:
     int maxLifeCycle;
-    int texFrame;
     int lifeCycle;
 
     Flame();
