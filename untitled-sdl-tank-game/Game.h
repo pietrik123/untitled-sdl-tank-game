@@ -18,12 +18,8 @@
 #include<SDL_ttf.h>
 
 #include<vector>
+#include "game_settings.h"
 
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT  480
-
-#define BULLET_LIFE 15
-#define FLAME_LIFE 15
 
 struct TextureDataStruct
 {
