@@ -6,6 +6,8 @@ class Bullet;
 
 class Enemy : public GameObject
 {
+private:
+    void basicInit();
 public:
     float displcmnt;
     int energy;

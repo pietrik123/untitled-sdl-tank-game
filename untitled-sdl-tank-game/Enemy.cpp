@@ -4,35 +4,33 @@
 
 #include <iostream>
 
-Enemy::Enemy()
+void Enemy::basicInit()
 {
     energy = 100;
     isStuck = false;
     cnt = 0;
     dirX = 0;
     dirY = 0;
+    displcmnt = 2.5;
+    energy = 100;
+}
+
+Enemy::Enemy()
+{
+    basicInit();
 }
 
 Enemy::Enemy(float x, float y) : GameObject(x, y)
 {
-    displcmnt = 2.5;
-    energy = 100;
-    isStuck = false;
-    cnt = 0;
-    dirX = 0;
-    dirY = 0;
+    basicInit();
+
 }
 
 Enemy::Enemy(float x, float y, float collisionRadius, MyTexture* texture) : GameObject(x, y)
 {
-    displcmnt = 2.5;
-    energy = 100;
+    basicInit();
     radius = collisionRadius;
     myTex = texture;
-    isStuck = false;
-    cnt = 0;
-    dirX = 0;
-    dirY = 0;
 }
 
 bool Enemy::isHit(Bullet &b)

@@ -5,6 +5,8 @@
 
 class Player : public GameObject
 {
+private:
+    void basicInit();
 public:
     float displcmt; // unit displacement
 
@@ -18,6 +20,12 @@ public:
     int coinsCollected;
 
     unsigned int weaponIndex;
+    
+    // Counts ticks after player is hit by enemy.
+    // Used so that player does not lose energy each time tick,
+    // when collision with an enemy is detected.
+    // Player should lose energy only on the first tick.
+    unsigned int afterHitCounter;
 
     Player();
     Player(float x, float y);
@@ -25,7 +33,11 @@ public:
 
     Weapon* getCurrentWeapon();
 
+    unsigned int energy;
+    unsigned int maxEnergy;
+
     ~Player();
 
+    void act();
     void moveObj(Direction direction);
 };

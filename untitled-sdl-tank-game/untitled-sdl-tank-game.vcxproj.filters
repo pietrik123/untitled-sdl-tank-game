@@ -18,6 +18,7 @@
     <ClCompile Include="MyText.cpp" />
     <ClCompile Include="ObjectAdder.cpp" />
     <ClCompile Include="EnemyAdder.cpp" />
+    <ClCompile Include="PlayerHealthBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -36,5 +37,6 @@
     <ClInclude Include="utils\utils.h" />
     <ClInclude Include="weapon.h" />
     <ClInclude Include="EnemyAdder.h" />
+    <ClInclude Include="PlayerHealthBar.h" />
   </ItemGroup>
 </Project>
