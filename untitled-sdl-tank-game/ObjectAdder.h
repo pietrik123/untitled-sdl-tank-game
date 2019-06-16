@@ -29,3 +29,8 @@ private:
     int minNumberOfCoinsInScene;
 
 };
+
+class CrateAdder
+{
+
+};

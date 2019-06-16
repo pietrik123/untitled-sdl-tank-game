@@ -42,10 +42,15 @@ struct TextureDataStruct
     MyTexture treeTexture2;
     MyTexture coinTexture;
     MyTexture sparkTexture;
+    MyTexture grassTexture;
+    MyTexture crateTexture;
 };
 
 class Game
 {
+private:
+    void initGrass();
+
 public:
     // SDL fields
     SDL_Window* window;
@@ -73,6 +78,8 @@ public:
     Bomb bombTemplate;
     GameObject coinTemplate;
     GameObject sparkTemplate;
+    GameObject grassTemplate;
+    GameObject crateTemplate;
 
     // groups of objects
     std::vector<Enemy> enemies;
@@ -84,6 +91,8 @@ public:
     std::vector<GameObject> trees;
     std::vector<GameObject> coins;
     std::vector<GameObject> sparks;
+    std::vector<GameObject> grassTiles;
+    std::vector<GameObject> crates;
     
     // texture struct	
     TextureDataStruct texDataStruct;
