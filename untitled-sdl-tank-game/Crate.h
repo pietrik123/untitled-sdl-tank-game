@@ -10,19 +10,14 @@ enum GoodsId
     FIRST_AID_KIT
 };
 
-std::map<GoodsId, std::string> goodsIdWithDescription
-{
-    {CANNON, "Basic Cannon"},
-    {BOMB, "Bombs"},
-    {FIRST_AID_KIT, "First Aid Kit"}
-};
-
 class Crate : public GameObject
 {
 public:
     GoodsId packageContent;
     
     Crate();
+
+    Crate(float x, float y, float parRadius, MyTexture* texture);
 
     void giveABonusToAPlayer(Player& p);
 };

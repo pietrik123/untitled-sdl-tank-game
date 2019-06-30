@@ -11,6 +11,7 @@
 #include "MyTexture.h"
 #include "MyText.h"
 #include "PatrollingEnemy.h"
+#include "Crate.h"
 
 #include<SDL.h>
 #include<SDL_image.h>
@@ -79,7 +80,7 @@ public:
     GameObject coinTemplate;
     GameObject sparkTemplate;
     GameObject grassTemplate;
-    GameObject crateTemplate;
+    Crate crateTemplate;
 
     // groups of objects
     std::vector<Enemy> enemies;
@@ -92,7 +93,7 @@ public:
     std::vector<GameObject> coins;
     std::vector<GameObject> sparks;
     std::vector<GameObject> grassTiles;
-    std::vector<GameObject> crates;
+    std::vector<Crate> crates;
     
     // texture struct	
     TextureDataStruct texDataStruct;

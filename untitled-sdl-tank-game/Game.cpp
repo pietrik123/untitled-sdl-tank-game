@@ -204,7 +204,7 @@ bool Game::initGame()
     coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture);
     sparkTemplate = GameObject(-10.0, -10.0, &texDataStruct.sparkTexture);
     grassTemplate = GameObject(-10.0, -10.0, &texDataStruct.grassTexture);
-    crateTemplate = GameObject(-10.0, -10.0, &texDataStruct.crateTexture);
+    crateTemplate = Crate(-10.0, -10.0, 25.0, &texDataStruct.crateTexture);
     coinTemplate.radius = 12.0;
 
     // add some coins
@@ -312,6 +312,7 @@ void Game::mainLoop()
     Enemy enemyTemplate(0.0, 0.0, 25.0, &texDataStruct.enemyTexture);
     EnemyAdder enemyAdder(enemyTemplate, 4, player);
     CoinAdder coinAdder(2);
+    CrateAdder crateAdder(50, 3);
     MyText scoreText(renderer, ttfFont, {127, 127, 127, 255});
     MyText currentWeaponInfoText(renderer, ttfFont, { 127, 127, 127, 255 });
 
@@ -453,6 +454,7 @@ void Game::mainLoop()
         std::vector<GameObject>::iterator coinsIt;
         std::vector<GameObject>::iterator sparkIt;
         std::vector<GameObject>::iterator grassIt;
+        std::vector<Crate>::iterator crateIt;
                
         // write previous positions of enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
@@ -506,6 +508,12 @@ void Game::mainLoop()
         for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
         {
             (*bombIt).act();
+        }
+
+        // handle crates' actions
+        for (crateIt = crates.begin(); crateIt != crates.end(); ++crateIt)
+        {
+            (*crateIt).giveABonusToAPlayer(player);
         }
 
         //handle bullet hits
@@ -631,6 +639,7 @@ void Game::mainLoop()
         }
 
         coinAdder.act(coins, sparks, coinTemplate, sparkTemplate);
+        crateAdder.act(crates, crateTemplate);
 
         //erase enemies, who have energy below or equal 0
         enemies.erase(
@@ -732,6 +741,11 @@ void Game::mainLoop()
         for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
         {
             (*bombIt).display(renderer, this);
+        }
+
+        for (crateIt = crates.begin(); crateIt != crates.end(); ++crateIt)
+        {
+            (*crateIt).display(renderer, this);
         }
 
         player.display(renderer, this);
