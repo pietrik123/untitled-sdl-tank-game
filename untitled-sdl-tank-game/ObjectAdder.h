@@ -40,8 +40,6 @@ public:
     unsigned int ticksCnt;
     
     CrateAdder(int ticksInterval, int maxNum);
-    
-    void add(std::vector<Crate>& crates);
 
     void act(std::vector<Crate>& crates, const Crate& c);
 };

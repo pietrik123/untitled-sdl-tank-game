@@ -50,20 +50,15 @@ CrateAdder::CrateAdder(int ticksInterval, int maxNum)
     ticksCnt = 0;
 }
 
-void CrateAdder::add(std::vector<Crate>& crates)
-{
-
-}
-
 void CrateAdder::act(std::vector<Crate>& crates, const Crate& c)
 {
     if ((ticksCnt % ticksBetweenAddingNewCrate == 0) && (ticksCnt != 0) && (numOfCratesCreated < maxNumOfCrates))
     {
         Crate newCrate = c;
 
-        newCrate.posX = static_cast<float>(rand() % 1000);
-        newCrate.posY = static_cast<float>(rand() % 1000);
-        
+        newCrate.posX = static_cast<float>(rand() % 300 - 150);
+        newCrate.posY = static_cast<float>(rand() % 300 - 150);
+
         crates.push_back(newCrate);
         numOfCratesCreated += 1;
         ticksCnt = 0;
