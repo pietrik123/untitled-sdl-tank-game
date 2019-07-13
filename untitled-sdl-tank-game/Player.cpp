@@ -65,6 +65,11 @@ void Player::moveObj(Direction direction)
 
 void Player::act()
 {
+    if (energy > maxEnergy)
+    {
+        energy = maxEnergy;
+    }
+
     // handle hits by enemies - player loses energy
     // lose energy only on the 1st tick
     if (afterHitCounter == 1)

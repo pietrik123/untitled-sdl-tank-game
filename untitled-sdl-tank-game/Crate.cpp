@@ -1,6 +1,7 @@
 #include "Crate.h"
 #include "GameObject.h"
 #include "Player.h"
+#include "ObjectAdder.h"
 
 #include <random>
 
@@ -32,6 +33,7 @@ void Crate::giveABonusToAPlayer(Player& player)
 {
     if (collision(player, *this, BoundsType::RADIUS, BoundsType::RADIUS))
     {
+        packageContent = static_cast<GoodsId>(rand() % 3);
         int currentAmmo = 0;
         switch (packageContent)
         {
@@ -47,5 +49,6 @@ void Crate::giveABonusToAPlayer(Player& player)
             player.energy += 25;
             break;
         }
+        isToRemove = true;
     }
 }

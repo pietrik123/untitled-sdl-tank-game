@@ -676,6 +676,20 @@ void Game::mainLoop()
         sparks.erase(
             std::remove_if(sparks.begin(), sparks.end(), isObjectToRemove),
             sparks.end());
+
+        for (crateIt = crates.begin(); crateIt != crates.end(); crateIt++)
+        {
+            if ((*crateIt).isToRemove)
+            {
+                crateAdder.numOfCratesCreated --;
+            }
+        }
+
+        // delete crates if they had been picked up
+        crates.erase(
+            std::remove_if(crates.begin(), crates.end(), isObjectToRemove),
+            crates.end());
+
         
         // handle enemies' collisions
 		std::vector<Enemy*> extendedEnemies;
