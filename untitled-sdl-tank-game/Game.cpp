@@ -47,6 +47,16 @@ bool isObjectToRemove(const GameObject &o)
     return o.isToRemove;   
 }
 
+bool isTextObjectToRemove(MyTextGameObject* o)
+{
+    bool res = o->isToRemove;
+    if (res)
+    {
+        delete o;
+    }
+    return res;
+}
+
 Game::~Game() 
 {
     std::cout << __FUNCTION__ << " : Game finished!" << "\n";
@@ -199,10 +209,10 @@ bool Game::initGame()
     // create copyable objects
 
     bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
-    flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture);
+    flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture, 5);
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
     coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture);
-    sparkTemplate = GameObject(-10.0, -10.0, &texDataStruct.sparkTexture);
+    sparkTemplate = GameObject(-10.0, -10.0, &texDataStruct.sparkTexture, 5);
     grassTemplate = GameObject(-10.0, -10.0, &texDataStruct.grassTexture);
     crateTemplate = Crate(-10.0, -10.0, 25.0, &texDataStruct.crateTexture);
     coinTemplate.radius = 12.0;
@@ -308,6 +318,7 @@ void Game::mainLoop()
     std::vector<Flame>::iterator flameIt;
     std::vector<GameObject>::iterator bricksIt;
     std::vector<GameObject>::iterator coinsIt;
+    std::vector<MyTextGameObject*> textObjects;
 
     Enemy enemyTemplate(0.0, 0.0, 25.0, &texDataStruct.enemyTexture);
     EnemyAdder enemyAdder(enemyTemplate, 4, player);
@@ -455,6 +466,8 @@ void Game::mainLoop()
         std::vector<GameObject>::iterator sparkIt;
         std::vector<GameObject>::iterator grassIt;
         std::vector<Crate>::iterator crateIt;
+
+        
                
         // write previous positions of enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
@@ -513,7 +526,14 @@ void Game::mainLoop()
         // handle crates' actions
         for (crateIt = crates.begin(); crateIt != crates.end(); ++crateIt)
         {
-            (*crateIt).giveABonusToAPlayer(player);
+           std::string bonusInfo;
+           bool res = (*crateIt).giveABonusToAPlayer(player, bonusInfo);
+           if (res == true)
+           {
+               textObjects.push_back(
+                   new MyTextGameObject(new MyText(bonusInfo, renderer, ttfFont, { 255, 242, 0, 255 }), player.posX, player.posY, 20)
+               );
+           }
         }
 
         //handle bullet hits
@@ -784,19 +804,13 @@ void Game::mainLoop()
         }
 
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
-            Flame &flame = (*flameIt);    
-			flame.myTex->renderAnim(renderer,
-                getPosXOnScreen(flame.posX),
-                getPosYOnScreen(flame.posY),
-                MyTexture::RENDER_IN_CENTER, 5, flame.texFrame);
+            Flame &flame = (*flameIt);
+            flame.displayAnimated(renderer, this);
         }
 
         for (sparkIt = sparks.begin(); sparkIt != sparks.end(); ++sparkIt) {
             GameObject &spark = (*sparkIt);
-            spark.myTex->renderAnim(renderer,
-                getPosXOnScreen(spark.posX),
-                getPosYOnScreen(spark.posY),
-                MyTexture::RENDER_IN_CENTER, 5, spark.texFrame);
+            spark.displayAnimated(renderer, this);
             if (mainLoopCnt % 3 == 0)
             {
                 spark.texFrame++;
@@ -820,6 +834,18 @@ void Game::mainLoop()
         for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt) {
             (*coinsIt).display(renderer, this);
         }
+
+        
+        for (std::vector<MyTextGameObject*>::iterator it = textObjects.begin(); it != textObjects.end(); ++it)
+        {
+            std::cout << "Texts" << " : ";
+            (*it)->display(this, renderer, ttfFont, { 255, 255, 255, 255 });
+            std::cout << (*it)->text->text << " " << (*it)->posX << " " << (*it)->posY << "\n";        
+        }
+
+        textObjects.erase(
+            std::remove_if(textObjects.begin(), textObjects.end(), isTextObjectToRemove),
+            textObjects.end());
 
         healthBar.display(0, 0, renderer, 1.5);
 

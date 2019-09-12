@@ -26,7 +26,7 @@ GameObject::GameObject(float x, float y)
     isToRemove = false;
 }
 
-GameObject::GameObject(float x, float y, float parRadius) : GameObject(x,y)
+GameObject::GameObject(float x, float y, float parRadius)
 {   
 	posX = x;
 	posY = y;
@@ -47,6 +47,19 @@ GameObject::GameObject(float x, float y, MyTexture* texture)
     id = -1;
     childId = -1;
     isToRemove = false;
+}
+
+GameObject::GameObject(float x, float y, MyTexture* texture, int aNumOfFramesInTexture)
+{
+    posX = x;
+    posY = y;
+    radius = 1.0;
+    myTex = texture;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
+    numOfFramesInTexture = aNumOfFramesInTexture;
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
@@ -98,6 +111,11 @@ void GameObject::display(SDL_Renderer* renderer, Game* game)
 		game->getPosXOnScreen(posX),
 		game->getPosYOnScreen(posY),
 		MyTexture::RENDER_IN_CENTER);
+}
+
+void GameObject::displayAnimated(SDL_Renderer* renderer, Game* game)
+{
+    myTex->renderAnim(renderer, game->getPosXOnScreen(posX), game->getPosYOnScreen(posY), MyTexture::RENDER_IN_CENTER, numOfFramesInTexture, texFrame);
 }
 
 float getDistance(const GameObject& obj1, const GameObject& obj2)

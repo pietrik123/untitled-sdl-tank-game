@@ -1,10 +1,19 @@
 #include "MyText.h"
 #include "MyTexture.h"
+#include "Game.h"
 
 MyText::MyText(SDL_Renderer* renderer, TTF_Font* font, const SDL_Color& color)
 {
     texture = new MyTexture;
     text = "-";
+
+    texture->loadTextTexture(text, color, renderer, font);
+}
+
+MyText::MyText(std::string aTextString, SDL_Renderer * renderer, TTF_Font* font, const SDL_Color& color)
+{
+    texture = new MyTexture;
+    text = aTextString;
 
     texture->loadTextTexture(text, color, renderer, font);
 }
@@ -30,3 +39,33 @@ MyText::~MyText()
     delete texture;
 }
 
+MyTextGameObject::MyTextGameObject(MyText* aText, float x, float y, unsigned int aMaxLifeCycle) : text(aText)
+{
+    currentLifeCycle = 0;
+    posX = x;
+    posY = y;
+    maxLifeCycle = aMaxLifeCycle;
+    isToRemove = false;
+}
+
+MyTextGameObject::~MyTextGameObject()
+{
+    std::cout << __FUNCTION__ << " : removing text\n";
+    delete text;
+}
+
+void MyTextGameObject::display(Game* game, SDL_Renderer* renderer, TTF_Font* font, const SDL_Color& color)
+{
+    text->printText(text->text, 
+        game->getPosXOnScreen(posX),
+        game->getPosYOnScreen(posY),
+        renderer, font, color);
+
+    posY -= 2.0;
+
+    currentLifeCycle++;
+    if (currentLifeCycle > maxLifeCycle)
+    {
+        isToRemove = true;
+    }
+}
