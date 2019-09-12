@@ -3,6 +3,7 @@
 #include <vector>
 
 class GameObject;
+class Crate;
 
 /**
  * Adds coins to the game scene. 
@@ -28,4 +29,17 @@ public:
 private:
     int minNumberOfCoinsInScene;
 
+};
+
+class CrateAdder
+{
+public:
+    int ticksBetweenAddingNewCrate;
+    int maxNumOfCrates;
+    int numOfCratesCreated;
+    unsigned int ticksCnt;
+    
+    CrateAdder(int ticksInterval, int maxNum);
+
+    void act(std::vector<Crate>& crates, const Crate& c);
 };

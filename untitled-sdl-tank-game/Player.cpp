@@ -32,6 +32,10 @@ Player::Player(float x, float y, float collisionRadius, MyTexture* texture)
     : GameObject(x, y, collisionRadius, texture)
 {
     basicInit();
+    weapons[WeaponId::BASIC_CANNON]->setAmmo(10);
+    weapons[WeaponId::BOMB_DROP]->setAmmo(10);
+
+    coinsCollected = 0;
 }
 
 Player::~Player()
@@ -61,6 +65,11 @@ void Player::moveObj(Direction direction)
 
 void Player::act()
 {
+    if (energy > maxEnergy)
+    {
+        energy = maxEnergy;
+    }
+
     // handle hits by enemies - player loses energy
     // lose energy only on the 1st tick
     if (afterHitCounter == 1)

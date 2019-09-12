@@ -4,6 +4,7 @@
 #include "ObjectAdder.h"
 #include "GameObject.h"
 #include "MyTexture.h"
+#include "Crate.h"
 
 CoinAdder::CoinAdder(int minNumberOfCoins)
 {
@@ -39,4 +40,29 @@ void CoinAdder::act(std::vector<GameObject>& coins, std::vector<GameObject>& spa
         // assign spark's id to coin's childId
         coins.back().childId = sparks.back().id;
     }
+}
+
+CrateAdder::CrateAdder(int ticksInterval, int maxNum)
+{
+    ticksBetweenAddingNewCrate = ticksInterval;
+    maxNumOfCrates = maxNum;
+    numOfCratesCreated = 0;
+    ticksCnt = 0;
+}
+
+void CrateAdder::act(std::vector<Crate>& crates, const Crate& c)
+{
+    if ((ticksCnt % ticksBetweenAddingNewCrate == 0) && (ticksCnt != 0) && (numOfCratesCreated < maxNumOfCrates))
+    {
+        Crate newCrate = c;
+
+        newCrate.posX = static_cast<float>(rand() % 300 - 150);
+        newCrate.posY = static_cast<float>(rand() % 300 - 150);
+
+        crates.push_back(newCrate);
+        numOfCratesCreated += 1;
+        ticksCnt = 0;
+        std::cout << __FUNCTION__ << " : crate added " << static_cast<int>(crates.size()) <<  "\n" ;
+    }
+    ticksCnt++;
 }

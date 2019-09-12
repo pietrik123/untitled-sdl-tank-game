@@ -105,6 +105,16 @@ bool Game::initSDL()
     return result;
 }
 
+void Game::initGrass()
+{
+    for (int i = 0; i < 15; i++)
+    {
+        float x = static_cast<float>(rand() % 1000 - 500);
+        float y = static_cast<float>(rand() % 1000 - 500);
+        grassTiles.push_back(GameObject(x, y, &texDataStruct.grassTexture));
+    }
+}
+
 void Game::loadTextures()
 {
     // load textures
@@ -127,6 +137,8 @@ void Game::loadTextures()
     texDataStruct.treeTexture2 = MyTexture(renderer, "data\\gfx\\tree2.png");
     texDataStruct.coinTexture = MyTexture(renderer, "data\\gfx\\coin.png");
     texDataStruct.sparkTexture = MyTexture(renderer, "data\\gfx\\spark.png");
+    texDataStruct.grassTexture = MyTexture(renderer, "data\\gfx\\grass2.png");
+    texDataStruct.crateTexture = MyTexture(renderer, "data\\gfx\\crate.png");
 }
 
 void Game::createGameMenu()
@@ -182,6 +194,8 @@ bool Game::initGame()
     trees.push_back(GameObject(35.0, 75.0, 25.0, &texDataStruct.treeTexture));
     trees.push_back(GameObject(-75.0, 0.0, 25.0, &texDataStruct.treeTexture2));
 
+    initGrass();
+
     // create copyable objects
 
     bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
@@ -189,6 +203,8 @@ bool Game::initGame()
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
     coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture);
     sparkTemplate = GameObject(-10.0, -10.0, &texDataStruct.sparkTexture);
+    grassTemplate = GameObject(-10.0, -10.0, &texDataStruct.grassTexture);
+    crateTemplate = Crate(-10.0, -10.0, 25.0, &texDataStruct.crateTexture);
     coinTemplate.radius = 12.0;
 
     // add some coins
@@ -232,6 +248,8 @@ bool Game::endGame()
     SDL_DestroyTexture(texDataStruct.treeTexture2.sdlTexture);
     SDL_DestroyTexture(texDataStruct.coinTexture.sdlTexture);
     SDL_DestroyTexture(texDataStruct.sparkTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.grassTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.crateTexture.sdlTexture);
 
     delete someText;
 
@@ -294,7 +312,9 @@ void Game::mainLoop()
     Enemy enemyTemplate(0.0, 0.0, 25.0, &texDataStruct.enemyTexture);
     EnemyAdder enemyAdder(enemyTemplate, 4, player);
     CoinAdder coinAdder(2);
+    CrateAdder crateAdder(50, 3);
     MyText scoreText(renderer, ttfFont, {127, 127, 127, 255});
+    MyText currentWeaponInfoText(renderer, ttfFont, { 127, 127, 127, 255 });
 
     mainLoopCnt = 0;
 
@@ -433,6 +453,8 @@ void Game::mainLoop()
         std::vector<GameObject>::iterator treesIt;
         std::vector<GameObject>::iterator coinsIt;
         std::vector<GameObject>::iterator sparkIt;
+        std::vector<GameObject>::iterator grassIt;
+        std::vector<Crate>::iterator crateIt;
                
         // write previous positions of enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
@@ -486,6 +508,12 @@ void Game::mainLoop()
         for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
         {
             (*bombIt).act();
+        }
+
+        // handle crates' actions
+        for (crateIt = crates.begin(); crateIt != crates.end(); ++crateIt)
+        {
+            (*crateIt).giveABonusToAPlayer(player);
         }
 
         //handle bullet hits
@@ -611,6 +639,7 @@ void Game::mainLoop()
         }
 
         coinAdder.act(coins, sparks, coinTemplate, sparkTemplate);
+        crateAdder.act(crates, crateTemplate);
 
         //erase enemies, who have energy below or equal 0
         enemies.erase(
@@ -647,6 +676,20 @@ void Game::mainLoop()
         sparks.erase(
             std::remove_if(sparks.begin(), sparks.end(), isObjectToRemove),
             sparks.end());
+
+        for (crateIt = crates.begin(); crateIt != crates.end(); crateIt++)
+        {
+            if ((*crateIt).isToRemove)
+            {
+                crateAdder.numOfCratesCreated --;
+            }
+        }
+
+        // delete crates if they had been picked up
+        crates.erase(
+            std::remove_if(crates.begin(), crates.end(), isObjectToRemove),
+            crates.end());
+
         
         // handle enemies' collisions
 		std::vector<Enemy*> extendedEnemies;
@@ -704,9 +747,19 @@ void Game::mainLoop()
         // displaying background terrain
         terrain.myTex->render(renderer, 0, 0, MyTexture::RENDER_IN_CORNER);
      
+        for (grassIt = grassTiles.begin(); grassIt != grassTiles.end(); ++grassIt)
+        {
+            (*grassIt).display(renderer, this);
+        }
+
         for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
         {
             (*bombIt).display(renderer, this);
+        }
+
+        for (crateIt = crates.begin(); crateIt != crates.end(); ++crateIt)
+        {
+            (*crateIt).display(renderer, this);
         }
 
         player.display(renderer, this);
@@ -755,7 +808,7 @@ void Game::mainLoop()
         }
 
         enemyAdder.run(enemies);
-     
+
         for (bricksIt = bricks.begin(); bricksIt != bricks.end(); ++bricksIt) {
             (*bricksIt).display(renderer, this);
         }
@@ -778,6 +831,20 @@ void Game::mainLoop()
         // display player's score (coins collected)
         scoreText.printText("score: " + std::to_string(player.coinsCollected), 75, 75,
             renderer, ttfFont, { 255, 255, 255, 255 });
+
+        std::string weaponName;
+        // TODO display weapon and ammo information
+        if (player.weaponIndex == WeaponId::BASIC_CANNON)
+        {
+            weaponName = "Cannon";
+        }
+        else if (player.weaponIndex == WeaponId::BOMB_DROP)
+        {
+            weaponName = "Bomb";
+        }
+
+        currentWeaponInfoText.printText(weaponName + ":   " +  std::to_string(player.getCurrentWeapon()->getAmmo()),
+            280, 50, renderer, ttfFont, { 255, 255, 255 });
      
         SDL_RenderPresent(renderer);
 

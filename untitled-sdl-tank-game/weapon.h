@@ -9,8 +9,10 @@ protected:
     int readyCnt = 0;
     int ammo = 0;
 public:
+    int getAmmo() { return ammo;  }
+    void setAmmo(int ammoParam) { ammo = ammoParam;  }
     virtual void act() {}
-    virtual bool trigger() { return false; }
+    virtual bool trigger();
 };
 
 enum WeaponId
@@ -27,7 +29,6 @@ public:
     BasicCannon();
     static const int READY = 100;
     void act();
-    bool trigger();
 };
 
 class BombDrop : public Weapon
@@ -36,7 +37,6 @@ public:
     BombDrop();
     static const int READY = 200;
     void act();
-    bool trigger();
 };
 
 
