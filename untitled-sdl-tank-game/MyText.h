@@ -3,6 +3,7 @@
 #include <string>
 
 class MyTexture;
+class Game;
 struct SDL_Color;
 struct SDL_Renderer;
 
@@ -28,6 +29,8 @@ public:
      */
     MyText(SDL_Renderer* renderer, TTF_Font* font, const SDL_Color& color);
 
+    MyText(std::string aTextString, SDL_Renderer * renderer, TTF_Font* font, const SDL_Color& color);
+
     /**
      * Frees memory taken by \c MyTexture and \c SDL_Texture. 
      */
@@ -44,4 +47,19 @@ public:
      */
     void printText(std::string newText, int x, int y,
         SDL_Renderer* renderer, TTF_Font* font, const SDL_Color& newColor);
+};
+
+class MyTextGameObject
+{
+public:
+    MyText* text;
+public:
+    float posX;
+    float posY;
+    bool isToRemove;
+    unsigned int currentLifeCycle;
+    unsigned int maxLifeCycle;
+    MyTextGameObject(MyText* text, float x, float y, unsigned int aMaxLifeCycle = 10);
+    ~MyTextGameObject();
+    void display(Game* game, SDL_Renderer * renderer, TTF_Font * font, const SDL_Color & color);
 };

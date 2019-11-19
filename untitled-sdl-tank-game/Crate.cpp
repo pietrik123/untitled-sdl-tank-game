@@ -29,7 +29,7 @@ std::map<GoodsId, std::string> goodsIdWithDescription
     {FIRST_AID_KIT, "First Aid Kit"}
 };
 
-void Crate::giveABonusToAPlayer(Player& player)
+bool Crate::giveABonusToAPlayer(Player& player, std::string &information)
 {
     if (collision(player, *this, BoundsType::RADIUS, BoundsType::RADIUS))
     {
@@ -40,15 +40,23 @@ void Crate::giveABonusToAPlayer(Player& player)
         case CANNON:
             currentAmmo = player.weapons[BASIC_CANNON]->getAmmo();
             player.weapons[BASIC_CANNON]->setAmmo(currentAmmo + 10);
+            information = "Cannon + 10!";
             break;
         case BOMB:
             currentAmmo = player.weapons[BOMB_DROP]->getAmmo();
             player.weapons[BOMB_DROP]->setAmmo(currentAmmo + 10);
+            information = "Bombs + 10!";
             break;
         case FIRST_AID_KIT:
             player.energy += 25;
+            information = "Energy Up!";
             break;
         }
         isToRemove = true;
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }

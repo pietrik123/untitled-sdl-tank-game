@@ -40,6 +40,7 @@ public:
     float radius;
 
     int texFrame;
+    int numOfFramesInTexture;
     
     bool isToRemove;
 
@@ -52,6 +53,7 @@ public:
     GameObject(float x, float y);
     GameObject(float x, float y, float radius);
     GameObject(float x, float y, MyTexture* texture);
+    GameObject(float x, float y, MyTexture* texture, int aNumOfFramesInTexture);
     GameObject(float x, float y, float radius, MyTexture* texture);
     GameObject(float x, float y, float radius, MyTexture* texture, Direction dir);
 
@@ -61,6 +63,7 @@ public:
     virtual void moveObj(Direction direction);
  
     void display(SDL_Renderer* renderer, Game* game);
+    void displayAnimated(SDL_Renderer * renderer, Game * game);
 };
 
 float getDistance(const GameObject& obj1, const GameObject& obj2);

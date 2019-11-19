@@ -19,5 +19,5 @@ public:
 
     Crate(float x, float y, float parRadius, MyTexture* texture);
 
-    void giveABonusToAPlayer(Player& p);
+    bool giveABonusToAPlayer(Player& p, std::string& information);
 };
