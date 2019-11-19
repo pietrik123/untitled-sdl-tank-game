@@ -12,6 +12,7 @@ void Player::basicInit()
     displcmt = 5.0;
     coinsCollected = 0;
     afterHitCounter = 0;
+    shootingDirection = EAST;
 
     weaponIndex = WeaponId::BASIC_CANNON;
     weapons.push_back(new BasicCannon());
