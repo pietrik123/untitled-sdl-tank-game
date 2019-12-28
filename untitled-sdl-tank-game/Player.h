@@ -18,6 +18,7 @@ public:
     Weapon* weapon;
     std::vector<Weapon*> weapons;
     int coinsCollected;
+    Direction shootingDirection;
 
     unsigned int weaponIndex;
     

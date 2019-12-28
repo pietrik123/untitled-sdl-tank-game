@@ -418,21 +418,26 @@ void Game::mainLoop()
             }
         }
 
+        if (state[SDL_SCANCODE_LEFT])
+        {
+            player.shootingDirection = WEST;
+        }
+        else if (state[SDL_SCANCODE_RIGHT])
+        {
+            player.shootingDirection = EAST;
+        }
+        else if (state[SDL_SCANCODE_DOWN])
+        {
+            player.shootingDirection = SOUTH;
+        }
+        else if (state[SDL_SCANCODE_UP])
+        {
+            player.shootingDirection = NORTH;
+        }
+
         if (addBulletFlag == true)
         {
-            bulletStartDir = EAST;
-            if (state[SDL_SCANCODE_LEFT])
-            {
-                bulletStartDir = WEST;
-            }
-            else if (state[SDL_SCANCODE_DOWN])
-            {
-                bulletStartDir = SOUTH;
-            }
-            else if (state[SDL_SCANCODE_UP])
-            {
-                bulletStartDir = NORTH;
-            }
+            bulletStartDir = player.shootingDirection;           
         }
 
         player.getCurrentWeapon()->act();
