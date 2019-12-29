@@ -156,3 +156,10 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode,
 
     SDL_RenderCopyEx(renderer, sdlTexture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 }
+
+std::pair<int,int> MyTexture::getTextureWidthAndHeight()
+{
+    int w, h;
+    SDL_QueryTexture(sdlTexture, NULL, NULL, &w, &h);
+    return std::pair<int, int>(w,h);
+}

@@ -1,0 +1,1 @@
+Please open *svg image with inkscape. There are circles, which are taken for collision calculation. Please use coordinates shown by inkscape (origin of coord system is bottom left of the image). Width is image width and height is image height. Both are given in pixels.

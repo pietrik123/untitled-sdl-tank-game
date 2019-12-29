@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include <string>
 #include <SDL_ttf.h>
+#include <utility>
 
 /**
  * \c Wrapper for \c SDL_Texture.
@@ -78,4 +79,6 @@ public:
     *
     */
     void renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode, int numOfFrames, int frameIndex);
+
+    std::pair<int,int> getTextureWidthAndHeight();
 };

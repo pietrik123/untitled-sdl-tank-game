@@ -1,0 +1,17 @@
+# collision circles of obstacle
+50,120
+55,73
+47,50
+87,55
+120,67
+118,122
+131,132
+75,150
+96,144
+
+# examples of player position
+-22,47
+13,41
+183,31
+85,96
+203,164
