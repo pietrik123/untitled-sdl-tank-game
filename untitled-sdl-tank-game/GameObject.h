@@ -18,7 +18,8 @@ enum BoundsType
 {
     RADIUS,
     POLYGON,
-    RECTANGLE
+    RECTANGLE,
+    MULTI_CIRCLE
 };
 
 class GameObject
@@ -47,15 +48,18 @@ public:
     MyTexture* myTex;
     std::vector<MyTexture> additionalTextures;
 
+    std::vector<Circle> collisionCircles;
+
     Direction direction;
 
     GameObject();
     GameObject(float x, float y);
     GameObject(float x, float y, float radius);
-    GameObject(float x, float y, MyTexture* texture);
+    //GameObject(float x, float y, MyTexture* texture);
     GameObject(float x, float y, MyTexture* texture, int aNumOfFramesInTexture);
     GameObject(float x, float y, float radius, MyTexture* texture);
     GameObject(float x, float y, float radius, MyTexture* texture, Direction dir);
+    GameObject(float x, float y, MyTexture* texture, std::vector<Circle>& collisionCircles);
 
     virtual ~GameObject();
 
@@ -71,4 +75,6 @@ float getDistance(const GameObject& obj1, const GameObject& obj2);
 float getDistance(const GameObject& obj, float pointX, float pointY);
 
 bool collision(const GameObject &obj1, const GameObject &obj2, BoundsType bounds1, BoundsType bounds2);
+
+Point getObjectPositionInTextureAxisSystem(const GameObject& object1, const GameObject& object2, float scaleFactor = 1.0);
 

@@ -2,6 +2,7 @@
 #include "ObjectAdder.h"
 #include "EnemyAdder.h"
 #include "PlayerHealthBar.h"
+#include "MyTexture.h"
 
 #include <iostream>
 #include <algorithm>
@@ -121,7 +122,7 @@ void Game::initGrass()
     {
         float x = static_cast<float>(rand() % 1000 - 500);
         float y = static_cast<float>(rand() % 1000 - 500);
-        grassTiles.push_back(GameObject(x, y, &texDataStruct.grassTexture));
+        grassTiles.push_back(GameObject(x, y, &texDataStruct.grassTexture, {}));
     }
 }
 
@@ -149,6 +150,7 @@ void Game::loadTextures()
     texDataStruct.sparkTexture = MyTexture(renderer, "data\\gfx\\spark.png");
     texDataStruct.grassTexture = MyTexture(renderer, "data\\gfx\\grass2.png");
     texDataStruct.crateTexture = MyTexture(renderer, "data\\gfx\\crate.png");
+    texDataStruct.lakeTexture = MyTexture(renderer, "data\\gfx\\lake.png");
 }
 
 void Game::createGameMenu()
@@ -189,7 +191,19 @@ bool Game::initGame()
 
     //game init
     //terrain = GameObject(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, texDataStruct.terrainTex);
-    terrain = GameObject(0, 0, &texDataStruct.terrainTex);
+    terrain = GameObject(0, 0, &texDataStruct.terrainTex, {});
+
+    std::vector<Circle> collisionCirclesOfLakeObject = {
+        {50.0,  120.0, 32.0},
+        {55.0,  73.0,  32.0},
+        {47.0,  50.0,  32.0},
+        {87.0,  55.0,  32.0},
+        {120.0, 67.0,  32.0},
+        {118.0, 122.0, 32.0},
+        {131.0, 132.0, 32.0},
+        {75.0,  150.0, 32.0},
+        {96.0,  144.0, 32.0}, };
+    lake = GameObject(250.0, 250.0, &texDataStruct.lakeTexture, collisionCirclesOfLakeObject);
     player = Player(100.0, 100.0, 25.0, &texDataStruct.playerTexture);
     hud = HUD(&texDataStruct.helpScreenTexture, &texDataStruct.bombInfo, &texDataStruct.cannonInfo);
 
@@ -211,9 +225,9 @@ bool Game::initGame()
     bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
     flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture, 5);
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
-    coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture);
+    coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture, {});
     sparkTemplate = GameObject(-10.0, -10.0, &texDataStruct.sparkTexture, 5);
-    grassTemplate = GameObject(-10.0, -10.0, &texDataStruct.grassTexture);
+    grassTemplate = GameObject(-10.0, -10.0, &texDataStruct.grassTexture, {});
     crateTemplate = Crate(-10.0, -10.0, 25.0, &texDataStruct.crateTexture);
     coinTemplate.radius = 12.0;
 
@@ -287,10 +301,10 @@ bool Game::runGame()
     int res = gameMenu.gameMenuLoop(renderer);
 
     //play music
-    if (Mix_PlayingMusic() == 0)
+    /*if (Mix_PlayingMusic() == 0)
     { 
         Mix_PlayMusic( music, -1 );
-    }
+    }*/
 
     if (res == START_GAME)
     {
@@ -506,6 +520,12 @@ void Game::mainLoop()
                 player.posX = prevPosX;
                 player.posY = prevPosY;
             }
+        }
+
+        if (collision(player, lake, RADIUS, MULTI_CIRCLE))
+        {
+            player.posX = prevPosX;
+            player.posY = prevPosY;
         }
 
         //handle bullets' actions
@@ -771,6 +791,8 @@ void Game::mainLoop()
    
         // displaying background terrain
         terrain.myTex->render(renderer, 0, 0, MyTexture::RENDER_IN_CORNER);
+
+        lake.display(renderer, this);
      
         for (grassIt = grassTiles.begin(); grassIt != grassTiles.end(); ++grassIt)
         {
@@ -897,4 +919,3 @@ int Game::getPosYOnScreen(float localPosY)
     float posYinPlayerAxisSystem = localPosY - player.posY;
     return static_cast<int>(-scaleY * posYinPlayerAxisSystem + Game::screenHeight / 2.0);
 }
-

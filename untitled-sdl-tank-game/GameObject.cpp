@@ -37,7 +37,7 @@ GameObject::GameObject(float x, float y, float parRadius)
     isToRemove = false;
 }
 
-GameObject::GameObject(float x, float y, MyTexture* texture)
+GameObject::GameObject(float x, float y, MyTexture* texture, std::vector<Circle>& circles)
 {
 	posX = x;
 	posY = y;
@@ -47,6 +47,7 @@ GameObject::GameObject(float x, float y, MyTexture* texture)
     id = -1;
     childId = -1;
     isToRemove = false;
+    collisionCircles = circles;
 }
 
 GameObject::GameObject(float x, float y, MyTexture* texture, int aNumOfFramesInTexture)
@@ -138,5 +139,35 @@ bool collision(const GameObject& obj1, const GameObject& obj2,
 			return true;
 		}
 	}
+
+    if (bounds1 == RADIUS && bounds2 == MULTI_CIRCLE)
+    {
+        Circle obj1Circle;
+        obj1Circle.radius = obj1.radius;
+        obj1Circle.center = getObjectPositionInTextureAxisSystem(obj1, obj2, 1.0);
+
+        // calculation is done in 2nd object's texture axis system 
+        for (std::vector<Circle>::const_iterator it = obj2.collisionCircles.begin(); it != obj2.collisionCircles.end(); ++it)
+        {
+            if (areCirclesIntersecting(obj1Circle, *it))
+            {
+                return true;
+            }
+        }
+    }
+
 	return false;
+}
+
+Point getObjectPositionInTextureAxisSystem(const GameObject& object1, const GameObject& object2, float scaleFactor)
+{
+    // object1 - game object, of which coordinates we would like to get
+    // object2 - game object with the texture with axis system, in which we want to get coordinates 
+    Point pos;
+    std::pair<int, int> widthAndHeightOfTheTex = object2.myTex->getTextureWidthAndHeight();
+    float texWidth = static_cast<float> (widthAndHeightOfTheTex.first);
+    float texHeight = static_cast<float> (widthAndHeightOfTheTex.second);
+    pos.PosX = (object1.posX - object2.posX) / scaleFactor + texWidth / 2.0;
+    pos.PosY = (object1.posY - object2.posY) / scaleFactor + texHeight / 2.0;
+    return pos;
 }
