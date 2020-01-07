@@ -1,2 +1,2 @@
-googleTest/gtest/* linguist-vendored=false
+googleTest/gtest/* linguist-vendored=true
 *.svg linguist-detectable=false
