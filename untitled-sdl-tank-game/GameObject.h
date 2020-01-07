@@ -39,6 +39,8 @@ public:
     float prevPosX;
     float prevPosY;
     float radius;
+    float boundsRectWidth;
+    float boundsRectHeight;
 
     int texFrame;
     int numOfFramesInTexture;
@@ -58,6 +60,7 @@ public:
     //GameObject(float x, float y, MyTexture* texture);
     GameObject(float x, float y, MyTexture* texture, int aNumOfFramesInTexture);
     GameObject(float x, float y, float radius, MyTexture* texture);
+    GameObject(float x, float y, float boundsRectWidth, float boundsRectHeight, MyTexture* texture);
     GameObject(float x, float y, float radius, MyTexture* texture, Direction dir);
     GameObject(float x, float y, MyTexture* texture, std::vector<Circle>& collisionCircles);
 
