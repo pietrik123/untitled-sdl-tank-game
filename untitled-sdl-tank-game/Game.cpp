@@ -151,6 +151,7 @@ void Game::loadTextures()
     texDataStruct.grassTexture = MyTexture(renderer, "data\\gfx\\grass2.png");
     texDataStruct.crateTexture = MyTexture(renderer, "data\\gfx\\crate.png");
     texDataStruct.lakeTexture = MyTexture(renderer, "data\\gfx\\lake.png");
+    texDataStruct.woodenHouseTexture = MyTexture(renderer, "data\\gfx\\wooden_house.png");
 }
 
 void Game::createGameMenu()
@@ -204,6 +205,7 @@ bool Game::initGame()
         {75.0,  150.0, 32.0},
         {96.0,  144.0, 32.0}, };
     lake = GameObject(250.0, 250.0, &texDataStruct.lakeTexture, collisionCirclesOfLakeObject);
+    woodenHouse = GameObject(-100.0, -400.0, 200.0, 200.0, &texDataStruct.woodenHouseTexture);
     player = Player(100.0, 100.0, 25.0, &texDataStruct.playerTexture);
     hud = HUD(&texDataStruct.helpScreenTexture, &texDataStruct.bombInfo, &texDataStruct.cannonInfo);
 
@@ -274,6 +276,8 @@ bool Game::endGame()
     SDL_DestroyTexture(texDataStruct.sparkTexture.sdlTexture);
     SDL_DestroyTexture(texDataStruct.grassTexture.sdlTexture);
     SDL_DestroyTexture(texDataStruct.crateTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.lakeTexture.sdlTexture);
+    SDL_DestroyTexture(texDataStruct.woodenHouseTexture.sdlTexture);
 
     delete someText;
 
@@ -523,6 +527,12 @@ void Game::mainLoop()
         }
 
         if (collision(player, lake, RADIUS, MULTI_CIRCLE))
+        {
+            player.posX = prevPosX;
+            player.posY = prevPosY;
+        }
+
+        if (collision(player, woodenHouse, RADIUS, RECTANGLE))
         {
             player.posX = prevPosX;
             player.posY = prevPosY;
@@ -792,6 +802,7 @@ void Game::mainLoop()
         // displaying background terrain
         terrain.myTex->render(renderer, 0, 0, MyTexture::RENDER_IN_CORNER);
 
+        woodenHouse.display(renderer, this);
         lake.display(renderer, this);
      
         for (grassIt = grassTiles.begin(); grassIt != grassTiles.end(); ++grassIt)

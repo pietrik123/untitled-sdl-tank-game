@@ -12,7 +12,6 @@ GameObject::GameObject()
     id = -1;
     childId = -1;
     isToRemove = false;
-    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y)
@@ -171,8 +170,8 @@ bool collision(const GameObject& obj1, const GameObject& obj2,
 
     if (bounds1 == RADIUS && bounds2 == RECTANGLE)
     {
-        if ( (abs(obj1.posX - obj2.posX) <= obj1.radius + obj2.boundsRectWidth)
-            || (abs(obj1.posY - obj2.posY) <= obj1.radius + obj2.boundsRectHeight) )
+        if ( (abs(obj1.posX - obj2.posX) <= obj1.radius + obj2.boundsRectWidth/2.0)
+            && (abs(obj1.posY - obj2.posY) <= obj1.radius + obj2.boundsRectHeight/2.0) )
         {
             return true;
         }
