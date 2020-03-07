@@ -12,7 +12,6 @@ GameObject::GameObject()
     id = -1;
     childId = -1;
     isToRemove = false;
-    isToRemove = false;
 }
 
 GameObject::GameObject(float x, float y)
@@ -60,16 +59,16 @@ GameObject::GameObject(float x, float y, MyTexture* texture, int aNumOfFramesInT
     id = -1;
     childId = -1;
     isToRemove = false;
-    numOfFramesInTexture = aNumOfFramesInTexture;
+numOfFramesInTexture = aNumOfFramesInTexture;
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
 {
-	posX = x;
-	posY = y;
-	radius = parRadius;
-	myTex = texture;
-	direction = EAST;
+    posX = x;
+    posY = y;
+    radius = parRadius;
+    myTex = texture;
+    direction = EAST;
     texFrame = 0;
     id = -1;
     childId = -1;
@@ -77,23 +76,36 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
-					   Direction dir)
+    Direction dir)
 {
-	posX = x;
-	posY = y;
-	radius = parRadius;
-	myTex = texture;
-	direction = dir;
+    posX = x;
+    posY = y;
+    radius = parRadius;
+    myTex = texture;
+    direction = dir;
     texFrame = 0;
     id = -1;
     childId = -1;
     isToRemove = false;
 }
 
+GameObject::GameObject(float x, float y, float width, float height, MyTexture* texture)
+{
+    posX = x;
+    posY = y;
+    myTex = texture;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
+    boundsRectWidth = width;
+    boundsRectHeight = height;
+}
+
 GameObject::~GameObject()
 {
-	//delete this->myTex;
-	std::cout << __FUNCTION__ << " : Destroying game object!" << std::endl;
+    //delete this->myTex;
+    std::cout << __FUNCTION__ << " : Destroying game object!" << std::endl;
 }
 
 void GameObject::moveObj(Direction direction)
@@ -102,16 +114,16 @@ void GameObject::moveObj(Direction direction)
 
 void GameObject::writePrevPositions()
 {
-	prevPosX = posX;
-	prevPosY = posY;
+    prevPosX = posX;
+    prevPosY = posY;
 }
 
 void GameObject::display(SDL_Renderer* renderer, Game* game)
 {
-	myTex->render(renderer,
-		game->getPosXOnScreen(posX),
-		game->getPosYOnScreen(posY),
-		MyTexture::RENDER_IN_CENTER);
+    myTex->render(renderer,
+        game->getPosXOnScreen(posX),
+        game->getPosYOnScreen(posY),
+        MyTexture::RENDER_IN_CENTER);
 }
 
 void GameObject::displayAnimated(SDL_Renderer* renderer, Game* game)
@@ -121,24 +133,24 @@ void GameObject::displayAnimated(SDL_Renderer* renderer, Game* game)
 
 float getDistance(const GameObject& obj1, const GameObject& obj2)
 {
-	return distanceFromPointToPoint({ obj1.posX, obj1.posY }, { obj2.posX, obj2.posY });
+    return distanceFromPointToPoint({ obj1.posX, obj1.posY }, { obj2.posX, obj2.posY });
 }
 
 float getDistance(const GameObject& obj1, float pointX, float pointY)
 {
-	return distanceFromPointToPoint({ obj1.posX, obj1.posY }, { pointX, pointY });
+    return distanceFromPointToPoint({ obj1.posX, obj1.posY }, { pointX, pointY });
 }
 
 bool collision(const GameObject& obj1, const GameObject& obj2,
-			   BoundsType bounds1, BoundsType bounds2)
+    BoundsType bounds1, BoundsType bounds2)
 {
-	if (bounds1 == RADIUS && bounds2 == RADIUS)
-	{
-		if (getDistance(obj1, obj2) < (obj1.radius + obj2.radius))
-		{
-			return true;
-		}
-	}
+    if (bounds1 == RADIUS && bounds2 == RADIUS)
+    {
+        if (getDistance(obj1, obj2) < (obj1.radius + obj2.radius))
+        {
+            return true;
+        }
+    }
 
     if (bounds1 == RADIUS && bounds2 == MULTI_CIRCLE)
     {
@@ -153,6 +165,15 @@ bool collision(const GameObject& obj1, const GameObject& obj2,
             {
                 return true;
             }
+        }
+    }
+
+    if (bounds1 == RADIUS && bounds2 == RECTANGLE)
+    {
+        if ( (abs(obj1.posX - obj2.posX) <= obj1.radius + obj2.boundsRectWidth/2.0)
+            && (abs(obj1.posY - obj2.posY) <= obj1.radius + obj2.boundsRectHeight/2.0) )
+        {
+            return true;
         }
     }
 

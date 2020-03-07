@@ -46,6 +46,7 @@ struct TextureDataStruct
     MyTexture grassTexture;
     MyTexture crateTexture;
     MyTexture lakeTexture;
+    MyTexture woodenHouseTexture;
 };
 
 class Game
@@ -83,6 +84,7 @@ public:
     GameObject grassTemplate;
     Crate crateTemplate;
     GameObject lake;
+    GameObject woodenHouse;
 
     // groups of objects
     std::vector<Enemy> enemies;
