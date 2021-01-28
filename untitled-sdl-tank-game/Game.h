@@ -127,6 +127,7 @@ public:
     void mainLoop();
     bool runGame();	
     bool endGame();
+    void titleScreenLoop();
 
     void printText(std::string text, int x, int y);
     
@@ -143,4 +144,6 @@ public:
      */
     int getPosYOnScreen(float localPosY);
 };
+
+void addFlame(const Flame& f, std::vector<Flame>& flames, float x, float y);
 
