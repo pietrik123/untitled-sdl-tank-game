@@ -19,6 +19,9 @@
     <ClCompile Include="ObjectAdder.cpp" />
     <ClCompile Include="EnemyAdder.cpp" />
     <ClCompile Include="PlayerHealthBar.cpp" />
+    <ClCompile Include="Crate.cpp" />
+    <ClCompile Include="PatrollingEnemy.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -38,5 +41,11 @@
     <ClInclude Include="weapon.h" />
     <ClInclude Include="EnemyAdder.h" />
     <ClInclude Include="PlayerHealthBar.h" />
+    <ClInclude Include="Crate.h" />
+    <ClInclude Include="PatrollingEnemy.h" />
+    <ClInclude Include="TitleScreen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="enemyGoTo.tpp" />
   </ItemGroup>
 </Project>

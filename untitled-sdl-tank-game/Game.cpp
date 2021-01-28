@@ -3,6 +3,7 @@
 #include "EnemyAdder.h"
 #include "PlayerHealthBar.h"
 #include "MyTexture.h"
+#include "TitleScreen.h"
 
 #include <iostream>
 #include <algorithm>
@@ -203,7 +204,7 @@ bool Game::initGame()
         {118.0, 122.0, 32.0},
         {131.0, 132.0, 32.0},
         {75.0,  150.0, 32.0},
-        {96.0,  144.0, 32.0}, };
+        {96.0,  144.0, 32.0}};
     lake = GameObject(250.0, 250.0, &texDataStruct.lakeTexture, collisionCirclesOfLakeObject);
     woodenHouse = GameObject(-100.0, -400.0, 200.0, 200.0, &texDataStruct.woodenHouseTexture);
     player = Player(100.0, 100.0, 25.0, &texDataStruct.playerTexture);
@@ -300,6 +301,8 @@ bool Game::runGame()
     }
     initGame();
 
+    TitleScreen t(screenWidth, screenHeight);
+    t.loop(renderer);
 
     //put all functions here
     int res = gameMenu.gameMenuLoop(renderer);
@@ -320,6 +323,8 @@ bool Game::runGame()
     }
     return true;
 }
+
+
 
 void Game::mainLoop()
 {
@@ -356,14 +361,12 @@ void Game::mainLoop()
 
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
-            (*enemyIt).prevPosX = (*enemyIt).posX;
-            (*enemyIt).prevPosY = (*enemyIt).posY;
+            enemyIt->writePrevPositions();
         }
 
 		for (patrollingEnemyIt = patrollingEnemies.begin(); patrollingEnemyIt != patrollingEnemies.end(); ++patrollingEnemyIt)
 		{
-			(*patrollingEnemyIt).prevPosX = (*patrollingEnemyIt).posX;
-			(*patrollingEnemyIt).prevPosY = (*patrollingEnemyIt).posY;
+            patrollingEnemyIt->writePrevPositions();
 		}
 
         //game logic cycle
@@ -489,9 +492,7 @@ void Game::mainLoop()
         std::vector<GameObject>::iterator sparkIt;
         std::vector<GameObject>::iterator grassIt;
         std::vector<Crate>::iterator crateIt;
-
-        
-               
+              
         // write previous positions of enemies
         for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
         {
@@ -581,20 +582,10 @@ void Game::mainLoop()
                 if (collision(*enemyIt, *bulletIt, RADIUS, RADIUS))
                 {
                     //add flame
-                    Flame f = flameTemplate;
-                    f.posX = (*enemyIt).posX + 10;
-                    f.posY = (*enemyIt).posY + 10;
-                    flames.push_back(f);
-
-                    f = flameTemplate;
-                    f.posX = (*enemyIt).posX - 15;
-                    f.posY = (*enemyIt).posY + 3;
-                    flames.push_back(f);
-
-                    f = flameTemplate;
-                    f.posX = (*enemyIt).posX;
-                    f.posY = (*enemyIt).posY - 7;
-                    flames.push_back(f);
+                   
+                    addFlame(flameTemplate, flames, enemyIt->posX + 10, enemyIt->posY + 10);        
+                    addFlame(flameTemplate, flames, enemyIt->posX - 15, enemyIt->posY + 3);         
+                    addFlame(flameTemplate, flames, enemyIt->posX, enemyIt->posY - 7);
 
                     (*enemyIt).energy -= 50;
                     (*bulletIt).destroyed = true;
@@ -605,20 +596,10 @@ void Game::mainLoop()
             {
                 if (isBombExploded(*bombIt))
                 {
-                    Flame f = flameTemplate;
-                    f.posX = (*bombIt).posX + 0;
-                    f.posY = (*bombIt).posY + 8;
-                    flames.push_back(f);
-
-                    f = flameTemplate;
-                    f.posX = (*bombIt).posX + (-5);
-                    f.posY = (*bombIt).posY + (-4);
-                    flames.push_back(f);
-
-                    f = flameTemplate;
-                    f.posX = (*bombIt).posX + 5;
-                    f.posY = (*bombIt).posY + (-4);
-                    flames.push_back(f);
+                    
+                    addFlame(flameTemplate, flames, bombIt->posX, bombIt->posY + 8);
+                    addFlame(flameTemplate, flames, bombIt->posX - 5, bombIt->posY - 4);
+                    addFlame(flameTemplate, flames, bombIt->posX + 5, bombIt->posY - 4);
 
                     if (getDistance(*enemyIt, *bombIt) <= (*bombIt).explosionRadius)
                     {
@@ -917,6 +898,14 @@ void Game::mainLoop()
         //wait
         SDL_Delay(50);
     }
+}
+
+void addFlame(const Flame& f, std::vector<Flame>& flames, float x, float y)
+{
+    Flame newFlame = f;
+    newFlame.posX = x;
+    newFlame.posY = y;
+    flames.push_back(newFlame);
 }
 
 int Game::getPosXOnScreen(float localPosX)
