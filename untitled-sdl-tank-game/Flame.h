@@ -13,5 +13,7 @@ public:
     Flame(float x, float y, MyTexture* texture);
     Flame(float x, float y, MyTexture* texture, int aNumOfFramesInTexture);
 
+    static bool isFlameCycleOver(const Flame& f);
+
     void act();
 };

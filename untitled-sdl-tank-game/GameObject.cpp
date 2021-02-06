@@ -104,7 +104,6 @@ GameObject::GameObject(float x, float y, float width, float height, MyTexture* t
 
 GameObject::~GameObject()
 {
-    //delete this->myTex;
     std::cout << __FUNCTION__ << " : Destroying game object!" << std::endl;
 }
 
@@ -126,12 +125,12 @@ void GameObject::display(SDL_Renderer* renderer, Game* game)
         MyTexture::RENDER_IN_CENTER);
 }
 
-void GameObject::displayAnimated(SDL_Renderer* renderer, Game* game, int par)
+void GameObject::displayAnimated(SDL_Renderer* renderer, Game* game, int gameFramePerTexFrame)
 {
     myTex->renderAnim(renderer, game->getPosXOnScreen(posX), game->getPosYOnScreen(posY),
-        MyTexture::RENDER_IN_CENTER, numOfFramesInTexture, texFrame/par);
+        MyTexture::RENDER_IN_CENTER, numOfFramesInTexture, texFrame/ gameFramePerTexFrame);
     texFrame++;
-    if (texFrame > par*numOfFramesInTexture)
+    if (texFrame > gameFramePerTexFrame*numOfFramesInTexture)
     {
         texFrame = 0;
     }
@@ -197,4 +196,9 @@ Point getObjectPositionInTextureAxisSystem(const GameObject& object1, const Game
     pos.PosX = (object1.posX - object2.posX) / scaleFactor + texWidth / 2.0;
     pos.PosY = (object1.posY - object2.posY) / scaleFactor + texHeight / 2.0;
     return pos;
+}
+
+bool GameObject::isObjectToRemove(const GameObject &o)
+{
+    return o.isToRemove;
 }

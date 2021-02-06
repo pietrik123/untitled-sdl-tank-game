@@ -62,4 +62,5 @@ public:
     MyTextGameObject(MyText* text, float x, float y, unsigned int aMaxLifeCycle = 10);
     ~MyTextGameObject();
     void display(Game* game, SDL_Renderer * renderer, TTF_Font * font, const SDL_Color & color);
+    static bool isTextObjectToRemove(MyTextGameObject* o);
 };

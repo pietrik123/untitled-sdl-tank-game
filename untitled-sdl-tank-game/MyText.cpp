@@ -69,3 +69,13 @@ void MyTextGameObject::display(Game* game, SDL_Renderer* renderer, TTF_Font* fon
         isToRemove = true;
     }
 }
+
+bool MyTextGameObject::isTextObjectToRemove(MyTextGameObject* o)
+{
+    bool res = o->isToRemove;
+    if (res)
+    {
+        delete o;
+    }
+    return res;
+}

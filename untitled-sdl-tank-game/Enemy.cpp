@@ -109,3 +109,8 @@ void Enemy::follow(const GameObject& objectToFollow)
         }
     }
 }
+
+bool Enemy::isEnemyDestroyed(const Enemy &e)
+{
+    return e.energy <= 0;
+}

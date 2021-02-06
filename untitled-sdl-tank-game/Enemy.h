@@ -26,6 +26,8 @@ public:
     Enemy(float x, float y);
     Enemy(float x, float y, float collisionRadius, MyTexture* texture);
 
+
+    static bool isEnemyDestroyed(const Enemy &e);
     virtual void follow(const GameObject& objectToFollow);
 
     bool isHit(Bullet &b);

@@ -79,3 +79,7 @@ float Bullet::getDirectionAngle()
     return angle;
 }
 
+bool Bullet::isBulletDestroyed(const Bullet& b)
+{
+    return b.destroyed;
+}

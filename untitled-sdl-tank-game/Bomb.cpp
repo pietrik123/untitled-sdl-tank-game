@@ -23,3 +23,8 @@ void Bomb::act()
         exploded = true;
     }
 }
+
+bool Bomb::isBombExploded(const Bomb &b)
+{
+    return b.exploded;
+}

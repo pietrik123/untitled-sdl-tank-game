@@ -29,4 +29,5 @@ public:
     float getDirectionAngle();
 
     void move();
+    static bool isBulletDestroyed(const Bullet& b);
 };

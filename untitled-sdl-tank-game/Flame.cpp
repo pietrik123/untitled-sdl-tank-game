@@ -31,9 +31,9 @@ Flame::Flame(float x, float y, MyTexture* texture, int aNumOfFramesInTexture) : 
 void Flame::act()
 {
     lifeCycle += 1;
+}
 
-    if (lifeCycle % 3 == 0)
-    {
-        // texFrame += 1;
-    }
+bool Flame::isFlameCycleOver(const Flame &f)
+{
+    return f.lifeCycle > f.maxLifeCycle;
 }

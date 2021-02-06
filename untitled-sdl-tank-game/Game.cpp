@@ -23,42 +23,6 @@ music(NULL), someText(NULL)
     scaleY = 1.0;
 }
 
-bool isEnemyDestroyed(const Enemy &e)
-{
-    return e.energy <= 0;
-}
-
-bool isFlameCycleOver(const Flame &f)
-{
-
-    return f.lifeCycle > f.maxLifeCycle;
-}
-
-bool isBulletDestroyed(const Bullet &b)
-{
-    return b.destroyed;
-}
-
-bool isBombExploded(const Bomb &b)
-{
-    return b.exploded;
-}
-
-bool isObjectToRemove(const GameObject &o)
-{
-    return o.isToRemove;   
-}
-
-bool isTextObjectToRemove(MyTextGameObject* o)
-{
-    bool res = o->isToRemove;
-    if (res)
-    {
-        delete o;
-    }
-    return res;
-}
-
 Game::~Game() 
 {
     std::cout << __FUNCTION__ << " : Game finished!" << "\n";
@@ -594,7 +558,7 @@ void Game::mainLoop()
 
             for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
             {
-                if (isBombExploded(*bombIt))
+                if (Bomb::isBombExploded(*bombIt))
                 {
                     
                     addFlame(flameTemplate, flames, bombIt->posX, bombIt->posY + 8);
@@ -619,7 +583,7 @@ void Game::mainLoop()
         player.act();
 
         flames.erase(
-            std::remove_if(flames.begin(), flames.end(), isFlameCycleOver),
+            std::remove_if(flames.begin(), flames.end(), Flame::isFlameCycleOver),
             flames.end());
 
         //handle enemies
@@ -679,12 +643,11 @@ void Game::mainLoop()
 
         //erase enemies, who have energy below or equal 0
         enemies.erase(
-            std::remove_if(enemies.begin(), enemies.end(), isEnemyDestroyed),
+            std::remove_if(enemies.begin(), enemies.end(), Enemy::isEnemyDestroyed),
             enemies.end());
 
-
 		patrollingEnemies.erase(
-			std::remove_if(patrollingEnemies.begin(), patrollingEnemies.end(), isEnemyDestroyed),
+			std::remove_if(patrollingEnemies.begin(), patrollingEnemies.end(), Enemy::isEnemyDestroyed),
 			patrollingEnemies.end());
 
         for (coinsIt = coins.begin(); coinsIt != coins.end(); ++coinsIt)
@@ -710,7 +673,7 @@ void Game::mainLoop()
 
         // delete sparks if coin is no longer there
         sparks.erase(
-            std::remove_if(sparks.begin(), sparks.end(), isObjectToRemove),
+            std::remove_if(sparks.begin(), sparks.end(), GameObject::isObjectToRemove),
             sparks.end());
 
         for (crateIt = crates.begin(); crateIt != crates.end(); crateIt++)
@@ -723,7 +686,7 @@ void Game::mainLoop()
 
         // delete crates if they had been picked up
         crates.erase(
-            std::remove_if(crates.begin(), crates.end(), isObjectToRemove),
+            std::remove_if(crates.begin(), crates.end(), GameObject::isObjectToRemove),
             crates.end());
 
         
@@ -758,12 +721,12 @@ void Game::mainLoop()
 
         // delete bullets which have been destroyed
         bullets.erase(
-            std::remove_if(bullets.begin(), bullets.end(), isBulletDestroyed),
+            std::remove_if(bullets.begin(), bullets.end(), Bullet::isBulletDestroyed),
             bullets.end());
 
         // delete bullets which have been destroyed
         bombs.erase(
-            std::remove_if(bombs.begin(), bombs.end(), isBombExploded),
+            std::remove_if(bombs.begin(), bombs.end(), Bomb::isBombExploded),
             bombs.end());
 
         // write previous positions of enemies
@@ -824,12 +787,12 @@ void Game::mainLoop()
 
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
             Flame &flame = (*flameIt);
-            flame.displayAnimated(renderer, this,3);
+            flame.displayAnimated(renderer, this, 3);
         }
 
         for (sparkIt = sparks.begin(); sparkIt != sparks.end(); ++sparkIt) {
             GameObject &spark = (*sparkIt);
-            spark.displayAnimated(renderer, this,3);
+            spark.displayAnimated(renderer, this, 3);
         }
 
         enemyAdder.run(enemies);
@@ -855,7 +818,7 @@ void Game::mainLoop()
         }
 
         textObjects.erase(
-            std::remove_if(textObjects.begin(), textObjects.end(), isTextObjectToRemove),
+            std::remove_if(textObjects.begin(), textObjects.end(), MyTextGameObject::isTextObjectToRemove),
             textObjects.end());
 
         healthBar.display(0, 0, renderer, 1.5);

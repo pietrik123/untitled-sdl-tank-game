@@ -28,6 +28,7 @@ public:
     Bomb(float x, float y, MyTexture *tex);
 
     void act();
+    static bool isBombExploded(const Bomb &b);
 
     ~Bomb();
 };
