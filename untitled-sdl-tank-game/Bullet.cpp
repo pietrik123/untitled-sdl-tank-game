@@ -2,23 +2,15 @@
 
 #include <iostream>
 
+#define BULLET_LIFE 100
+
 Bullet::Bullet() {}
-
-Bullet::Bullet(float x, float y) : GameObject(x, y)
-{
-    displcmnt = 4.0;
-    maxLifeCycle = 20;
-
-    lifeCycle = 0;
-    destroyed = false;
-    std::cout << __FUNCTION__ << " : Bullet created!\n";
-}
 
 Bullet::Bullet(float x, float y, float collisionRadius, MyTexture* texture)
     : GameObject(x, y)
 {
-    displcmnt = 4.0;
-    maxLifeCycle = 20;
+    displcmnt = 8.0;
+    maxLifeCycle = BULLET_LIFE;
 
     lifeCycle = 0;
     destroyed = false;

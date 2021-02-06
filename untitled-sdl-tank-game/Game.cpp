@@ -511,10 +511,6 @@ void Game::mainLoop()
         for (bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++)
         {
             (*bulletIt).move();
-            if ((*bulletIt).lifeCycle > BULLET_LIFE)
-            {
-                (*bulletIt).destroyed = true;
-            }
         }
 
         //handle bombs actions
@@ -534,43 +530,6 @@ void Game::mainLoop()
                    new MyTextGameObject(new MyText(bonusInfo, renderer, ttfFont, { 255, 242, 0, 255 }), player.posX, player.posY, 20)
                );
            }
-        }
-
-        //handle bullet hits
-        //add flames
-        for (enemyIt = enemies.begin(); enemyIt != enemies.end(); ++enemyIt)
-        {
-            for (bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt)
-            {
-                if ((*bulletIt).destroyed == true) continue;
-                if (collision(*enemyIt, *bulletIt, RADIUS, RADIUS))
-                {
-                    //add flame
-                   
-                    addFlame(flameTemplate, flames, enemyIt->posX + 10, enemyIt->posY + 10);        
-                    addFlame(flameTemplate, flames, enemyIt->posX - 15, enemyIt->posY + 3);         
-                    addFlame(flameTemplate, flames, enemyIt->posX, enemyIt->posY - 7);
-
-                    (*enemyIt).energy -= 50;
-                    (*bulletIt).destroyed = true;
-                }
-            }
-
-            for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
-            {
-                if (Bomb::isBombExploded(*bombIt))
-                {
-                    
-                    addFlame(flameTemplate, flames, bombIt->posX, bombIt->posY + 8);
-                    addFlame(flameTemplate, flames, bombIt->posX - 5, bombIt->posY - 4);
-                    addFlame(flameTemplate, flames, bombIt->posX + 5, bombIt->posY - 4);
-
-                    if (getDistance(*enemyIt, *bombIt) <= (*bombIt).explosionRadius)
-                    {
-                        (*enemyIt).energy -= 200;
-                    }
-                }
-            }
         }
 
         //handle flames' actions
@@ -707,7 +666,7 @@ void Game::mainLoop()
             {
                 if (i == j) continue;
 
-                bool res = collision( *(extendedEnemies[i]), *(extendedEnemies[j]),
+                bool res = collision( *extendedEnemies[i], *extendedEnemies[j],
                     BoundsType::RADIUS, BoundsType::RADIUS);
 
                 if (res == true)
@@ -718,6 +677,42 @@ void Game::mainLoop()
                 }
             }
         }
+
+        for (std::vector<Enemy*>::iterator enemyIt = extendedEnemies.begin(); enemyIt != extendedEnemies.end(); ++enemyIt)
+        {
+            for (bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt)
+            {
+                if ((*bulletIt).destroyed == true) continue;
+                if (collision(**enemyIt, *bulletIt, RADIUS, RADIUS))
+                {
+                    //add flame
+
+                    addFlame(flameTemplate, flames, (*enemyIt)->posX + 10, (*enemyIt)->posY + 10);
+                    addFlame(flameTemplate, flames, (*enemyIt)->posX - 15, (*enemyIt)->posY + 3);
+                    addFlame(flameTemplate, flames, (*enemyIt)->posX, (*enemyIt)->posY - 7);
+
+                    (*enemyIt)->energy -= 50;
+                    (*bulletIt).destroyed = true;
+                }
+            }
+
+            for (bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
+            {
+                if (Bomb::isBombExploded(*bombIt))
+                {
+
+                    addFlame(flameTemplate, flames, bombIt->posX, bombIt->posY + 8);
+                    addFlame(flameTemplate, flames, bombIt->posX - 5, bombIt->posY - 4);
+                    addFlame(flameTemplate, flames, bombIt->posX + 5, bombIt->posY - 4);
+
+                    if (getDistance(**enemyIt, *bombIt) <= (*bombIt).explosionRadius)
+                    {
+                        (*enemyIt)->energy -= 200;
+                    }
+                }
+            }
+        }
+
 
         // delete bullets which have been destroyed
         bullets.erase(
