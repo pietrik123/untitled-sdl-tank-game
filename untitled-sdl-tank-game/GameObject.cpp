@@ -126,9 +126,15 @@ void GameObject::display(SDL_Renderer* renderer, Game* game)
         MyTexture::RENDER_IN_CENTER);
 }
 
-void GameObject::displayAnimated(SDL_Renderer* renderer, Game* game)
+void GameObject::displayAnimated(SDL_Renderer* renderer, Game* game, int par)
 {
-    myTex->renderAnim(renderer, game->getPosXOnScreen(posX), game->getPosYOnScreen(posY), MyTexture::RENDER_IN_CENTER, numOfFramesInTexture, texFrame);
+    myTex->renderAnim(renderer, game->getPosXOnScreen(posX), game->getPosYOnScreen(posY),
+        MyTexture::RENDER_IN_CENTER, numOfFramesInTexture, texFrame/par);
+    texFrame++;
+    if (texFrame > par*numOfFramesInTexture)
+    {
+        texFrame = 0;
+    }
 }
 
 float getDistance(const GameObject& obj1, const GameObject& obj2)

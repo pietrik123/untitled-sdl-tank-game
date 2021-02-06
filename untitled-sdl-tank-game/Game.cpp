@@ -824,20 +824,12 @@ void Game::mainLoop()
 
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {
             Flame &flame = (*flameIt);
-            flame.displayAnimated(renderer, this);
+            flame.displayAnimated(renderer, this,3);
         }
 
         for (sparkIt = sparks.begin(); sparkIt != sparks.end(); ++sparkIt) {
             GameObject &spark = (*sparkIt);
-            spark.displayAnimated(renderer, this);
-            if (mainLoopCnt % 3 == 0)
-            {
-                spark.texFrame++;
-            }
-            if (spark.texFrame > 10)
-            {
-                spark.texFrame = 0;
-            }
+            spark.displayAnimated(renderer, this,3);
         }
 
         enemyAdder.run(enemies);

@@ -34,6 +34,6 @@ void Flame::act()
 
     if (lifeCycle % 3 == 0)
     {
-        texFrame += 1;
+        // texFrame += 1;
     }
 }
