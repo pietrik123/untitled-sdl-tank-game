@@ -161,6 +161,9 @@ bool collision(const GameObject& obj1, const GameObject& obj2,
     {
         Circle obj1Circle;
         obj1Circle.radius = obj1.radius;
+
+        std::cout << "Debug info: " << obj1.radius << "\n";
+
         obj1Circle.center = getObjectPositionInTextureAxisSystem(obj1, obj2, 1.0);
 
         // calculation is done in 2nd object's texture axis system 
