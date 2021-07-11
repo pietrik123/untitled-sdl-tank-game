@@ -173,6 +173,7 @@
     <ClInclude Include="EnemyAdder.h" />
     <ClInclude Include="Flame.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="game_settings.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="MyText.h" />

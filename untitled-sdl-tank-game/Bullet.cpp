@@ -10,7 +10,7 @@ Bullet::Bullet(float x, float y, float collisionRadius, MyTexture* texture)
     : GameObject(x, y)
 {
     displcmnt = BULLET_SPEED;
-    maxLifeCycle = BULLET_LIFE;
+    maxLifeCycle = BULLET_MAX_LIFE_CYCLE;
 
     lifeCycle = 0;
     destroyed = false;
