@@ -1,15 +1,16 @@
 #include "Player.h"
+#include "game_settings.h"
 
 void Player::basicInit()
 {
-    energy = 100u;
-    maxEnergy = 100u;
+    energy = PLAYER_MAX_ENERGY;
+    maxEnergy = PLAYER_MAX_ENERGY;
     bulletReady = true;
     reloadingPhase = 100;
     shotFired = false;
     prevShotFired = false;
     addBullet = false;
-    displcmt = 5.0;
+    displcmt = PLAYER_SPEED;
     coinsCollected = 0;
     afterHitCounter = 0;
     shootingDirection = EAST;

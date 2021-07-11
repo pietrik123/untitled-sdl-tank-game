@@ -12,6 +12,7 @@
 #include "MyText.h"
 #include "PatrollingEnemy.h"
 #include "Crate.h"
+#include "game_settings.h"
 
 #include<SDL.h>
 #include<SDL_image.h>
@@ -19,9 +20,6 @@
 #include<SDL_ttf.h>
 
 #include<vector>
-
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT  480
 
 struct TextureDataStruct
 {

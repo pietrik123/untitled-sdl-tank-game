@@ -1,15 +1,15 @@
 #include "Bullet.h"
+#include "game_settings.h"
 
 #include <iostream>
 
-#define BULLET_LIFE 100
 
 Bullet::Bullet() {}
 
 Bullet::Bullet(float x, float y, float collisionRadius, MyTexture* texture)
     : GameObject(x, y)
 {
-    displcmnt = 8.0;
+    displcmnt = BULLET_SPEED;
     maxLifeCycle = BULLET_LIFE;
 
     lifeCycle = 0;

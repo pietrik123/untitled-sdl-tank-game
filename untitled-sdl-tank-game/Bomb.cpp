@@ -1,15 +1,15 @@
-
 #include "Bomb.h"
+#include "game_settings.h"
 
 Bomb::Bomb() {}
 
 Bomb::Bomb(float x, float y, MyTexture *tex)
 {
-    maxLifeCycle = 50;
+    maxLifeCycle = BOMB_MAX_LIFE_CYCLE;
 
     myTex = tex;
     exploded = false;
-    explosionRadius = 25.0;
+    explosionRadius = BOMB_EXPLOSION_RADIUS;
     lifeCycle = 0;
 }
 
