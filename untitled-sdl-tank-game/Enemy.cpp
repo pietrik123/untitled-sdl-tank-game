@@ -1,18 +1,18 @@
 
 #include "Enemy.h"
 #include "Bullet.h"
+#include "game_settings.h"
 
 #include <iostream>
 
 void Enemy::basicInit()
 {
-    energy = 100;
+    energy = ENEMY_ENERGY;
     isStuck = false;
     cnt = 0;
     dirX = 0;
     dirY = 0;
-    displcmnt = 2.5;
-    energy = 100;
+    displcmnt = ENEMY_SPEED;
 }
 
 Enemy::Enemy()

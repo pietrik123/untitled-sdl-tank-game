@@ -4,6 +4,7 @@
 #include "PlayerHealthBar.h"
 #include "MyTexture.h"
 #include "TitleScreen.h"
+#include "game_settings.h"
 
 #include <iostream>
 #include <algorithm>
