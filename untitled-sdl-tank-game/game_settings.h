@@ -13,7 +13,7 @@ const int ENEMY_ENERGY = 100;
 const float ENEMY_SPEED = 2.5f;
 
 // bullet
-const unsigned int BULLET_LIFE = 100ul;
+const unsigned int BULLET_MAX_LIFE_CYCLE = 100ul;
 const float BULLET_SPEED = 8.0f;
 
 // bomb
