@@ -53,6 +53,7 @@ public:
     std::vector<Circle> collisionCircles;
 
     Direction direction;
+    float directionAngle; // degrees
 
     GameObject();
     GameObject(float x, float y);
@@ -61,6 +62,7 @@ public:
     GameObject(float x, float y, float radius, MyTexture* texture);
     GameObject(float x, float y, float boundsRectWidth, float boundsRectHeight, MyTexture* texture);
     GameObject(float x, float y, float radius, MyTexture* texture, Direction dir);
+    GameObject(float x, float y, float parRadius, MyTexture* texture, float angle);
     GameObject(float x, float y, MyTexture* texture, std::vector<Circle>& collisionCircles);
 
     virtual ~GameObject();
@@ -72,6 +74,11 @@ public:
     void displayAnimated(SDL_Renderer * renderer, Game * game, int gameFramePerTexFrame = 1);
 
     static bool isObjectToRemove(const GameObject &o);
+
+    void setDirectionAngle(float angle);
+protected:
+    float coefX;
+    float coefY;
 };
 
 float getDistance(const GameObject& obj1, const GameObject& obj2);

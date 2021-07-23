@@ -118,6 +118,7 @@ void Game::loadTextures()
     texDataStruct.crateTexture = MyTexture(renderer, "data\\gfx\\crate.png");
     texDataStruct.lakeTexture = MyTexture(renderer, "data\\gfx\\lake.png");
     texDataStruct.woodenHouseTexture = MyTexture(renderer, "data\\gfx\\wooden_house.png");
+    texDataStruct.machineGunBulletTexture = MyTexture(renderer, "data\\gfx\\tower_bullet.png");
 }
 
 void Game::createGameMenu()
@@ -191,6 +192,7 @@ bool Game::initGame()
     // create copyable objects
 
     bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
+    machineGunBulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.machineGunBulletTexture);
     flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture, 5);
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
     coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture, {});
@@ -427,7 +429,20 @@ void Game::mainLoop()
         }
 
         player.getCurrentWeapon()->act();
-        
+
+        static int tmpMachineGunAngleParam = 0;
+        if (mainLoopCnt % 15 == 0)
+        {
+            Bullet b = machineGunBulletTemplate;
+            b.posX = player.posX;
+            b.posY = player.posY;
+            b.setDirectionAngle(tmpMachineGunAngleParam * 10.0f);
+            b.isFourDirMovementOnly = false;
+            b.displcmnt = MACHINE_GUN_BULLET_SPEED;
+            bullets.push_back(b);
+            tmpMachineGunAngleParam += 1;
+        }
+
         if (addBulletFlag == true)
         {
             Bullet b = bulletTemplate;
@@ -778,7 +793,7 @@ void Game::mainLoop()
                 getPosXOnScreen((*bulletIt).posX),
                 getPosYOnScreen((*bulletIt).posY),
                 MyTexture::RENDER_IN_CENTER,
-                (*bulletIt).getDirectionAngle());
+                (*bulletIt).getDirectionAngleForView());
         }
 
         for (flameIt = flames.begin(); flameIt != flames.end(); ++flameIt) {

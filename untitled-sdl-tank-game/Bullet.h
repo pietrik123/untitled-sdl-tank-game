@@ -14,6 +14,8 @@ public:
      */
     int maxLifeCycle;
 
+    bool isFourDirMovementOnly;
+
     bool destroyed;
     /**
      * current lifeCycle
@@ -25,8 +27,9 @@ public:
 
     ~Bullet();
 
-    float getDirectionAngle();
+    float getDirectionAngleForView();
 
     void move();
+
     static bool isBulletDestroyed(const Bullet& b);
 };

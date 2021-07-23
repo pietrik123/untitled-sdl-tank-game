@@ -15,6 +15,7 @@ const float ENEMY_SPEED = 2.5f;
 // bullet
 const unsigned int BULLET_MAX_LIFE_CYCLE = 100ul;
 const float BULLET_SPEED = 8.0f;
+const float MACHINE_GUN_BULLET_SPEED = 16.0f;
 
 // bomb
 const int BOMB_MAX_LIFE_CYCLE = 50;

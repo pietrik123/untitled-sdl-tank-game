@@ -12,6 +12,7 @@ GameObject::GameObject()
     id = -1;
     childId = -1;
     isToRemove = false;
+    setDirectionAngle(0.0f);
 }
 
 GameObject::GameObject(float x, float y)
@@ -23,6 +24,7 @@ GameObject::GameObject(float x, float y)
     id = -1;
     childId = -1;
     isToRemove = false;
+    setDirectionAngle(0.0f);
 }
 
 GameObject::GameObject(float x, float y, float parRadius)
@@ -34,6 +36,7 @@ GameObject::GameObject(float x, float y, float parRadius)
     id = -1;
     childId = -1;
     isToRemove = false;
+    setDirectionAngle(0.0f);
 }
 
 GameObject::GameObject(float x, float y, MyTexture* texture, std::vector<Circle>& circles)
@@ -47,6 +50,7 @@ GameObject::GameObject(float x, float y, MyTexture* texture, std::vector<Circle>
     childId = -1;
     isToRemove = false;
     collisionCircles = circles;
+    setDirectionAngle(0.0f);
 }
 
 GameObject::GameObject(float x, float y, MyTexture* texture, int aNumOfFramesInTexture)
@@ -59,7 +63,8 @@ GameObject::GameObject(float x, float y, MyTexture* texture, int aNumOfFramesInT
     id = -1;
     childId = -1;
     isToRemove = false;
-numOfFramesInTexture = aNumOfFramesInTexture;
+    numOfFramesInTexture = aNumOfFramesInTexture;
+    setDirectionAngle(0.0f);
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
@@ -73,6 +78,7 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture)
     id = -1;
     childId = -1;
     isToRemove = false;
+    setDirectionAngle(0.0f);
 }
 
 GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
@@ -87,6 +93,21 @@ GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
     id = -1;
     childId = -1;
     isToRemove = false;
+}
+
+
+GameObject::GameObject(float x, float y, float parRadius, MyTexture* texture,
+    float angle)
+{
+    posX = x;
+    posY = y;
+    radius = parRadius;
+    myTex = texture;
+    texFrame = 0;
+    id = -1;
+    childId = -1;
+    isToRemove = false;
+    setDirectionAngle(0.0f);
 }
 
 GameObject::GameObject(float x, float y, float width, float height, MyTexture* texture)
@@ -204,4 +225,12 @@ Point getObjectPositionInTextureAxisSystem(const GameObject& object1, const Game
 bool GameObject::isObjectToRemove(const GameObject &o)
 {
     return o.isToRemove;
+}
+
+void GameObject::setDirectionAngle(float angle)
+{
+    directionAngle = angle;
+    float angleInRad = angle * M_PI / 180.0f;
+    coefX = cos(angleInRad);
+    coefY = sin(angleInRad);
 }
