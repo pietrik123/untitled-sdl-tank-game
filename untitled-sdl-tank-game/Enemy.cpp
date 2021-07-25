@@ -12,7 +12,7 @@ void Enemy::basicInit()
     cnt = 0;
     dirX = 0;
     dirY = 0;
-    displcmnt = ENEMY_SPEED;
+    speed = ENEMY_SPEED;
 }
 
 Enemy::Enemy()
@@ -42,8 +42,6 @@ bool Enemy::isHit(Bullet &b)
         hit = true;
     }
     return hit;
-    dirX = 0;
-    dirY = 0;
 }
 
 void Enemy::follow(const GameObject& objectToFollow)
@@ -94,8 +92,8 @@ void Enemy::follow(const GameObject& objectToFollow)
         }
     }
 
-    posX += dirX * displcmnt;
-    posY += dirY * displcmnt;
+    posX += dirX * speed;
+    posY += dirY * speed;
 
     // check if enemy is far from object to follow and does not move 
     if ((getDistance(*this, objectToFollow) > radius)

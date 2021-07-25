@@ -8,7 +8,8 @@ class Player : public GameObject
 private:
     void basicInit();
 public:
-    float displcmt; // unit displacement
+    // player speed, unit: [game distance unit]/[1*frame]
+    float speed;
 
     bool bulletReady;
     int reloadingPhase;
@@ -18,7 +19,9 @@ public:
     Weapon* weapon;
     std::vector<Weapon*> weapons;
     int coinsCollected;
-    Direction shootingDirection;
+
+    Direction basicCannonShootingDirection;
+    float machineGunShootingAngle;
 
     unsigned int weaponIndex;
     

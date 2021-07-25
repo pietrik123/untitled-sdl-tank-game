@@ -9,7 +9,8 @@ class Enemy : public GameObject
 private:
     void basicInit();
 public:
-    float displcmnt;
+    // enemy speed, unit: [game distance unit]/[1*frame] 
+    float speed;
     int energy;
 
     bool isStuck;
@@ -18,9 +19,6 @@ public:
 
     short int dirX;
     short int dirY;
-    
-    float prevPosX;
-    float prevPosY;
 
     Enemy();
     Enemy(float x, float y);

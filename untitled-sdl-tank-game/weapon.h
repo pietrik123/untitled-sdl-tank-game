@@ -39,4 +39,11 @@ public:
     void act();
 };
 
+class MachineGun : public Weapon
+{
+public:
+    MachineGun();
+    static const int READY = 5;
+    void act();
+};
 

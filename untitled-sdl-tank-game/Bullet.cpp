@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+
 #include "Bullet.h"
 #include "game_settings.h"
 
@@ -17,6 +19,7 @@ Bullet::Bullet(float x, float y, float collisionRadius, MyTexture* texture)
     std::cout << __FUNCTION__ << " : Bullet created!" << std::endl;
     radius = collisionRadius;
     myTex = texture;
+    isFourDirMovementOnly = true;
 }
 
 
@@ -33,42 +36,48 @@ void Bullet::move()
         destroyed = true;
     }
 
-    switch (direction)
+    if (isFourDirMovementOnly)
     {
+        switch (direction)
+        {
         case SOUTH:
-            posY -= displcmnt;
+            setDirectionAngle(270.0f);
             break;
         case WEST:
-            posX -= displcmnt;
+            setDirectionAngle(180.0f);
             break;
         case NORTH:
-            posY += displcmnt;
+            setDirectionAngle(90.0f);
             break;
         case EAST:
         default:
-            posX += displcmnt;
+            setDirectionAngle(0.0f);
+        }
     }
+
+    posX += coefX * displcmnt;
+    posY += coefY * displcmnt;
 }
 
-float Bullet::getDirectionAngle()
+float Bullet::getDirectionAngleForView()
 {
-    float angle = 0.0;
+    float viewAngle = 0.0;
     switch (direction)
     {
         case NORTH:
-            angle = 270.0;
+            viewAngle = 270.0;
             break;
         case SOUTH:
-            angle = 90.0;
+            viewAngle = 90.0;
             break;
         case WEST:
-            angle = 180.0;
+            viewAngle = 180.0;
             break;
         case EAST:
         default:
             break;
     }
-    return angle;
+    return viewAngle;
 }
 
 bool Bullet::isBulletDestroyed(const Bullet& b)

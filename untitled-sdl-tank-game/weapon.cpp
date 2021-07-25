@@ -34,12 +34,12 @@ void BasicCannon::act()
 
 BasicCannon::BasicCannon()
 {
-    readyCnt = 100;
+    readyCnt = READY;
 }
 
 BombDrop::BombDrop()
 {
-    readyCnt = 200;
+    readyCnt = READY;
 }
 
 void BombDrop::act()
@@ -47,6 +47,19 @@ void BombDrop::act()
     if (readyCnt < READY)
     {
         readyCnt += 5;
+    }
+}
+
+MachineGun::MachineGun()
+{
+    readyCnt = READY;
+}
+
+void MachineGun::act()
+{
+    if (readyCnt < READY)
+    {
+        readyCnt += 1;
     }
 }
 
