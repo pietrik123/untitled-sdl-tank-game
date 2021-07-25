@@ -9,7 +9,8 @@ class Enemy : public GameObject
 private:
     void basicInit();
 public:
-    float displcmnt;
+    // enemy speed, unit: [game distance unit]/[1*frame] 
+    float speed;
     int energy;
 
     bool isStuck;

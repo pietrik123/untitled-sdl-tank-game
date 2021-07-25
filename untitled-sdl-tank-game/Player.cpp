@@ -10,10 +10,10 @@ void Player::basicInit()
     shotFired = false;
     prevShotFired = false;
     addBullet = false;
-    displcmt = PLAYER_SPEED;
+    speed = PLAYER_SPEED;
     coinsCollected = 0;
     afterHitCounter = 0;
-    shootingDirection = EAST;
+    basicCannonShootingDirection = EAST;
 
     weaponIndex = WeaponId::BASIC_CANNON;
     weapons.push_back(new BasicCannon());
@@ -49,19 +49,19 @@ void Player::moveObj(Direction direction)
 {
     if (direction == WEST)
     {
-        posX -= displcmt;
+        posX -= speed;
     }
     if (direction == EAST)
     {
-        posX += displcmt;
+        posX += speed;
     }
     if (direction == NORTH)
     {
-        posY += displcmt;
+        posY += speed;
     }
     if (direction == SOUTH)
     {
-        posY -= displcmt;
+        posY -= speed;
     }
 }
 

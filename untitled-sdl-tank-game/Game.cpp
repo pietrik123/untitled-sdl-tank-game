@@ -412,29 +412,29 @@ void Game::mainLoop()
 
         if (state[SDL_SCANCODE_O])
         {
-            std::cout << "debug key o\n";
+            std::cout << "debug key 'O' pressed\n";
         }
 
         if (state[SDL_SCANCODE_LEFT])
         {
-            player.shootingDirection = WEST;
+            player.basicCannonShootingDirection = WEST;
         }
         else if (state[SDL_SCANCODE_RIGHT])
         {
-            player.shootingDirection = EAST;
+            player.basicCannonShootingDirection = EAST;
         }
         else if (state[SDL_SCANCODE_DOWN])
         {
-            player.shootingDirection = SOUTH;
+            player.basicCannonShootingDirection = SOUTH;
         }
         else if (state[SDL_SCANCODE_UP])
         {
-            player.shootingDirection = NORTH;
+            player.basicCannonShootingDirection = NORTH;
         }
 
         if (addBulletFlag == true)
         {
-            bulletStartDir = player.shootingDirection;           
+            bulletStartDir = player.basicCannonShootingDirection;           
         }
 
         player.getCurrentWeapon()->act();

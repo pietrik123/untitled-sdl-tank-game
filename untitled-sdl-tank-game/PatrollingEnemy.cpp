@@ -67,8 +67,8 @@ void PatrollingEnemy::GoToPoint(const Point& point)
 	{
 		dirY = 0;
 	}
-	posX += dirX * displcmnt;
-	posY += dirY * displcmnt;
+	posX += dirX * speed;
+	posY += dirY * speed;
 }
 
 Point PatrollingEnemy::choosePointToGoTo()

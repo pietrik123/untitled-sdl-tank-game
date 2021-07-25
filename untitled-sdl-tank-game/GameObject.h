@@ -53,7 +53,9 @@ public:
     std::vector<Circle> collisionCircles;
 
     Direction direction;
-    float directionAngle; // degrees
+
+    // degrees - angle between X-axis and direction vector ("+" is counter-clockwise)
+    float directionAngle; 
 
     GameObject();
     GameObject(float x, float y);
