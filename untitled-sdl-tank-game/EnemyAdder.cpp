@@ -59,7 +59,7 @@ void EnemyAdder::run(std::vector<Enemy>& enemies)
         }
         else
         {
-            std::cout << __FUNCTION__ << " : Could not add an enemy, not colliding with the player!\n";
+            std::cout << __FUNCTION__ << " : Could not add an enemy, which is not colliding with the player!\n";
         }       
     }
 

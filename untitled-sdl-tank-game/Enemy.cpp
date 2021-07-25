@@ -42,8 +42,6 @@ bool Enemy::isHit(Bullet &b)
         hit = true;
     }
     return hit;
-    dirX = 0;
-    dirY = 0;
 }
 
 void Enemy::follow(const GameObject& objectToFollow)

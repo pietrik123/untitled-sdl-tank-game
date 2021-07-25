@@ -192,7 +192,11 @@ bool Game::initGame()
     // create copyable objects
 
     bulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.bulletTexture);
+    bulletTemplate.bulletDamage = 50;
+
     machineGunBulletTemplate = Bullet(-10, -10, 10.0, &texDataStruct.machineGunBulletTexture);
+    machineGunBulletTemplate.bulletDamage = 10;
+
     flameTemplate = Flame(-10.0, -10.0, &texDataStruct.flameTexture, 5);
     bombTemplate = Bomb(-10.0, -10.0, &texDataStruct.bombTexture);
     coinTemplate = GameObject(-10.0, -10.0, &texDataStruct.coinTexture, {});
@@ -404,6 +408,11 @@ void Game::mainLoop()
             default:
                 break;
             }
+        }
+
+        if (state[SDL_SCANCODE_O])
+        {
+            std::cout << "debug key o\n";
         }
 
         if (state[SDL_SCANCODE_LEFT])
@@ -707,7 +716,7 @@ void Game::mainLoop()
                     addFlame(flameTemplate, flames, (*enemyIt)->posX - 15, (*enemyIt)->posY + 3);
                     addFlame(flameTemplate, flames, (*enemyIt)->posX, (*enemyIt)->posY - 7);
 
-                    (*enemyIt)->energy -= 50;
+                    (*enemyIt)->energy -= (*bulletIt).bulletDamage;
                     (*bulletIt).destroyed = true;
                 }
             }

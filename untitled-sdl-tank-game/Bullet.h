@@ -13,14 +13,13 @@ public:
      * maximum life cycle of a bullet
      */
     int maxLifeCycle;
-
     bool isFourDirMovementOnly;
-
     bool destroyed;
     /**
      * current lifeCycle
      */
     int lifeCycle;
+    int bulletDamage;
     
     Bullet();
     Bullet(float x, float y, float collisionRadius, MyTexture* texture);

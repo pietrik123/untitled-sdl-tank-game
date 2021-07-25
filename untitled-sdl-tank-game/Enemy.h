@@ -18,9 +18,6 @@ public:
 
     short int dirX;
     short int dirY;
-    
-    float prevPosX;
-    float prevPosY;
 
     Enemy();
     Enemy(float x, float y);

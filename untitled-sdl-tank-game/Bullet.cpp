@@ -61,23 +61,23 @@ void Bullet::move()
 
 float Bullet::getDirectionAngleForView()
 {
-    float angle = 0.0;
+    float viewAngle = 0.0;
     switch (direction)
     {
         case NORTH:
-            angle = 270.0;
+            viewAngle = 270.0;
             break;
         case SOUTH:
-            angle = 90.0;
+            viewAngle = 90.0;
             break;
         case WEST:
-            angle = 180.0;
+            viewAngle = 180.0;
             break;
         case EAST:
         default:
             break;
     }
-    return angle;
+    return viewAngle;
 }
 
 bool Bullet::isBulletDestroyed(const Bullet& b)
