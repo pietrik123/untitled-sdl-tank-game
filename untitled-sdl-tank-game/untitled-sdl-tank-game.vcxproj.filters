@@ -22,6 +22,7 @@
     <ClCompile Include="Crate.cpp" />
     <ClCompile Include="PatrollingEnemy.cpp" />
     <ClCompile Include="TitleScreen.cpp" />
+    <ClCompile Include="Level.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -45,6 +46,8 @@
     <ClInclude Include="PatrollingEnemy.h" />
     <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="game_settings.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="TextureDataStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="enemyGoTo.tpp" />
