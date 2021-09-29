@@ -166,6 +166,7 @@
     <ClCompile Include="ObjectAdder.cpp" />
     <ClCompile Include="EnemyAdder.cpp" />
     <ClCompile Include="PlayerHealthBar.cpp" />
+    <ClCompile Include="Level.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -180,11 +181,13 @@
     <ClInclude Include="MyTexture.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="PlayerHealthBar.h" />
     <ClInclude Include="Crate.h" />
     <ClInclude Include="ObjectAdder.h" />
     <ClInclude Include="PatrollingEnemy.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="TextureDataStruct.h" />
     <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="utils\figures.h" />
     <ClInclude Include="utils\utils.h" />
