@@ -97,7 +97,7 @@ void Player::act()
     }
 }
 
-Weapon* Player::getCurrentWeapon()
+Weapon* Player::getCurrentWeapon() const
 {
     return weapons[weaponIndex];
 }

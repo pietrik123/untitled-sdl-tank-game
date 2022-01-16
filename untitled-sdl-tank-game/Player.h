@@ -35,7 +35,7 @@ public:
     Player(float x, float y);
     Player(float x, float y, float collisionRadius, MyTexture* texture);
 
-    Weapon* getCurrentWeapon();
+    Weapon* getCurrentWeapon() const;
 
     unsigned int energy;
     unsigned int maxEnergy;
