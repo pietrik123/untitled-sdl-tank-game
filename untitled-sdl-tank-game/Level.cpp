@@ -66,12 +66,12 @@ bool Level::initLevel()
     machineGunBulletTemplate = Bullet(-10, -10, 10.0, & texturesStruct.machineGunBulletTexture);
     machineGunBulletTemplate.bulletDamage = 10;
 
-    Flame flameTemplate (-10.0, -10.0, & texturesStruct.flameTexture, 5);
-    Bomb bombTemplate(-10.0, -10.0, & texturesStruct.bombTexture);
-    GameObject coinTemplate(-10.0, -10.0, & texturesStruct.coinTexture, {});
-    GameObject sparkTemplate(-10.0, -10.0, & texturesStruct.sparkTexture, 5);
-    GameObject grassTemplate(-10.0, -10.0, & texturesStruct.grassTexture, {});
-    Crate crateTemplate(-10.0, -10.0, 25.0, & texturesStruct.crateTexture);
+    flameTemplate = Flame(-10.0, -10.0, &texturesStruct.flameTexture, 5);
+    bombTemplate = Bomb(-10.0, -10.0, &texturesStruct.bombTexture);
+    coinTemplate = GameObject(-10.0, -10.0, &texturesStruct.coinTexture, {});
+    sparkTemplate = GameObject(-10.0, -10.0, &texturesStruct.sparkTexture, 5);
+    grassTemplate = GameObject(-10.0, -10.0, &texturesStruct.grassTexture, {});
+    crateTemplate = Crate(-10.0, -10.0, 25.0, &texturesStruct.crateTexture);
     coinTemplate.radius = 12.0;
 
     // add some coins

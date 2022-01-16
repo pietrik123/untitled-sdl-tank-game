@@ -35,7 +35,6 @@ void MyText::printText(std::string newText, int x, int y,
 
 MyText::~MyText()
 {
-    std::cout << "destroying mytext\n";
     SDL_DestroyTexture(texture->sdlTexture);
     delete texture;
 }
