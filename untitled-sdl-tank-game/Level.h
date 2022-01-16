@@ -12,6 +12,7 @@
 #include "MyText.h"
 #include "PatrollingEnemy.h"
 #include "Crate.h"
+
 #include "ObjectAdder.h"
 #include "game_settings.h"
 
@@ -51,6 +52,7 @@ public:
     std::vector<GameObject> trees;
     std::vector<GameObject> coins;
     std::vector<GameObject> sparks;
+
     std::vector<GameObject> groundTiles;
     std::vector<Crate> crates;
     std::vector<MyTextGameObject*> textObjects;
@@ -59,6 +61,7 @@ public:
 
     bool initLevel();
     void runMainLoop();
+
     void handleEnemyCollision();
     void handleCrateAdderActions(CrateAdder &crateAdder);
     void handleCoinAdderActions(CoinAdder &coinAdder);

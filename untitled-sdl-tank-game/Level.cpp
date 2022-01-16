@@ -42,7 +42,7 @@ bool Level::initLevel()
     lake = GameObject(250.0, 250.0, &texturesStruct.lakeTexture, collisionCirclesOfLakeObject);
     woodenHouse = GameObject(-100.0, -400.0, 200.0, 200.0, &texturesStruct.woodenHouseTexture);
     player = Player(100.0, 100.0, 25.0, &texturesStruct.playerTexture);
-    
+
     hud = HUD(&texturesStruct.helpScreenTexture, &texturesStruct.bombInfo, &texturesStruct.cannonInfo);
 
     enemies.push_back(Enemy(-50.0, -100.0, 25.0, &texturesStruct.enemyTexture));
@@ -59,6 +59,7 @@ bool Level::initLevel()
     initGroundTiles(&texturesStruct.grassTexture);
 
     // create copyable objects
+
     bulletTemplate = Bullet(-10, -10, 10.0, & texturesStruct.bulletTexture);
     bulletTemplate.bulletDamage = 50;
 
@@ -176,12 +177,12 @@ void Level::runMainLoop()
         unsigned int i;
         n = bullets.size();
 
+
         for (auto& bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++)
         {
             (*bulletIt).move();
         }
 
-        //handle bombs actions
         for (auto& bombIt = bombs.begin(); bombIt != bombs.end(); ++bombIt)
         {
             (*bombIt).act();
@@ -489,6 +490,7 @@ void Level::handlePlayerInput(bool &exit, bool &addBulletFlag, bool &addBombFlag
     else if (state[SDL_SCANCODE_UP])
     {
         player.basicCannonShootingDirection = NORTH;
+
     }
 }
 
@@ -668,4 +670,3 @@ void Level::updateLevelDisplay()
 
     SDL_RenderPresent(game.renderer);
 }
-
