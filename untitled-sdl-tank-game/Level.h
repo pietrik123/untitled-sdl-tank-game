@@ -12,6 +12,8 @@
 #include "MyText.h"
 #include "PatrollingEnemy.h"
 #include "Crate.h"
+
+#include "ObjectAdder.h"
 #include "game_settings.h"
 
 class Level
@@ -50,16 +52,25 @@ public:
     std::vector<GameObject> trees;
     std::vector<GameObject> coins;
     std::vector<GameObject> sparks;
-    std::vector<GameObject> grassTiles;
+
+    std::vector<GameObject> groundTiles;
     std::vector<Crate> crates;
+    std::vector<MyTextGameObject*> textObjects;
 
     Level(Game& g);
 
     bool initLevel();
     void runMainLoop();
+
+    void handleEnemyCollision();
+    void handleCrateAdderActions(CrateAdder &crateAdder);
+    void handleCoinAdderActions(CoinAdder &coinAdder);
+    void handlePlayerInput(bool &exit, bool &addBulletFlag, bool &addBombFlag);
     void cleanup();
 
 private:
     void updatePlayerPositionOnCollision(float prevX, float prevY);
-    void initGrass();
+    void cleanupLevelObjects();
+    void updateLevelDisplay();
+    void initGroundTiles(MyTexture* texture);
 };
