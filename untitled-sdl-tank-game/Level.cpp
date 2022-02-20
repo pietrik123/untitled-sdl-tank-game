@@ -83,7 +83,7 @@ bool Level::initLevel()
     game.music = Mix_LoadMUS("data\\bandit_radio.wav");
 
     game.ttfFont = TTF_OpenFont("data\\cour.ttf", 28);
-    if (game.ttfFont == NULL)
+    if (game.ttfFont == nullptr)
     {
         std::cout << __FUNCTION__ << " : Error in opening *.ttf file.\n";
     }
@@ -428,7 +428,7 @@ void Level::handlePlayerInput(bool &exit, bool &addBulletFlag, bool &addBombFlag
         }
     }
 
-    const Uint8* state = SDL_GetKeyboardState(NULL);
+    const Uint8* state = SDL_GetKeyboardState(nullptr);
 
     if (state[SDL_SCANCODE_UP])
     {

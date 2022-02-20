@@ -15,7 +15,7 @@ int GameMenu::gameMenuLoop(SDL_Renderer* r)
         SDL_Event e;		
         while (SDL_PollEvent(&e) != 0)
         {
-            const Uint8* state = SDL_GetKeyboardState(NULL);
+            const Uint8* state = SDL_GetKeyboardState(nullptr);
 
             if (state[SDL_SCANCODE_UP])
             {

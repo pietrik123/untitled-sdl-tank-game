@@ -5,17 +5,17 @@
 
 MyTexture::MyTexture()
 {
-    sdlTexture = NULL;
+    sdlTexture = nullptr;
     std::cout << __FUNCTION__ << " : MyTexture::MyTexture() : Empty texture created!" << std::endl;
 }
 
 MyTexture::MyTexture(SDL_Renderer* renderer, std::string fileName)
 {
 
-    SDL_Surface* textureSurface = NULL;
+    SDL_Surface* textureSurface = nullptr;
 
     textureSurface = IMG_Load(fileName.c_str());
-    if (textureSurface == NULL)
+    if (textureSurface == nullptr)
     {
         std::cout << __FUNCTION__ << " : MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
         exit(EXIT_FAILURE);
@@ -24,7 +24,7 @@ MyTexture::MyTexture(SDL_Renderer* renderer, std::string fileName)
     SDL_SetColorKey(textureSurface, SDL_TRUE, SDL_MapRGB(textureSurface->format, 0xFF, 0x00, 0xFF));
 
     sdlTexture = SDL_CreateTextureFromSurface(renderer, textureSurface);
-    if (sdlTexture == NULL)
+    if (sdlTexture == nullptr)
     {
         std::cout << __FUNCTION__ << " : MyTexture::MyTexture() : Error: " << SDL_GetError() << std::endl;
     }
@@ -44,14 +44,14 @@ bool MyTexture::loadTextTexture(const std::string& text, const SDL_Color& color,
 {
     //free();
     SDL_Surface* textSurface = TTF_RenderText_Solid(ttfFont, text.c_str(), color);
-    if (textSurface == NULL)
+    if (textSurface == nullptr)
     {
         std::cout << __FUNCTION__ << " : Error in creating text surface\n";
         return false;
     }
 
     sdlTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    if (sdlTexture == NULL)
+    if (sdlTexture == nullptr)
     {
         std::cout << __FUNCTION__ << " : Error in creating texture out of text surface\n";
         return false;
@@ -68,7 +68,7 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode)
 
     int w, h;
 
-    SDL_QueryTexture(sdlTexture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(sdlTexture, nullptr, nullptr, &w, &h);
 
     if (mode == RENDER_IN_CENTER)
     {
@@ -88,7 +88,7 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode)
     rect.w = w;
     rect.h = h;
 
-    SDL_RenderCopy(renderer, sdlTexture, NULL, &rect);
+    SDL_RenderCopy(renderer, sdlTexture, nullptr, &rect);
 }
 
 void MyTexture::renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode, int numOfFrames, int frameIndex)
@@ -98,7 +98,7 @@ void MyTexture::renderAnim(SDL_Renderer* renderer, int x, int y, RenderMode mode
 
     int w, h;
 
-    SDL_QueryTexture(sdlTexture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(sdlTexture, nullptr, nullptr, &w, &h);
     int tileWidth = w / numOfFrames;
 
     sourceRect.x = frameIndex*tileWidth;
@@ -134,7 +134,7 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode,
 
     int w, h;
 
-    SDL_QueryTexture(sdlTexture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(sdlTexture, nullptr, nullptr, &w, &h);
 
     if (mode == RENDER_IN_CENTER)
     {
@@ -154,12 +154,12 @@ void MyTexture::render(SDL_Renderer* renderer, int x, int y, RenderMode mode,
     rect.w = w;
     rect.h = h;
 
-    SDL_RenderCopyEx(renderer, sdlTexture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, sdlTexture, nullptr, &rect, angle, nullptr, SDL_FLIP_NONE);
 }
 
 std::pair<int,int> MyTexture::getTextureWidthAndHeight()
 {
     int w, h;
-    SDL_QueryTexture(sdlTexture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(sdlTexture, nullptr, nullptr, &w, &h);
     return std::pair<int, int>(w,h);
 }

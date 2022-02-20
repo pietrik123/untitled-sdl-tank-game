@@ -84,9 +84,9 @@ HUD::HUD(MyTexture* textureHelpScreen, MyTexture* textureBombInfo, MyTexture* te
     bombInfo = textureBombInfo;
     cannonInfo = textureCannonInfo;
 
-    scoreText = NULL;
-    currentWeaponInfoText = NULL;
-    healthBar = NULL;
+    scoreText = nullptr;
+    currentWeaponInfoText = nullptr;
+    healthBar = nullptr;
 }
 
 HUD::~HUD()

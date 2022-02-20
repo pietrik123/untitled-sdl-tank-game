@@ -26,7 +26,7 @@ public:
     SDL_Texture* sdlTexture;
 
     /**
-     * Default constructor - creates object with no texture data (NULL).
+     * Default constructor - creates object with no texture data (nullptr).
      */
     MyTexture();
 
